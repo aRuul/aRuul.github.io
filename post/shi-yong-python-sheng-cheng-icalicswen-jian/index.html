@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>使用python生成ical(.ics)文件 | aRuul的无名小站</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://aruul.github.io/favicon.ico?v=1618109139419">
+<link rel="stylesheet" href="https://aruul.github.io/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+<script async src="//code.tidio.co/0llaydzaqpj2momyrcycfplv2h2my3av.js"></script>
+
+    <meta name="description" content="前言
+在了解了ical文件的基本结构之后，理论上是可以自己写出ical文件了。但是，如果把课程表的所有课全部一个个写出来就很不程序员，毕竟能交给电脑自动干的从不手动干。 一开始我是想着自己写一个可以批量生成ical文件的函数。写完之后感觉自..." />
+    <meta name="keywords" content="python" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://aruul.github.io">
+        <img src="https://aruul.github.io/images/avatar.png?v=1618109139419" class="site-logo">
+        <h1 class="site-title">aRuul的无名小站</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://aruul.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">使用python生成ical(.ics)文件</h2>
+            <div class="post-date">2020-08-08</div>
+            
+            <div class="post-content" v-pre>
+              <h4 id="前言">前言</h4>
+<p>在了解了ical文件的基本结构之后，理论上是可以自己写出ical文件了。但是，如果把课程表的所有课全部一个个写出来就很不程序员，毕竟能交给电脑自动干的从不手动干。 一开始我是想着自己写一个可以批量生成ical文件的函数。写完之后感觉自己写很繁琐，不够简洁，毕竟python之蝉是这样说的：</p>
+<!--more-->
+<blockquote>
+<p>The Zen of Python, by Tim Peters</p>
+<p>Beautiful is better than ugly.<br>
+Explicit is better than implicit.<br>
+Simple is better than complex.<br>
+Complex is better than complicated.<br>
+Flat is better than nested.<br>
+Sparse is better than dense.<br>
+Readability counts.<br>
+Special cases aren't special enough to break the rules.<br>
+Although practicality beats purity.<br>
+Errors should never pass silently.<br>
+Unless explicitly silenced.<br>
+In the face of ambiguity, refuse the temptation to guess.<br>
+There should be one-- and preferably only one --obvious way to do it.<br>
+Although that way may not be obvious at first unless you're Dutch.<br>
+Now is better than never.<br>
+Although never is often better than <em>right</em> now.<br>
+If the implementation is hard to explain, it's a bad idea.<br>
+If the implementation is easy to explain, it may be a good idea.<br>
+Namespaces are one honking great idea -- let's do more of those!</p>
+</blockquote>
+<p>所以，看了好多第三方库，找到了一个感觉还行的第三方库<code>icalendar</code></p>
+<h4 id="icalendar库">icalendar库</h4>
+<p>唯一美中不足的是这个库的<a href="https://icalendar.readthedocs.io/en/latest/usage.html#file-structure">官方文档</a>没有中文，不过也还好理解，比较简单。<br>
+<strong>首先下载该库</strong></p>
+<pre><code class="language-python">    pip install icalendar
+</code></pre>
+<p><strong>引入</strong></p>
+<pre><code class="language-python">    from icalendar import Calendar, Event,Alarm
+</code></pre>
+<p><strong>常用的方法</strong><br>
+1.建立一个日历-----Calendar()方法<br>
+实例：</p>
+<pre><code class="language-python">     cal = Calendar()
+</code></pre>
+<p>2.在日历中添加组件-----add(属性名，值)</p>
+<pre><code class="language-python">    cal.add('VERSION','2.0')
+    cal.add('X-WR-CALNAME','生成ics文件测试')
+    cal.add('X-APPLE-CALENDAR-COLOR','#540EB9')
+    cal.add('X-WR-TIMEZONE','Asia/Shanghai')
+</code></pre>
+<p>这些参数的意义在我的<a href="https://aruul.github.io/2020/08/07/ical%E6%96%87%E4%BB%B6%E4%BB%A3%E7%A0%81%E7%BB%93%E6%9E%84%E8%AF%B4%E6%98%8E/">这篇文章</a>中讲到</p>
+<p>3.在日历中添加子组件(事件)-----Event</p>
+<pre><code>    event=Event()
+</code></pre>
+<p>4.为事件添加属性-----add(属性名，值)</p>
+<pre><code class="language-python">    event.add('UID','2000')
+    event.add('DTSTART;VALUE=DATE','20200808T170500')
+    event.add('DTEND;VALUE=DATE','20200808T172000')
+    event.add('SUMMARY','测试事件键')
+    event.add('SEQUENCE','0')
+    event.add('DESCRIPTION','这是描述')
+    event.add('LOCATION','这是地点')
+</code></pre>
+<p>5.添加子组件(Event)的子组件(Alarm)</p>
+<pre><code class="language-python">    alarm=Alarm()
+    alarm.add('ACTION','NONE')
+    alarm.add('TRIGGER;VALUE=DATE-TIME','19760401T005545Z')
+    event.add_component(alarm)
+</code></pre>
+<p>6.将事件添加到日历-----add_component()</p>
+<pre><code class="language-python">    cal.add_component(event)
+</code></pre>
+<p>一个日历可添加多个事件<br>
+7.生成ical文件</p>
+<pre><code class="language-python">    f = open('example.ics', 'wb')
+    f.write(cal.to_ical())
+    f.close()
+</code></pre>
+<p>其中to_ical()方法将之前写的代码生成字符串，方便我们写入文件</p>
+<p>8.总结</p>
+<p>总的代码，添加多个事件时格式如下</p>
+<pre><code class="language-python">    cal = Calendar()
+    cal.add('VERSION','2.0')
+    cal.add('X-WR-CALNAME','生成ics文件测试')
+    cal.add('X-APPLE-CALENDAR-COLOR','#540EB9')
+    cal.add('X-WR-TIMEZONE','Asia/Shanghai')
+
+    event = Event()
+    event.add('UID','2000')
+    event.add('DTSTART;VALUE=DATE','20200808T170500')
+    event.add('DTEND;VALUE=DATE','20200808T172000')
+    event.add('SUMMARY','测试事件键')
+    event.add('SEQUENCE','0')
+    event.add('DESCRIPTION','这是描述')
+    event.add('LOCATION','这是地点')
+    alarm=Alarm()
+    alarm.add('ACTION','NONE')
+    alarm.add('TRIGGER;VALUE=DATE-TIME','19760401T005545Z')
+    event.add_component(alarm)
+
+    eventt=Event()
+    eventt.add('UID','2001')
+    eventt.add('DTSTART;VALUE=DATE','20200808T180500')
+    eventt.add('DTEND;VALUE=DATE','20200808T182000')
+    eventt.add('SUMMARY','测试事件2')
+    eventt.add('SEQUENCE','0')
+    eventt.add('DESCRIPTION','这是描述2')
+    eventt.add('LOCATION','这是地点2')
+    alarmm=Alarm()
+    alarmm.add('ACTION','NONE')
+    alarmm.add('TRIGGER;VALUE=DATE-TIME','19760401T005545Z')
+    eventt.add_component(alarmm)
+
+    cal.add_component(event)
+    cal.add_component(eventt)
+    f = open('例子.ics', 'wb')
+    f.write(cal.to_ical())
+    f.close()
+</code></pre>
+<p>生成的文件内部代码如下：</p>
+<pre><code>BEGIN:VCALENDAR
+VERSION:2.0
+X-APPLE-CALENDAR-COLOR:#540EB9
+X-WR-CALNAME:生成ics文件测试
+X-WR-TIMEZONE:Asia/Shanghai
+BEGIN:VEVENT
+SUMMARY:测试事件键
+UID:2000
+SEQUENCE:0
+DESCRIPTION:这是描述
+DTEND;VALUE=DATE:20200808T172000
+DTSTART;VALUE=DATE:20200808T170500
+LOCATION:这是地点
+BEGIN:VALARM
+ACTION:NONE
+TRIGGER;VALUE=DATE-TIME:19760401T005545Z
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:测试事件键2
+UID:2000
+SEQUENCE:0
+DESCRIPTION:这是描述2
+DTEND;VALUE=DATE:20200808T182000
+DTSTART;VALUE=DATE:20200808T182000
+LOCATION:这是地点2
+BEGIN:VALARM
+ACTION:NONE
+TRIGGER;VALUE=DATE-TIME:19760401T005545Z
+END:VALARM
+END:VEVENT
+END:VCALENDAR
+</code></pre>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://aruul.github.io/tag/yEKiL3dgJ/" class="tag">
+                    python
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://aruul.github.io/post/b-zhan-pai-xing-bang-pa-chong/">
+                  <h3 class="post-title">
+                    b站排行榜爬虫
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>

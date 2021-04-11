@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>模拟登陆cdut教务处(上) | aRuul的无名小站</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://aruul.github.io/favicon.ico?v=1618109139419">
+<link rel="stylesheet" href="https://aruul.github.io/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+<script async src="//code.tidio.co/0llaydzaqpj2momyrcycfplv2h2my3av.js"></script>
+
+    <meta name="description" content="
+
+前言
+感觉学校教务处比较简单，拿来练练手
+
+
+
+分析网页
+登陆界面如下：
+
+
+
+可以看到我们学校教务处的登陆界面还是比较简单的，没有验证码之类的东西，这就减少了很多工作量。
+
+浏览器抓包：
+
+第一个Login.html就是登陆页面，下面..." />
+    <meta name="keywords" content="python" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://aruul.github.io">
+        <img src="https://aruul.github.io/images/avatar.png?v=1618109139419" class="site-logo">
+        <h1 class="site-title">aRuul的无名小站</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://aruul.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">模拟登陆cdut教务处(上)</h2>
+            <div class="post-date">2020-08-24</div>
+            
+            <div class="post-content" v-pre>
+              <ul>
+<li>
+<h4 id="前言">前言</h4>
+<p>感觉学校教务处比较简单，拿来练练手</p>
+<!--more-->
+</li>
+<li>
+<h4 id="分析网页">分析网页</h4>
+<p>登陆界面如下：</p>
+</li>
+</ul>
+<figure data-type="image" tabindex="1"><img src="https://s1.ax1x.com/2020/08/24/ds9pGQ.png" alt="教务处登陆界面" title="教务处登陆界面" loading="lazy"></figure>
+<p>可以看到我们学校教务处的登陆界面还是比较简单的，没有验证码之类的东西，这就减少了很多工作量。</p>
+<hr>
+<p>浏览器抓包：<br>
+<img src="https://s1.ax1x.com/2020/08/24/dskar9.png" alt="" loading="lazy"><br>
+第一个Login.html就是登陆页面，下面是几个css文件，可以忽略。主要是 md5.js这个js文件，可以知道<code>教务处的加密方式八成是md5加密</code>。</p>
+<p>【md5加密：MD5是一个安全的散列算法，输入两个不同的明文不会得到相同的输出值，根据输出值，不能得到原始的明文，即其过程不可逆】</p>
+<hr>
+<p>输入账号密码点击登陆之后，抓包登陆成功之后的界面</p>
+<figure data-type="image" tabindex="2"><img src="https://s1.ax1x.com/2020/08/24/dsty7t.jpg" alt="" loading="lazy"></figure>
+<p>可以看到，抓包到的第一个就是接收登陆界面账号密码表单的页面【http://202.115.133.173:805/Common/Handler/UserLogin.ashx】 ，因为他的方法为post。 虽然我们在浏览器里登陆时只填了用户名和密码，但表单里包含的数据可不只这些。可以看到在抓包到的表单数据如下（保护个人隐私，所以图片中一些信息打码了，下面列出来的数据是我虚构的，没有任何影响，只是作为演示）</p>
+<pre><code> Action: Login
+ userName: 123456789789
+ pwd: 723d505516e0c197e42a6be3c0af910e
+ sign: 1598267074584
+</code></pre>
+<p>这里的    <code>userName</code>是你的学号，<code>pwd</code>是加密过后一段32位的字符串。<br>
+多登陆抓包几次可以看到<code>sign</code>、<code>pwd</code>是一直在变的。<br>
+初步猜测<code>sign</code>可能是时间戳。然后再百度搜一下时间戳，可以获得当前的时间戳，看到当前的时间戳前几位是跟<code>sign</code>相吻合的，后几位不吻合，再观察分析一波可以看出来<code>sign</code>是毫秒级的时间戳。</p>
+<p>下面就剩下<code>pwd</code>不知道了。</p>
+<hr>
+<p>这时再回到我们的登陆界面</p>
+<figure data-type="image" tabindex="3"><img src="https://s1.ax1x.com/2020/08/24/dskar9.png" alt="" loading="lazy"></figure>
+<p>找到 <strong>LogUserManage.js?xxx=20191107</strong>  双击打开，可以看到下面的代码</p>
+<pre><code class="language-javascript">//for students
+function UserLogin(userName, pwd) {
+
+    var sign = new Date().getTime();
+    var user = userName.trim();
+    var signedpwd = hex_md5(user + sign + hex_md5(pwd.trim()));
+
+    var data = { Action: &quot;Login&quot;, userName: user, pwd: signedpwd, sign: sign };
+    var url = &quot;/Common/Handler/UserLogin.ashx&quot;;
+
+
+    $.post(url, data, function (rs) {
+
+
+        if (rs == &quot;0&quot;) {
+
+            window.location.href = &quot;/Default.aspx&quot;;
+        } else {
+            $(&quot;.loading&quot;).hide();
+            if (rs == &quot;4&quot; || rs == &quot;2&quot; || rs == &quot;1&quot;) {
+                alert(&quot;密码或者用户名错误&quot;);
+            }
+            else if (rs == &quot;3&quot;) {
+                alert(&quot; 账户已经被锁定， 请登陆学生缴费平台核对缴费信息，完成缴费后24小时候解锁系统, 已经办理缓交手续的同学，请联系学生资助管理中心核实，电话84078912\r\n&quot;);
+				
+				
+				window.location.href=&quot;http://wsjf.cdut.edu.cn/&quot;;
+            }
+
+        }
+    });
+}
+
+//用户退出登录
+function UserLoginOut() {
+
+    var data = { Action: &quot;LoginOut&quot; };
+    var url = &quot;/Common/Handler/UserLogin.ashx&quot;;
+    $(&quot;.loading&quot;).show();
+
+    $.post(url, data, function (rs) {
+
+        if (rs == &quot;0&quot;) {
+
+            window.location.href = &quot;/login.html&quot;;
+        } else {
+            //mini.alert(&quot;退出登录失败，请再试&quot;);
+            window.location.href = &quot;/login.html&quot;;
+            //$(&quot;.loading&quot;).hide();
+        }
+    });
+}
+
+
+//菜单操作
+$(document).ready(function () {
+    /*
+    setTimeout(
+    function () {
+    
+        $('*[target = &quot;main&quot;]').click(function () {
+            var name = $(this).html();
+            var memo = $(this).attr(&quot;memo&quot;);
+
+            $(&quot;#FnName&quot;).html(name);
+            $(&quot;#FnNotice&quot;).html(memo);
+        });
+    }, 500);
+    */
+});
+</code></pre>
+<p>这里面对我们有用的代码也就是第1——9行的代码，代码里很清楚的写着。</p>
+<pre><code class="language-javascript">var sign = new Date().getTime();
+</code></pre>
+<p>可以看到sign就是登陆时的时间戳；</p>
+<pre><code class="language-javascript">var signedpwd = hex_md5(user + sign + hex_md5(pwd.trim()));
+</code></pre>
+<p>这里signedpwd就是pwd，而hex_md5()这个函数在我们前面看到的md5.js中有，也就是标准的md5加密，将输入的字符加密成32位字符串。<br>
+可以看到pwd是由【user（学号）+sign（时间戳）+由md5加密之后的密码】再经过md5加密之后得到的。</p>
+<hr>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://aruul.github.io/tag/yEKiL3dgJ/" class="tag">
+                    python
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://aruul.github.io/post/ical-wen-jian-dai-ma-jie-gou-shuo-ming/">
+                  <h3 class="post-title">
+                    ical文件代码结构说明
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>

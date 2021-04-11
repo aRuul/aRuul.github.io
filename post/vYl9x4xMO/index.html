@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>css学习笔记 | aRuul的无名小站</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://aruul.github.io/favicon.ico?v=1618109139419">
+<link rel="stylesheet" href="https://aruul.github.io/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+<script async src="//code.tidio.co/0llaydzaqpj2momyrcycfplv2h2my3av.js"></script>
+
+    <meta name="description" content="
+css选择器
+
+
+
+选择器名称
+选择的内容
+示例
+
+
+
+
+元素选择器（也称作标签或类型选择器）
+所有指定(该)类型的 HTML 元素
+p 选择 &lt;p&gt;
+
+
+ID 选择器
+具有特定 ID 的元素（单一 HTML 页面中，每个 I..." />
+    <meta name="keywords" content="css" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://aruul.github.io">
+        <img src="https://aruul.github.io/images/avatar.png?v=1618109139419" class="site-logo">
+        <h1 class="site-title">aRuul的无名小站</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://aruul.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">css学习笔记</h2>
+            <div class="post-date">2020-10-06</div>
+            
+            <div class="post-content" v-pre>
+              <!--more-->
+<h3 id="css选择器">css选择器</h3>
+<table>
+<thead>
+<tr>
+<th>选择器名称</th>
+<th>选择的内容</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>元素选择器（也称作标签或类型选择器）</td>
+<td>所有指定(该)类型的 HTML 元素</td>
+<td><code>p</code> 选择 <code>&lt;p&gt;</code></td>
+</tr>
+<tr>
+<td>ID 选择器</td>
+<td>具有特定 ID 的元素（单一 HTML 页面中，每个 ID 只对应一个元素，一个元素只对应一个 ID）</td>
+<td><code>#my-id</code> 选择 <code>&lt;p id=&quot;my-id&quot;&gt;</code> 或 <code>&lt;a id=&quot;my-id&quot;&gt;</code></td>
+</tr>
+<tr>
+<td>类选择器</td>
+<td>具有特定类的元素（单一页面中，一个类可以有多个实例）</td>
+<td><code>.my-class</code> 选择 <code>&lt;p class=&quot;my-class&quot;&gt;</code> 和 <code>&lt;a class=&quot;my-class&quot;&gt;</code></td>
+</tr>
+<tr>
+<td>属性选择器</td>
+<td>拥有特定属性的元素</td>
+<td><code>img[src]</code> 选择 <code>&lt;img src=&quot;myimage.png&quot;&gt;</code> 而不是 <code>&lt;img&gt;</code></td>
+</tr>
+<tr>
+<td>伪（Pseudo）类选择器</td>
+<td>特定状态下的特定元素（比如鼠标指针悬停）</td>
+<td><code>a:hover</code> 仅在鼠标指针悬停在链接上时选择 <code>&lt;a&gt;</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="常见的属性">常见的属性</h3>
+<ul>
+<li>font-family       你想要你的文本使用的字体</li>
+<li>font-size           字体大小  （px）默认16px</li>
+<li>background-color    背景演示</li>
+<li>color                  字体颜色</li>
+<li>width                  宽度   如：width: 80%</li>
+<li>margin               外边距，围绕元素外部的空间,如margin: auto</li>
+<li>text-decoration: underline;           为文字添加下划线</li>
+<li>letter-spacing      字母间距   单位em</li>
+<li>word-spacing        词间距      单位em</li>
+<li>line-heigh              行高          单位em</li>
+</ul>
+<h4 id="盒子模型">盒子模型</h4>
+<figure data-type="image" tabindex="1"><img src="https://s1.ax1x.com/2020/10/06/0U0Q1g.png" alt="0U0Q1g.png" loading="lazy"></figure>
+<ul>
+<li>
+<p>margin          外边距</p>
+<p>margin-top: 5px</p>
+<p>margin-bottom: 5px</p>
+<p>margin-right:  10px</p>
+<p>margin-left: 10px</p>
+<p>上述属性可以用margin: 5px 10px 5px 10px代替，按照顺时针方向</p>
+<p>上述属性还可以用margin: 5px 10px 代替  第一个值为上下属性，第二个为左右</p>
+<p><strong>内边距同理</strong></p>
+</li>
+<li>
+<p>border           边框</p>
+<p>border: 5px blue solid;     设置边框线大小为5px，颜色为蓝色</p>
+<p>border-radius: 15px           设置边框圆角</p>
+</li>
+<li>
+<p>padding         内边距</p>
+</li>
+<li>
+<p>content          内容</p>
+</li>
+</ul>
+<p>未完待续...</p>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://aruul.github.io/tag/6rvOGvEbj/" class="tag">
+                    css
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://aruul.github.io/post/Al_mw5Fbu/">
+                  <h3 class="post-title">
+                    idea中导入struts2包
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>

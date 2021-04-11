@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>安卓学习笔记(1) | aRuul的无名小站</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://aruul.github.io/favicon.ico?v=1618109139419">
+<link rel="stylesheet" href="https://aruul.github.io/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+<script async src="//code.tidio.co/0llaydzaqpj2momyrcycfplv2h2my3av.js"></script>
+
+    <meta name="description" content="事件处理
+
+1.直接在xml文件里设置android:onClick
+&lt;Button
+    android:id=&quot;@+id/btn_sure&quot;
+    android:layout_width=&quot;wr..." />
+    <meta name="keywords" content="android,java" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://aruul.github.io">
+        <img src="https://aruul.github.io/images/avatar.png?v=1618109139419" class="site-logo">
+        <h1 class="site-title">aRuul的无名小站</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://aruul.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">安卓学习笔记(1)</h2>
+            <div class="post-date">2020-12-21</div>
+            
+            <div class="post-content" v-pre>
+              <h1 id="事件处理">事件处理</h1>
+<!--more-->
+<h2 id="1直接在xml文件里设置androidonclick">1.直接在xml文件里设置android:onClick</h2>
+<pre><code class="language-java">&lt;Button
+    android:id=&quot;@+id/btn_sure&quot;
+    android:layout_width=&quot;wrap_content&quot;
+    android:layout_height=&quot;wrap_content&quot;
+    android:text=&quot;sure&quot;
+    android:onClick=&quot;onCheckBoxClicked&quot;&gt;&lt;/Button&gt;
+</code></pre>
+<pre><code class="language-java">public void onCheckBoxClicked(View view){
+    //事件的响应代码
+}
+</code></pre>
+<h2 id="2在java文件中实现viewonclicklistener接口">2.在java文件中实现View.OnClickListener接口</h2>
+<pre><code class="language-java">btn=findViewById(R.id.ok);
+//为btn添加事件监听，是下面自定义的实现View.OnClickListener的mClick内部类
+btn.setOnClickListener(new mClick());
+
+class mClick implements View.OnClickListener{
+
+    @Override
+    public void onClick(View v) {
+        //事件的响应代码
+    }
+}
+</code></pre>
+<h2 id="3使用匿名类推荐">3.使用匿名类（推荐）</h2>
+<pre><code class="language-java">Button button=findViewBuId(R.id.btn_sure)
+button.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+        //事件的响应代码
+    }
+});
+</code></pre>
+<h1 id="fragment">Fragment</h1>
+<h2 id="fragment动态添加">Fragment动态添加</h2>
+<p>​     例如向<strong>activity_main.xml</strong>中动态添加、删除<code>Fragment</code></p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;LinearLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+    android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;match_parent&quot;
+    android:orientation=&quot;vertical&quot;&gt;
+
+    &lt;LinearLayout
+        android:id=&quot;@+id/minPhoto&quot;
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:orientation=&quot;vertical&quot;&gt;
+    &lt;/LinearLayout&gt;
+
+    &lt;Button
+        android:id=&quot;@+id/btn_remove&quot;
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:text=&quot;remove&quot;&gt;&lt;/Button&gt;
+
+&lt;/LinearLayout&gt;
+</code></pre>
+<p>​     假设Fragment文件是PhotoFragment.java;那么在mainActivity.java文件中,</p>
+<pre><code class="language-java">public class MainActivity extends AppCompatActivity {
+
+    Button button;
+    Fragment minPhoto=new MinPhotoFragment();
+    Fragment textFragment=new TextFragment();
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+		//动态添加Fragment
+        //获取当前Activity的FragmentManager对象
+        FragmentManager fragmentManager=getSupportFragmentManager();
+        //开启事务
+        FragmentTransaction transaction=fragmentManager.beginTransaction();
+        //添加Fragment，第一个参数是要被添加Fragment的视图布局的id，
+        //             第二个参数是要添加进去的Fragment对应的java类名字
+        transaction.add(R.id.minPhoto,minPhoto);
+        transaction.add(R.id.minPhoto,textFragment);
+        transaction.commit();
+        
+        
+        //点击按钮去除Fragment
+        button=findViewById(R.id.btn_remove);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //获取当前Activity的FragmentManager对象
+                FragmentManager fragmentManager=getSupportFragmentManager();
+                //开启事务
+                FragmentTransaction transaction=fragmentManager.beginTransaction();
+                //去除Fragment     参数为要去除的Fragment的java类名
+                transaction.remove(textFragment);
+                transaction.commit();
+            }
+        });
+    }
+}
+</code></pre>
+<h1 id="fragment间的通信">Fragment间的通信</h1>
+<p><mark>1.Fragment中定义接口</mark></p>
+<p><mark>2.Fragment中初始化接口，并设置这个接口的set方法</mark></p>
+<p><mark>3.Activity中实现这个接口</mark></p>
+<p><mark>4.Fragment的onActivityCreated回调方法中添加控件监听，事件处理环节调用接口，具体操作由Activity进行</mark></p>
+<p><mark>5.Activity中的onAttach方法中，调用Fragment设置接口的方法，将自身引用传入</mark></p>
+<p>下面举个作业中例子：点击小图显示对应的大图</p>
+<img src="D:\孺\乱七八糟的笔记\photo\安卓fragment事件.png" alt="安卓fragment事件" style="zoom:75%;" />
+<pre><code class="language-java">//Fragment类文件代码
+public class MinPhotoFragment extends Fragment {
+    
+  // 1.Fragment中定义接口
+    public interface ImgClick{
+        public void onImgClickListener(ImageView imageView);
+    }
+  
+  //2.Fragment中初始化接口，并设置这个接口的set方法
+    ImgClick imgClick;
+    public void setImgClick(ImgClick imgClick){
+        this.imgClick=imgClick;
+    }
+    
+    ....其他代码省略...
+
+}
+</code></pre>
+<pre><code class="language-java">public class MainActivity extends AppCompatActivity implements MinPhotoFragment.ImgClick{
+
+//3.Activity中实现这个接口
+	public void onImgClickListener(ImageView imageView) {
+        maxImg.setImageDrawable(imageView.getDrawable());
+    }
+}
+</code></pre>
+<pre><code class="language-java">//4.在Fragment的onActivityCreated回调方法中添加监听，事件处理环节调用接口，具体操作由Activity进行
+@Override
+public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    super.onActivityCreated(savedInstanceState);
+    for(int i=0;i&lt;img.length;i++) {
+        ImageView image = (ImageView) this.getActivity().findViewById(img[i]);
+        image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imgClick.onImgClickListener((ImageView)v);
+            }
+        });
+    }
+}
+</code></pre>
+<pre><code class="language-java">//5.Activity中的onAttachFragment方法中，调用Fragment设置接口的方法，将自身引用传入
+@Override
+public void onAttachFragment(@NonNull Fragment fragment) {
+    super.onAttachFragment(fragment);
+    if(fragment instanceof  MinPhotoFragment){  //判断fragment是否为目标Fragment
+        MinPhotoFragment minPhotoFragment=(MinPhotoFragment)fragment;
+        minPhotoFragment.setImgClick(this);
+    }
+}
+</code></pre>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://aruul.github.io/tag/sGjW75O1c/" class="tag">
+                    android
+                  </a>
+                
+                  <a href="https://aruul.github.io/tag/fABi2KP6qR/" class="tag">
+                    java
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://aruul.github.io/post/vYl9x4xMO/">
+                  <h3 class="post-title">
+                    css学习笔记
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>

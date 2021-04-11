@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>Gitalk ---- 勉强能用的博客评论 | aRuul的无名小站</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://aruul.github.io/favicon.ico?v=1618109139419">
+<link rel="stylesheet" href="https://aruul.github.io/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+<script async src="//code.tidio.co/0llaydzaqpj2momyrcycfplv2h2my3av.js"></script>
+
+    <meta name="description" content="基于yilia主题配置的评论区
+本打算用Gitment，但发现原作者的服务器好像不能用来
+由于自己懒得去注册别的网站的账号，所以就用了Gitalk。
+
+正式开始吧
+首先点这里进行注册
+你会看到下面四个选项
+
+Application name..." />
+    <meta name="keywords" content="hexo" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://aruul.github.io">
+        <img src="https://aruul.github.io/images/avatar.png?v=1618109139419" class="site-logo">
+        <h1 class="site-title">aRuul的无名小站</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://aruul.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">Gitalk ---- 勉强能用的博客评论</h2>
+            <div class="post-date">2020-06-21</div>
+            
+            <div class="post-content" v-pre>
+              <h3 id="基于yilia主题配置的评论区">基于yilia主题配置的评论区</h3>
+<p>本打算用Gitment，但发现原作者的服务器好像不能用来<br>
+由于自己懒得去注册别的网站的账号，所以就用了Gitalk。</p>
+<!--more-->
+<h6 id="正式开始吧">正式开始吧</h6>
+<p>首先<a href="https://github.com/settings/applications/new" title="点这里">点这里</a>进行注册<br>
+你会看到下面四个选项</p>
+<ol>
+<li>Application name：填写你的应用名称（这个随意，最好是英文，建议跟仓库名一样）</li>
+<li>Homepage URL：填写你的博客主页域名</li>
+<li>Application description：应用描述，非必填项</li>
+<li>Authorization callback URL：这个填写与Homepage URL一致<br>
+点击注册，会获取到 Client ID/scerct 。</li>
+</ol>
+<h6 id="配置-_configyml-文件">配置 _config.yml 文件</h6>
+<p>打开themes\yilia_config.yml ,增加如下代码：</p>
+<pre><code class="language-html">#6、gitalk评论
+gitalk:
+  enable: true
+  githubID: 填写你的 github 账户名即可  
+  repo: 'repo 名字为可新建一个repo 或者使用博客托管的 repo 都行。'
+  ClientID: '就是上步骤中注册的获取的信息'
+  ClientSecret: '就是上步骤中注册的获取的信息'
+  adminUser: 填写你的 github 账户名即可
+  distractionFreeMode: true
+</code></pre>
+<p><strong>注意不要去掉引号！！！！</strong></p>
+<h6 id="在themesyilialayout_partialpost目录下新增gitalkejs文件文件内写入如下代码">在themes/yilia/layout/_partial/post目录下新增gitalk.ejs文件,文件内写入如下代码：</h6>
+<pre><code> &lt;div id=&quot;gitalk-container&quot; style=&quot;padding: 0px 30px 0px 30px;&quot;&gt;&lt;/div&gt; 
+
+&lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css&quot;&gt;
+&lt;script src=&quot;https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot;&gt;
+
+if(&lt;%=theme.gitalk.enable%&gt;){
+	var gitalk = new Gitalk({
+  	clientID: '&lt;%=theme.gitalk.ClientID%&gt;',
+  	clientSecret: '&lt;%=theme.gitalk.ClientSecret%&gt;',
+  	repo: '&lt;%=theme.gitalk.repo%&gt;',
+  	owner: '&lt;%=theme.gitalk.githubID%&gt;',
+  	admin: ['&lt;%=theme.gitalk.adminUser%&gt;'],
+  	id: '&lt;%= page.date %&gt;',
+  	distractionFreeMode: '&lt;%=theme.gitalk.distractionFreeMode%&gt;'
+})
+gitalk.render('gitalk-container') 
+}
+&lt;/script&gt;
+</code></pre>
+<h6 id="修改themesyiliasource-srccss目录下commentscss文件">修改themes/yilia/source-src/css/目录下comment.scss文件</h6>
+<pre><code class="language-html">#disqus_thread, .duoshuo, .cloud-tie-wrapper, #SOHUCS, #gitment-ctn, #gitalk-container {
+	padding: 0 30px !important;
+	min-height: 20px;
+}
+
+#SOHUCS {
+	#SOHU_MAIN .module-cmt-list .block-cont-gw {
+		border-bottom: 1px dashed #c8c8c8 !important;
+	}
+}
+</code></pre>
+<h6 id="在themesyilialayout_partial目录下的articleejs文件内新增gitalk相关的配置代码">在themes/yilia/layout/_partial目录下的article.ejs文件内新增gitalk相关的配置代码：</h6>
+<p>先找到</p>
+<pre><code class="language-html">&lt;% if (!index &amp;&amp; post.comments){ %&gt;
+//添加到这里
+&lt;% } %&gt;
+</code></pre>
+<p>然后将：</p>
+<pre><code class="language-html">&lt;% if(theme.gitalk.enable){ %&gt;
+  &lt;%- partial('post/gitalk', {
+      key: post.slug,
+      title: post.title,
+      url: config.url+url_for(post.path)
+    }) %&gt;
+  &lt;% } %&gt;
+</code></pre>
+<p>添加到上述位置处</p>
+<p>否则添加到别处主页中间会出现评论区</p>
+<p><strong>完</strong></p>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://aruul.github.io/tag/PxPLB8Gwy/" class="tag">
+                    hexo
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://aruul.github.io/post/hexogithub-da-jian-ge-ren-bo-ke/">
+                  <h3 class="post-title">
+                    hexo+github搭建个人博客
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>

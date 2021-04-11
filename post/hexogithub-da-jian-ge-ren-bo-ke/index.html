@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>hexo+github搭建个人博客 | aRuul的无名小站</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://aruul.github.io/favicon.ico?v=1618109139419">
+<link rel="stylesheet" href="https://aruul.github.io/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+<script async src="//code.tidio.co/0llaydzaqpj2momyrcycfplv2h2my3av.js"></script>
+
+    <meta name="description" content="周周转转终于把博客搭建的差不多了
+
+本篇博客由aRu原创，转载请标明出处，附上本文链接。
+下面是我的过程：
+由于还是没找到合适的md编辑器，所以直接用的md在线编辑，
+而在线编辑又不能插入图片，所以这篇文章看起来有点枯燥
+1. 准备工作
+
+..." />
+    <meta name="keywords" content="hexo" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://aruul.github.io">
+        <img src="https://aruul.github.io/images/avatar.png?v=1618109139419" class="site-logo">
+        <h1 class="site-title">aRuul的无名小站</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://aruul.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">hexo+github搭建个人博客</h2>
+            <div class="post-date">2020-06-20</div>
+            
+            <div class="post-content" v-pre>
+              <h1 id="周周转转终于把博客搭建的差不多了">周周转转终于把博客搭建的差不多了</h1>
+<h2 id="-more-本篇博客由aru原创转载请标明出处附上本文链接"><!--more--><br>
+<strong>本篇博客由aRu原创，转载请标明出处，附上本文链接。</strong></h2>
+<p><strong>下面是我的过程</strong>：<br>
+<s>由于还是没找到合适的md编辑器，所以直接用的md在线编辑，<br>
+而在线编辑又不能插入图片，所以这篇文章看起来有点枯燥</s></p>
+<p><strong>1. 准备工作</strong></p>
+<ul>
+<li>
+<p>安装Node.js</p>
+</li>
+<li>
+<p>安装Git</p>
+</li>
+<li>
+<p>注册Github账号 生成静态网页</p>
+</li>
+<li>
+<p>安装Hexo</p>
+</li>
+<li>
+<p>连接Github与本地</p>
+</li>
+<li>
+<p><strong>安装软件大家都会，直接去官网下载就行</strong><br>
+<em><strong>需要注意的是Node.js安装时有一步要选Add To Path，其他默认就行。</strong></em></p>
+</li>
+<li>
+<p><strong>注册GitHub相信聪明的你也会</strong></p>
+</li>
+<li>
+<p><strong>生成静态网页</strong><br>
+1.在 Github 中创建一个名称为 <strong>你的Github名字.github.io</strong>  的Repository。<br>
+<em>这里实在不懂得话可以搜一下怎么创建Github Pages</em><br>
+2.勾选 Initialize this repository with a README<br>
+3.选择Create repository</p>
+</li>
+<li>
+<p><strong>安装Hexo</strong><br>
+以上软件装完之后在你本地磁盘建一个文件夹命名为Blog（名字可以随便取，但要是英文）<br>
+进入Blog文件<br>
+鼠标右键---选择Git Bash Here（之后的步骤会频繁使用它，建议不要教程结束之后在关闭该窗口，每输入一行命令都要回车执行）<br>
+输入</p>
+<pre><code>npm install -g hexo-cli
+</code></pre>
+</li>
+</ul>
+<pre><code>然后回车等待安装，安装完成后输入
+</code></pre>
+<p>hexo -v</p>
+<pre><code>出现一堆数据就证明你安装成功了
+
+**连接Github与本地**- 
+还是在刚才打开的Git Bash那里依次输入下面的命令
+</code></pre>
+<p>git config --global user.name &quot;username&quot;<br>
+git config --global user.email &quot;Email&quot;</p>
+<pre><code>其中username是你的GitHub名字
+Email是你注册时的邮箱   （两个参数都不用去引号）  
+
+然后生成密钥SSH key：
+</code></pre>
+<p>ssh-keygen -t rsa -C &quot;Email&quot;</p>
+<pre><code>Email是你注册时的邮箱，引号不用去
+
+然后打开github，在头像下面点击settings，再点击SSH and GPG keys，新建一个SSH，名字随便。
+
+然后git bash中输入
+</code></pre>
+<p>cat ~/.ssh/id_rsa.pub</p>
+<pre><code>这时候会出现一堆字符，复制下来，粘贴到GitHub刚才的页面框中，点击确定保存。
+
+然后再Git Bash输入
+</code></pre>
+<p>ssh -T git@github.com</p>
+<pre><code>如果看到出现 **You successfly**就证明链接成功。
+
+**2.创建本地博客**
+
+还是在刚才打开的Git Bush中输入：```
+hexo init
+​```将 blog 文件夹初始化成一个博客文件夹。
+
+输入 ```
+npm install
+​``` 安装依赖包。
+
+输入```hexo g``` 生成（generate）网页。 
+
+由于我们还没创建任何博客，生成的网页会展示 Hexo 里面自带了一个 Hello World 的博客。
+
+输入```hexo s``` 将生成的网页放在了本地服务器（server）。
+
+浏览器里输入 http://localhost:4000/  就可以看到刚才的成果了。
+
+回到 Git Bash，按 Ctrl+C 结束，此时再看 http://localhost:4000/ 就是无法访问了。
+
+**3.将本地 Hexo 博客部署在 Github 上**
+
+ - 获取 Github 对应的 Repository 的链接
+登陆 Github，进入到 你之前创建的仓库页面下，点击 Clone or download复制 URL 
+
+- 修改博客的配置文件打开配置文件 /blog/_config.yml 
+找到 #Deployment，
+填入以下内容：
+deploy:   
+ type: git  
+ repository: 填刚才复制的url  
+ branch: master 
+保存退出
+- 部署
+回到 Git Bash
+输入 ```npm install hexo-deployer-git --save
+​``` 安装 hexo-deployer-git 
+此步骤只需要做一次。
+输入 ```hexo d
+​```得到  INFO Deploy done: git  即为部署成功
+前往你的仓库页面即可查看成果。
+
+**4.选择你的博客主题**
+打开[Hexo 主题](https://hexo.io/themes/ &quot;Hexo 主题&quot;)
+或者[Easy Hexo](https://easyhexo.com/2-Theme-use-and-config/ &quot;Easy Hexo&quot;)
+第一个网页有很多主题可以选，选择你心仪的主题，找到对应的github仓库，仓库里一般会有操作说明
+这里我更推荐第二个网页，都是现成的教程和主题，我的博客主题（名字是yilia）就是安照这个教程来设置的
+
+**5.重新上传**
+
+*我们采用的是静态网页，所以每次改动之后都要重新上传*
+
+- **重新上传前你要知道的**
+~~似乎聪明的你会发现前面啰里啰唆一大堆，怎么没有教你怎么写博客和上传博客。~~
+**以发布一篇博客为例子：**
+
+***第一种方式：***
+继续在 Git Bash 里，所在路径还是 /d/blog
+输入 ``hexo new &quot;My First Post&quot;``
+在 \blog\source\_posts 路径下，会有一个 My-First-Post.md 的文件。 
+编辑这个文件，随便写一些什么，然后保存。
+回到 Git Bash，输入 ``hexo g``
+输入 ``hexo s``
+前往 http://localhost:4000/ 查看成果。
+回到 Git Bash，按 Ctrl+C 结束。
+
+**第二种方式：**
+直接打开\blog\source\_posts（或者\blog\source下其他的文件夹）
+然后新建一个以 .md结尾的文件
+打开并输入内容即可
+这里是[md语法规则](https://blog.csdn.net/qq_27870421/article/details/86541868 &quot;md语法规则&quot;)的教程，还是很简单的。你也可以选择用md编辑器来操作。
+
+**6.更新博客**
+
+每次配置本地博客或者更新博客内容后都需要重新上传部署
+
+回到 Git Bash，输入 ``hexo g -d``就可以了。
+
+**7.后记**
+可以在评论区跟我互动哦，github互关也可以（逃
+
+
+-----------
+**本篇博客由aRu原创，转载请标明出处。**
+</code></pre>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://aruul.github.io/tag/PxPLB8Gwy/" class="tag">
+                    hexo
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://aruul.github.io/post/hello-gridea/">
+                  <h3 class="post-title">
+                    Hello Gridea
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>

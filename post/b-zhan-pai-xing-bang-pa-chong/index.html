@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>Hello Gridea | aRuul的无名小站</title>
+<title>b站排行榜爬虫 | aRuul的无名小站</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -20,15 +20,18 @@
 
 <script async src="//code.tidio.co/0llaydzaqpj2momyrcycfplv2h2my3av.js"></script>
 
-    <meta name="description" content="👏  欢迎使用 Gridea ！
-✍️  Gridea 一个静态博客写作客户端。你可以用它来记录你的生活、心情、知识、笔记、创意... ...
+    <meta name="description" content="
+（一）简单爬取标题 up 播放量等表面数据
 
-Github
-Gridea 主页
-示例网站
-特性👇
-📝  你可以使用最酷的 Markdo..." />
-    <meta name="keywords" content="Gridea" />
+前提准备
+
+
+b站排行榜链接 https://www.bilibili.com/ranking
+python编译器一个
+所需要的库：urllib3  BeautifulSoup
+
+2 . 观察..." />
+    <meta name="keywords" content="python" />
   </head>
   <body>
     <div id="app" class="main">
@@ -99,45 +102,71 @@ Gridea 主页
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">Hello Gridea</h2>
-            <div class="post-date">2018-12-12</div>
-            
-              <div class="feature-container" style="background-image: url('https://aruul.github.io/post-images/hello-gridea.png')">
-              </div>
+            <h2 class="post-title">b站排行榜爬虫</h2>
+            <div class="post-date">2020-07-24</div>
             
             <div class="post-content" v-pre>
-              <p>👏  欢迎使用 <strong>Gridea</strong> ！<br>
-✍️  <strong>Gridea</strong> 一个静态博客写作客户端。你可以用它来记录你的生活、心情、知识、笔记、创意... ...</p>
-<!-- more -->
-<p><a href="https://github.com/getgridea/gridea">Github</a><br>
-<a href="https://gridea.dev/">Gridea 主页</a><br>
-<a href="http://fehey.com/">示例网站</a></p>
-<h2 id="特性">特性👇</h2>
-<p>📝  你可以使用最酷的 <strong>Markdown</strong> 语法，进行快速创作</p>
-<p>🌉  你可以给文章配上精美的封面图和在文章任意位置插入图片</p>
-<p>🏷️  你可以对文章进行标签分组</p>
-<p>📋  你可以自定义菜单，甚至可以创建外部链接菜单</p>
-<p>💻  你可以在 <strong>Windows</strong>，<strong>MacOS</strong> 或 <strong>Linux</strong> 设备上使用此客户端</p>
-<p>🌎  你可以使用 <strong>𝖦𝗂𝗍𝗁𝗎𝖻 𝖯𝖺𝗀𝖾𝗌</strong> 或 <strong>Coding Pages</strong> 向世界展示，未来将支持更多平台</p>
-<p>💬  你可以进行简单的配置，接入 <a href="https://github.com/gitalk/gitalk">Gitalk</a> 或 <a href="https://github.com/SukkaW/DisqusJS">DisqusJS</a> 评论系统</p>
-<p>🇬🇧  你可以使用<strong>中文简体</strong>或<strong>英语</strong></p>
-<p>🌁  你可以任意使用应用内默认主题或任意第三方主题，强大的主题自定义能力</p>
-<p>🖥  你可以自定义源文件夹，利用 OneDrive、百度网盘、iCloud、Dropbox 等进行多设备同步</p>
-<p>🌱 当然 <strong>Gridea</strong> 还很年轻，有很多不足，但请相信，它会不停向前 🏃</p>
-<p>未来，它一定会成为你离不开的伙伴</p>
-<p>尽情发挥你的才华吧！</p>
-<p>😘 Enjoy~</p>
+              <!--more-->
+<h2 id="一简单爬取标题-up-播放量等表面数据">（一）简单爬取标题 up 播放量等表面数据</h2>
+<ol>
+<li>前提准备</li>
+</ol>
+<ul>
+<li>b站排行榜链接 https://www.bilibili.com/ranking</li>
+<li>python编译器一个</li>
+<li>所需要的库：urllib3  BeautifulSoup</li>
+</ul>
+<p>2 . 观察<br>
+打开b站排行榜页面，按F12或者鼠标右键检查页面，可以查看b站排行榜页面源码。当你鼠标在源码出浏览时，对应网页部分会高亮提示，可以看到代码对应的网页内容。</p>
+<p>3.伪装<br>
+作为一个爬虫，要先把自己伪装成一个浏览器。在浏览器按F12后，点击 &lt;网络&gt; 选项<br>
+<img src="https://s1.ax1x.com/2020/07/24/UvHCsx.png" alt="UvHCsx.png" loading="lazy"></p>
+<p>找到请求标头<br>
+<a href="https://imgchr.com/i/UvHAoD"><img src="https://s1.ax1x.com/2020/07/24/UvHAoD.png" alt="UvHAoD.png" loading="lazy"></a></p>
+<p>这些就是你浏览器的信息<br>
+这次我们只需要用到user-agent这个内容</p>
+<pre><code class="language-python">import urllib3
+import urllib.request
+from bs4 import BeautifulSoup
+def askURL(url):
+    headersss={
+    &quot;user-agent&quot;: &quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36 Edg/83.0.478.61&quot;,
+    &quot;accept&quot;: &quot;text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9&quot;
+    }
+    req=urllib.request.Request(url=url,headers=headersss)
+    #html=&quot;null&quot;
+    try:
+        response=urllib.request.urlopen(req)
+        html=response.read().decode('utf-8')
+        #print(html)
+    except urllib.error.URLError as e:
+        if hasattr(e,&quot;code&quot;):
+            print(e.code)
+        if hasattr(e,&quot;reason&quot;):
+            print(e.reason)
+    return html
+</code></pre>
+<p>剩下的过几天续上。。。</p>
 
             </div>
             
               <div class="tag-container">
                 
-                  <a href="https://aruul.github.io/tag/klUf7TWnQ/" class="tag">
-                    Gridea
+                  <a href="https://aruul.github.io/tag/yEKiL3dgJ/" class="tag">
+                    python
                   </a>
                 
               </div>
             
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://aruul.github.io/post/gitalk/">
+                  <h3 class="post-title">
+                    Gitalk ---- 勉强能用的博客评论
+                  </h3>
+                </a>
+              </div>
             
 
             

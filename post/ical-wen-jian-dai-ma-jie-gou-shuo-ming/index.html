@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>ical文件代码结构说明 | aRuul的无名小站</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://aruul.github.io/favicon.ico?v=1618109139419">
+<link rel="stylesheet" href="https://aruul.github.io/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+<script async src="//code.tidio.co/0llaydzaqpj2momyrcycfplv2h2my3av.js"></script>
+
+    <meta name="description" content="前言
+最近在想着把课表导入到日历里，就研究了一下ical文件
+
+什么是ical文件
+iCal 又称 iCalendar，是一种标准的互联网日历格式，让用户能够在各种计算机和各种程序之间创建和共享电子日历。
+一言蔽之，可以理解成可以向日历导入..." />
+    <meta name="keywords" content="python" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://aruul.github.io">
+        <img src="https://aruul.github.io/images/avatar.png?v=1618109139419" class="site-logo">
+        <h1 class="site-title">aRuul的无名小站</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://aruul.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">ical文件代码结构说明</h2>
+            <div class="post-date">2020-08-11</div>
+            
+            <div class="post-content" v-pre>
+              <h2 id="前言"><strong>前言</strong></h2>
+<p>最近在想着把课表导入到日历里，就研究了一下ical文件</p>
+<!--more-->
+<h2 id="什么是ical文件"><strong>什么是ical文件</strong></h2>
+<p>iCal 又称 iCalendar，是一种标准的互联网日历格式，让用户能够在各种计算机和各种程序之间创建和共享电子日历。<br>
+一言蔽之，可以理解成可以向日历导入事件的文件。</p>
+<h3 id="具体格式"><strong>具体格式</strong></h3>
+<ol>
+<li>
+<p>ical文件以.ics结尾</p>
+</li>
+<li>
+<p>ical文件的编写格式</p>
+</li>
+</ol>
+<pre><code>BEGIN:VCALENDAR
+VERSION:2.0
+X-WR-CALNAME:北京游玩安排
+X-APPLE-CALENDAR-COLOR:#540EB9
+X-WR-TIMEZONE:Asia/Shanghai
+BEGIN:VEVENT
+UID:2020-0124-0001
+DTSTART;VALUE=DATE:20200807T165000
+DTEND;VALUE=DATE:20200807T165500
+SUMMARY:购物
+DESCRIPTION:买特产
+LOCATION:王府井     
+SEQUENCE:0
+BEGIN:VALARM
+TRIGGER;VALUE=DATE-TIME:19760401T005545Z
+ACTION:NONE
+END:VALARM
+END:VEVENT
+END:VCALENDAR
+</code></pre>
+<p><em><strong>为了方便理解，我将代码写出下面的格式，但是实际上，上面的代码格式是正确的</strong></em></p>
+<pre><code>BEGIN:VCALENDAR               #固定写法，ical文件以BEGIN:VCALENDAR开头        
+|  VERSION:2.0                #固定写法
+|  X-WR-CALNAME:北京游玩安排   #日历名称
+|  X-APPLE-CALENDAR-COLOR:#540EB9  #该日历事件的颜色
+|  X-WR-TIMEZONE:Asia/Shanghai     #时区，中国默认写Asia/Shanghai
+|  
+|  BEGIN:VEVENT                                  #固定写法，表示一个日历事件的开始
+|  |  UID:2020-0124-0001                         #这个日历事件的id，是唯一的，可自定义
+|  |  DTSTART;VALUE=DATE:20200807T165000         #事件开始时间:年-月-日-T-时-分-秒
+|  |  DTEND;VALUE=DATE:20200807T165500           #事件结束时间:年-月-日-T-时-分-秒
+|  |  SUMMARY:购物                               #事件名称
+|  |  DESCRIPTION:买特产                         #事件描述(备注)
+|  |  LOCATION:北京王府井                        #事件地点
+|  |  SEQUENCE:0                                 #固定写法
+|  |  BEGIN:VALARM                               #设置闹钟提醒，这里设置的是无需闹钟提醒
+|  |  |  TRIGGER;VALUE=DATE-TIME:19760401T005545Z
+|  |  |  ACTION:NONE
+|  |  END:VALARM
+|  END:VEVENT                                    #固定写法，表示一个日历事件的结束
+|
+END:VCALENDAR                #固定写法，ical文件以END:VCALENDAR结尾
+</code></pre>
+<p>当想在一个日历中添加多个时间时，只需要在<code>BEGIN:VCALENDAR----END:VCALENDAR</code>之间按照<code>BEGIN:VEVENT----END:VEVENT</code>代码的格式添加日历事件即可</p>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://aruul.github.io/tag/yEKiL3dgJ/" class="tag">
+                    python
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://aruul.github.io/post/shi-yong-python-sheng-cheng-icalicswen-jian/">
+                  <h3 class="post-title">
+                    使用python生成ical(.ics)文件
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>
