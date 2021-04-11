@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>hexo | aRuul的无名小站</title>
+<title>5-日志 | aRuul的无名小站</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -22,7 +22,15 @@
 <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
 </script>
 
-    <meta name="description" content="温故而知新">
+    <meta name="description" content="1.日志工厂
+Mybatis 通过使用内置的日志工厂提供日志功能。内置日志工厂将会把日志工作委托给下面的实现之一：
+
+SLF4J
+Apache Commons Logging
+Log4j 2
+Log4j   【掌握】
+STDOUT_LOGG..." />
+    <meta name="keywords" content="mybatis,java" />
   </head>
   <body>
     <div id="app" class="main">
@@ -99,47 +107,73 @@
 
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
-          <h2 class="current-tag">标签: hexo</h2>
-          
-            <article class="post-item">
-              <div class="left">
-                <a href="https://aruul.github.io/post/gitalk/">
-                  <h2 class="post-title">Gitalk ---- 勉强能用的博客评论</h2>
-                </a>
-                <div class="post-date">
-                  2020-06-21
-                </div>
-                <div class="post-abstract">
-                  <h3 id="基于yilia主题配置的评论区">基于yilia主题配置的评论区</h3>
-<p>本打算用Gitment，但发现原作者的服务器好像不能用来<br>
-由于自己懒得去注册别的网站的账号，所以就用了Gitalk。</p>
+          <div class="post-detail">
+            <h2 class="post-title">5-日志</h2>
+            <div class="post-date">2021-03-15</div>
+            
+            <div class="post-content" v-pre>
+              <h3 id="1日志工厂">1.日志工厂</h3>
+<p>Mybatis 通过使用内置的日志工厂提供日志功能。内置日志工厂将会把日志工作委托给下面的实现之一：</p>
+<ul>
+<li>SLF4J</li>
+<li>Apache Commons Logging</li>
+<li>Log4j 2</li>
+<li>Log4j   【掌握】</li>
+<li>STDOUT_LOGGING （标准日志输出）【掌握】</li>
+<li>JDK logging</li>
+</ul>
+<p>MyBatis 内置日志工厂会基于运行时检测信息选择日志委托实现。它会（按上面罗列的顺序）使用第一个查找到的实现。当没有找到这些实现时，将会禁用日志功能。</p>
+<hr>
+<p><strong>STDOUT_LOGGING</strong> （标准日志输出）</p>
+<pre><code class="language-xml">&lt;!--设置日志--&gt;
+&lt;settings&gt;
+    &lt;setting name=&quot;logImpl&quot; value=&quot;STDOUT_LOGGING&quot;/&gt;
+&lt;/settings&gt;
+</code></pre>
+<hr>
+<p><strong>Log4j</strong></p>
+<ol>
+<li>
+<p>导包</p>
+<pre><code class="language-xml">&lt;!-- https://mvnrepository.com/artifact/log4j/log4j --&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;log4j&lt;/groupId&gt;
+    &lt;artifactId&gt;log4j&lt;/artifactId&gt;
+    &lt;version&gt;1.2.17&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+<p>--未完待续</p>
+</li>
+</ol>
 
-                </div>
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://aruul.github.io/tag/vFNp_g0Hb/" class="tag">
+                    mybatis
+                  </a>
+                
+                  <a href="https://aruul.github.io/tag/fABi2KP6qR/" class="tag">
+                    java
+                  </a>
+                
               </div>
-              
-            </article>
-          
-            <article class="post-item">
-              <div class="left">
-                <a href="https://aruul.github.io/post/hexogithub-da-jian-ge-ren-bo-ke/">
-                  <h2 class="post-title">hexo+github搭建个人博客</h2>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://aruul.github.io/post/-bkx04iBA/">
+                  <h3 class="post-title">
+                    4-常见parameterType的别名
+                  </h3>
                 </a>
-                <div class="post-date">
-                  2020-06-20
-                </div>
-                <div class="post-abstract">
-                  <h1 id="周周转转终于把博客搭建的差不多了">周周转转终于把博客搭建的差不多了</h1>
-
-                </div>
               </div>
-              
-            </article>
-          
+            
 
-          <div class="pagination-container">
-  
-  
-</div>
+            
+
+          </div>
 
         </div>
       </div>

@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>8-多对一 | aRuul的无名小站</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://aruul.github.io/favicon.ico?v=1618111547851">
+<link rel="stylesheet" href="https://aruul.github.io/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+<script async src="//code.tidio.co/0llaydzaqpj2momyrcycfplv2h2my3av.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+    <meta name="description" content="student表
+
+
+teacher表
+
+
+一个老师对应多个学生
+
+Teacher.java
+package org.example.pojo;
+
+/**
+ * @author aRu
+ * @date 2021/3/17 20:21
+ *..." />
+    <meta name="keywords" content="mybatis,java" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://aruul.github.io">
+        <img src="https://aruul.github.io/images/avatar.png?v=1618111547851" class="site-logo">
+        <h1 class="site-title">aRuul的无名小站</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+          <a class="social-link" href="https://github.com/aRuul" target="_blank">
+            <i class="fab fa-github"></i>
+          </a>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+<span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+</span> | <a class="rss" href="https://aruul.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">8-多对一</h2>
+            <div class="post-date">2021-03-17</div>
+            
+            <div class="post-content" v-pre>
+              <p>student表</p>
+<figure data-type="image" tabindex="1"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210317213129.png" alt="image-20210317213128631" loading="lazy"></figure>
+<hr>
+<p>teacher表</p>
+<figure data-type="image" tabindex="2"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210317213220.png" alt="image-20210317213220202" loading="lazy"></figure>
+<hr>
+<p><mark>一个老师对应多个学生</mark></p>
+<hr>
+<p><strong>Teacher.java</strong></p>
+<pre><code class="language-java">package org.example.pojo;
+
+/**
+ * @author aRu
+ * @date 2021/3/17 20:21
+ */
+public class Teacher {
+    private int id;
+    private String name;
+
+    public Teacher() {
+    }
+
+    public Teacher(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return &quot;Teacher{&quot; +
+                &quot;id=&quot; + id +
+                &quot;, name='&quot; + name + '\'' +
+                '}';
+    }
+}
+</code></pre>
+<p><strong>Student.java</strong></p>
+<p><mark>一个老师对应多个学生，在学生类中写上<strong>Teacher teacher</strong></mark></p>
+<pre><code class="language-java">package org.example.pojo;
+
+/**
+ * @author aRu
+ * @date 2021/3/17 20:20
+ */
+public class Student {
+    private int id;
+    private String name;
+    private Teacher teacher;
+
+    public Student() {
+    }
+
+    public Student(int id, String name, Teacher teacher) {
+        this.id = id;
+        this.name = name;
+        this.teacher = teacher;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Teacher getTeacher() {
+        return teacher;
+    }
+
+    public void setTeacher(Teacher teacher) {
+        this.teacher = teacher;
+    }
+
+    @Override
+    public String toString() {
+        return &quot;Student{&quot; +
+                &quot;id=&quot; + id +
+                &quot;, name='&quot; + name + '\'' +
+                &quot;, teacher=&quot; + teacher +
+                '}';
+    }
+}
+</code></pre>
+<hr>
+<p><strong>StudentMapper.java</strong></p>
+<pre><code class="language-java">public interface StudentMapper {
+    //查询所有的学生信息 以及对应的老师的信息
+    public List&lt;Student&gt; getStudent();
+}
+</code></pre>
+<ul>
+<li><mark>在查询学生时，学生中包含了Teacher这个类，查询的resultType比较复杂 ，所以采用resultMap的形式</mark></li>
+<li><mark>sql语句中将学生表、教师表中s.id  s.name  t.name字段起别名为sid  sname   tname</mark></li>
+</ul>
+<pre><code class="language-mysql">select s.id sid, s.name sname, t.name tname
+        from mybatis.student s,mybatis.teacher t
+        where s.tid=t.id;
+</code></pre>
+<ul>
+<li>
+<p><mark>resultMap的编写</mark></p>
+<p><mark>在上一步中三个关键的数据库字段名被起别名，与原来java中的属性名不一致，所以要一一对应一下；</mark></p>
+<p><mark>对于一般的属性 用<code>result</code>标签</mark></p>
+<p><mark>对于类来说  用 <strong>association</strong> 标签 在java实体类中属性名property为teacher ,  javaType=&quot;Teacher&quot;</mark></p>
+<p><mark>而原来java实体类中属性名name对于起别名后 的tname</mark></p>
+</li>
+</ul>
+<p><strong>StudentMapper.xml</strong></p>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
+&lt;!DOCTYPE mapper
+        PUBLIC &quot;-//mybatis.org//DTD Mapper 3.0//EN&quot;
+        &quot;http://mybatis.org/dtd/mybatis-3-mapper.dtd&quot;&gt;
+&lt;!--namespace 是要绑定的类的路径--&gt;
+&lt;mapper namespace=&quot;org.example.dao.StudentMapper&quot;&gt;
+    &lt;!--按照结果嵌套处理--&gt;
+    &lt;select id=&quot;getStudent&quot; resultMap=&quot;StudentTeacher&quot;&gt;
+        select s.id sid, s.name sname, t.name tname
+        from mybatis.student s,mybatis.teacher t
+        where s.tid=t.id;
+    &lt;/select&gt;
+
+    &lt;resultMap id=&quot;StudentTeacher&quot; type=&quot;Student&quot;&gt;
+        &lt;result property=&quot;id&quot; column=&quot;sid&quot;/&gt;
+        &lt;result property=&quot;name&quot; column=&quot;sname&quot;/&gt;
+        &lt;association property=&quot;teacher&quot; javaType=&quot;Teacher&quot;&gt;
+            &lt;result property=&quot;name&quot; column=&quot;tname&quot;/&gt;
+        &lt;/association&gt;
+    &lt;/resultMap&gt;
+&lt;/mapper&gt;
+</code></pre>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://aruul.github.io/tag/vFNp_g0Hb/" class="tag">
+                    mybatis
+                  </a>
+                
+                  <a href="https://aruul.github.io/tag/fABi2KP6qR/" class="tag">
+                    java
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://aruul.github.io/post/d8DRHzqIN/">
+                  <h3 class="post-title">
+                    7-注解开发
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+  <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad()
+  </script>
+
+
+
+
+
+  </body>
+</html>

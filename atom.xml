@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://aruul.github.io</id>
     <title>aRuul的无名小站</title>
-    <updated>2021-04-11T03:06:20.464Z</updated>
+    <updated>2021-04-11T03:26:28.136Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://aruul.github.io"/>
     <link rel="self" href="https://aruul.github.io/atom.xml"/>
@@ -21,1060 +21,1198 @@
 ]]></content>
     </entry>
     <entry>
-        <title type="html"><![CDATA[安卓学习笔记(1)]]></title>
-        <id>https://aruul.github.io/post/fo392kjus/</id>
-        <link href="https://aruul.github.io/post/fo392kjus/">
+        <title type="html"><![CDATA[Lombook]]></title>
+        <id>https://aruul.github.io/post/iJ3Ze3gYo/</id>
+        <link href="https://aruul.github.io/post/iJ3Ze3gYo/">
         </link>
-        <updated>2020-12-21T13:35:31.000Z</updated>
-        <summary type="html"><![CDATA[<h1 id="事件处理">事件处理</h1>
-]]></summary>
-        <content type="html"><![CDATA[<h1 id="事件处理">事件处理</h1>
-<!--more-->
-<h2 id="1直接在xml文件里设置androidonclick">1.直接在xml文件里设置android:onClick</h2>
-<pre><code class="language-java">&lt;Button
-    android:id=&quot;@+id/btn_sure&quot;
-    android:layout_width=&quot;wrap_content&quot;
-    android:layout_height=&quot;wrap_content&quot;
-    android:text=&quot;sure&quot;
-    android:onClick=&quot;onCheckBoxClicked&quot;&gt;&lt;/Button&gt;
+        <updated>2021-03-17T08:24:24.000Z</updated>
+        <content type="html"><![CDATA[<p>使用步骤</p>
+<ol>
+<li>
+<p>在idea中装Lombok插件</p>
+</li>
+<li>
+<p>导入jar包</p>
+<pre><code class="language-xml">&lt;!-- https://mvnrepository.com/artifact/org.projectlombok/lombok --&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.projectlombok&lt;/groupId&gt;
+    &lt;artifactId&gt;lombok&lt;/artifactId&gt;
+    &lt;version&gt;1.18.10&lt;/version&gt;
+    &lt;scope&gt;provided&lt;/scope&gt;
+&lt;/dependency&gt;
 </code></pre>
-<pre><code class="language-java">public void onCheckBoxClicked(View view){
-    //事件的响应代码
-}
-</code></pre>
-<h2 id="2在java文件中实现viewonclicklistener接口">2.在java文件中实现View.OnClickListener接口</h2>
-<pre><code class="language-java">btn=findViewById(R.id.ok);
-//为btn添加事件监听，是下面自定义的实现View.OnClickListener的mClick内部类
-btn.setOnClickListener(new mClick());
+<p>3.使用注解</p>
+<hr>
+<h2 id="有哪些注解">有哪些注解？</h2>
+<ul>
+<li>@Data</li>
+<li>@Setter</li>
+<li>@Getter</li>
+<li>@Log4j</li>
+<li>@AllArgsConstructor</li>
+<li>@NoArgsConstructor</li>
+<li>@EqualsAndHashCode</li>
+<li>@NonNull</li>
+<li>@Cleanup</li>
+<li>@ToString</li>
+<li>@RequiredArgsConstructor</li>
+<li>@Value</li>
+<li>@SneakyThrows</li>
+<li>@Synchronized</li>
+</ul>
+<h2 id="注解详解">注解详解</h2>
+<p><strong>@Data</strong></p>
+<p>注解在 <strong>类</strong> 上；提供类所有属性的 get 和 set 方法，此外还提供了equals、canEqual、hashCode、toString 方法。</p>
+<figure data-type="image" tabindex="1"><img src="https://pic4.zhimg.com/80/v2-9b36bb6fd37372cee213b118d7e26c7b_720w.jpg" alt="img" loading="lazy"></figure>
+<p><strong>@Setter</strong></p>
+<p>注解在 <strong>属性</strong> 上；为单个属性提供 set 方法; 注解在 <strong>类</strong> 上，为该类所有的属性提供 set 方法， 都提供默认构造方法。</p>
+<figure data-type="image" tabindex="2"><img src="https://pic2.zhimg.com/80/v2-12139fea446022a1986ba2042f886a7d_720w.jpg" alt="img" loading="lazy"></figure>
+<figure data-type="image" tabindex="3"><img src="https://pic3.zhimg.com/80/v2-994e89f3c9c6976b05e345fcd0848692_720w.jpg" alt="img" loading="lazy"></figure>
+<p><strong>@Getter</strong></p>
+<p>注解在 <strong>属性</strong> 上；为单个属性提供 get 方法; 注解在 <strong>类</strong> 上，为该类所有的属性提供 get 方法，都提供默认构造方法。</p>
+<figure data-type="image" tabindex="4"><img src="https://pic3.zhimg.com/80/v2-18149a8d23a4e3673b9441b198a1f976_720w.jpg" alt="img" loading="lazy"></figure>
+<figure data-type="image" tabindex="5"><img src="https://pic4.zhimg.com/80/v2-2cb156b6d93198d271f2ff4bca1c21ff_720w.jpg" alt="img" loading="lazy"></figure>
+<p><strong>@Log4j</strong></p>
+<p>注解在 <strong>类</strong> 上；为类提供一个 属性名为 log 的 log4j 日志对象，提供默认构造方法。</p>
+<figure data-type="image" tabindex="6"><img src="https://pic1.zhimg.com/80/v2-ce28a344baae222aa0c4ea0b84461000_720w.jpg" alt="img" loading="lazy"></figure>
+<p><strong>@AllArgsConstructor</strong></p>
+<p>注解在 <strong>类</strong> 上；为类提供一个全参的构造方法，加了这个注解后，类中不提供默认构造方法了。</p>
+<figure data-type="image" tabindex="7"><img src="https://pic4.zhimg.com/80/v2-31bca5c4da7e9c475bade1eaa400802f_720w.jpg" alt="img" loading="lazy"></figure>
+<p><strong>@NoArgsConstructor</strong></p>
+<p>注解在 <strong>类</strong> 上；为类提供一个无参的构造方法。</p>
+<figure data-type="image" tabindex="8"><img src="https://pic2.zhimg.com/80/v2-518a849c9d5fffde690b2a801e951275_720w.jpg" alt="img" loading="lazy"></figure>
+<p><strong>@EqualsAndHashCode</strong></p>
+<p>注解在 <strong>类</strong> 上, 可以生成 equals、canEqual、hashCode 方法。</p>
+<figure data-type="image" tabindex="9"><img src="https://pic1.zhimg.com/80/v2-6bddfeaa77e8dd29b05bb8b499da65f4_720w.jpg" alt="img" loading="lazy"></figure>
+<p><strong>@NonNull</strong></p>
+<p>注解在 <strong>属性</strong> 上，会自动产生一个关于此参数的非空检查，如果参数为空，则抛出一个空指针异常，也会有一个默认的无参构造方法。</p>
+<figure data-type="image" tabindex="10"><img src="https://pic2.zhimg.com/80/v2-268671034ed3141e117c99f055a3f2ad_720w.jpg" alt="img" loading="lazy"></figure>
+<p><strong>@Cleanup</strong></p>
+<p>这个注解用在 <strong>变量</strong> 前面，可以保证此变量代表的资源会被自动关闭，默认是调用资源的 close() 方法，如果该资源有其它关闭方法，可使用 @Cleanup(“methodName”) 来指定要调用的方法，也会生成默认的构造方法</p>
+<figure data-type="image" tabindex="11"><img src="https://pic3.zhimg.com/80/v2-6408e68a5f77eba5add53abe3ee8abf2_720w.jpg" alt="img" loading="lazy"></figure>
+<p><strong>@ToString</strong></p>
+<p>这个注解用在 <strong>类</strong> 上，可以生成所有参数的 toString 方法，还会生成默认的构造方法。</p>
+<figure data-type="image" tabindex="12"><img src="https://pic1.zhimg.com/80/v2-28b29cc1b5940f31de246e719cfcd9e8_720w.jpg" alt="img" loading="lazy"></figure>
+<p><strong>@RequiredArgsConstructor</strong></p>
+<p>这个注解用在 <strong>类</strong> 上，使用类中所有带有 @NonNull 注解的或者带有 final 修饰的成员变量生成对应的构造方法。</p>
+<figure data-type="image" tabindex="13"><img src="https://pic3.zhimg.com/80/v2-866a42cd03707c5095b44721be5e17ba_720w.jpg" alt="img" loading="lazy"></figure>
+<p><strong>@Value</strong></p>
+<p>这个注解用在 <strong>类</strong> 上，会生成含所有参数的构造方法，get 方法，此外还提供了equals、hashCode、toString 方法。</p>
+<figure data-type="image" tabindex="14"><img src="https://pic1.zhimg.com/80/v2-159c62a7a9f545505246939abe6cfcc0_720w.jpg" alt="img" loading="lazy"></figure>
+<p><strong>@SneakyThrows</strong></p>
+<p>这个注解用在 <strong>方法</strong> 上，可以将方法中的代码用 try-catch 语句包裹起来，捕获异常并在 catch 中用 Lombok.sneakyThrow(e) 把异常抛出，可以使用 @SneakyThrows(Exception.class) 的形式指定抛出哪种异常，也会生成默认的构造方法。</p>
+<figure data-type="image" tabindex="15"><img src="https://pic3.zhimg.com/80/v2-2cd23582188406e3301a318d37bfa426_720w.jpg" alt="img" loading="lazy"></figure>
+<p><strong>@Synchronized</strong></p>
+<p>这个注解用在 <strong>类方法</strong> 或者 <strong>实例方法</strong> 上，效果和 synchronized 关键字相同，区别在于锁对象不同，对于类方法和实例方法，synchronized 关键字的锁对象分别是类的 class 对象和 this 对象，而 @Synchronized 的锁对象分别是 私有静态 final 对象 lock 和 私有 final 对象 lock，当然，也可以自己指定锁对象，此外也提供默认的构造方法。</p>
+<figure data-type="image" tabindex="16"><img src="https://pic4.zhimg.com/80/v2-7f38c354c3ca8ba9205ecbcaae04d1d3_720w.jpg" alt="img" loading="lazy"></figure>
+</li>
+</ol>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[8-多对一]]></title>
+        <id>https://aruul.github.io/post/q2Mgvtj6L/</id>
+        <link href="https://aruul.github.io/post/q2Mgvtj6L/">
+        </link>
+        <updated>2021-03-17T02:23:00.000Z</updated>
+        <content type="html"><![CDATA[<p>student表</p>
+<figure data-type="image" tabindex="1"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210317213129.png" alt="image-20210317213128631" loading="lazy"></figure>
+<hr>
+<p>teacher表</p>
+<figure data-type="image" tabindex="2"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210317213220.png" alt="image-20210317213220202" loading="lazy"></figure>
+<hr>
+<p><mark>一个老师对应多个学生</mark></p>
+<hr>
+<p><strong>Teacher.java</strong></p>
+<pre><code class="language-java">package org.example.pojo;
 
-class mClick implements View.OnClickListener{
+/**
+ * @author aRu
+ * @date 2021/3/17 20:21
+ */
+public class Teacher {
+    private int id;
+    private String name;
+
+    public Teacher() {
+    }
+
+    public Teacher(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     @Override
-    public void onClick(View v) {
-        //事件的响应代码
+    public String toString() {
+        return &quot;Teacher{&quot; +
+                &quot;id=&quot; + id +
+                &quot;, name='&quot; + name + '\'' +
+                '}';
     }
 }
 </code></pre>
-<h2 id="3使用匿名类推荐">3.使用匿名类（推荐）</h2>
-<pre><code class="language-java">Button button=findViewBuId(R.id.btn_sure)
-button.setOnClickListener(new View.OnClickListener() {
+<p><strong>Student.java</strong></p>
+<p><mark>一个老师对应多个学生，在学生类中写上<strong>Teacher teacher</strong></mark></p>
+<pre><code class="language-java">package org.example.pojo;
+
+/**
+ * @author aRu
+ * @date 2021/3/17 20:20
+ */
+public class Student {
+    private int id;
+    private String name;
+    private Teacher teacher;
+
+    public Student() {
+    }
+
+    public Student(int id, String name, Teacher teacher) {
+        this.id = id;
+        this.name = name;
+        this.teacher = teacher;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Teacher getTeacher() {
+        return teacher;
+    }
+
+    public void setTeacher(Teacher teacher) {
+        this.teacher = teacher;
+    }
+
     @Override
-    public void onClick(View v) {
-        //事件的响应代码
-    }
-});
-</code></pre>
-<h1 id="fragment">Fragment</h1>
-<h2 id="fragment动态添加">Fragment动态添加</h2>
-<p>​     例如向<strong>activity_main.xml</strong>中动态添加、删除<code>Fragment</code></p>
-<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
-&lt;LinearLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
-    android:layout_width=&quot;match_parent&quot;
-    android:layout_height=&quot;match_parent&quot;
-    android:orientation=&quot;vertical&quot;&gt;
-
-    &lt;LinearLayout
-        android:id=&quot;@+id/minPhoto&quot;
-        android:layout_width=&quot;wrap_content&quot;
-        android:layout_height=&quot;wrap_content&quot;
-        android:orientation=&quot;vertical&quot;&gt;
-    &lt;/LinearLayout&gt;
-
-    &lt;Button
-        android:id=&quot;@+id/btn_remove&quot;
-        android:layout_width=&quot;wrap_content&quot;
-        android:layout_height=&quot;wrap_content&quot;
-        android:text=&quot;remove&quot;&gt;&lt;/Button&gt;
-
-&lt;/LinearLayout&gt;
-</code></pre>
-<p>​     假设Fragment文件是PhotoFragment.java;那么在mainActivity.java文件中,</p>
-<pre><code class="language-java">public class MainActivity extends AppCompatActivity {
-
-    Button button;
-    Fragment minPhoto=new MinPhotoFragment();
-    Fragment textFragment=new TextFragment();
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-		//动态添加Fragment
-        //获取当前Activity的FragmentManager对象
-        FragmentManager fragmentManager=getSupportFragmentManager();
-        //开启事务
-        FragmentTransaction transaction=fragmentManager.beginTransaction();
-        //添加Fragment，第一个参数是要被添加Fragment的视图布局的id，
-        //             第二个参数是要添加进去的Fragment对应的java类名字
-        transaction.add(R.id.minPhoto,minPhoto);
-        transaction.add(R.id.minPhoto,textFragment);
-        transaction.commit();
-        
-        
-        //点击按钮去除Fragment
-        button=findViewById(R.id.btn_remove);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //获取当前Activity的FragmentManager对象
-                FragmentManager fragmentManager=getSupportFragmentManager();
-                //开启事务
-                FragmentTransaction transaction=fragmentManager.beginTransaction();
-                //去除Fragment     参数为要去除的Fragment的java类名
-                transaction.remove(textFragment);
-                transaction.commit();
-            }
-        });
+    public String toString() {
+        return &quot;Student{&quot; +
+                &quot;id=&quot; + id +
+                &quot;, name='&quot; + name + '\'' +
+                &quot;, teacher=&quot; + teacher +
+                '}';
     }
 }
 </code></pre>
-<h1 id="fragment间的通信">Fragment间的通信</h1>
-<p><mark>1.Fragment中定义接口</mark></p>
-<p><mark>2.Fragment中初始化接口，并设置这个接口的set方法</mark></p>
-<p><mark>3.Activity中实现这个接口</mark></p>
-<p><mark>4.Fragment的onActivityCreated回调方法中添加控件监听，事件处理环节调用接口，具体操作由Activity进行</mark></p>
-<p><mark>5.Activity中的onAttach方法中，调用Fragment设置接口的方法，将自身引用传入</mark></p>
-<p>下面举个作业中例子：点击小图显示对应的大图</p>
-<img src="D:\孺\乱七八糟的笔记\photo\安卓fragment事件.png" alt="安卓fragment事件" style="zoom:75%;" />
-<pre><code class="language-java">//Fragment类文件代码
-public class MinPhotoFragment extends Fragment {
-    
-  // 1.Fragment中定义接口
-    public interface ImgClick{
-        public void onImgClickListener(ImageView imageView);
-    }
-  
-  //2.Fragment中初始化接口，并设置这个接口的set方法
-    ImgClick imgClick;
-    public void setImgClick(ImgClick imgClick){
-        this.imgClick=imgClick;
-    }
-    
-    ....其他代码省略...
+<hr>
+<p><strong>StudentMapper.java</strong></p>
+<pre><code class="language-java">public interface StudentMapper {
+    //查询所有的学生信息 以及对应的老师的信息
+    public List&lt;Student&gt; getStudent();
+}
+</code></pre>
+<ul>
+<li><mark>在查询学生时，学生中包含了Teacher这个类，查询的resultType比较复杂 ，所以采用resultMap的形式</mark></li>
+<li><mark>sql语句中将学生表、教师表中s.id  s.name  t.name字段起别名为sid  sname   tname</mark></li>
+</ul>
+<pre><code class="language-mysql">select s.id sid, s.name sname, t.name tname
+        from mybatis.student s,mybatis.teacher t
+        where s.tid=t.id;
+</code></pre>
+<ul>
+<li>
+<p><mark>resultMap的编写</mark></p>
+<p><mark>在上一步中三个关键的数据库字段名被起别名，与原来java中的属性名不一致，所以要一一对应一下；</mark></p>
+<p><mark>对于一般的属性 用<code>result</code>标签</mark></p>
+<p><mark>对于类来说  用 <strong>association</strong> 标签 在java实体类中属性名property为teacher ,  javaType=&quot;Teacher&quot;</mark></p>
+<p><mark>而原来java实体类中属性名name对于起别名后 的tname</mark></p>
+</li>
+</ul>
+<p><strong>StudentMapper.xml</strong></p>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
+&lt;!DOCTYPE mapper
+        PUBLIC &quot;-//mybatis.org//DTD Mapper 3.0//EN&quot;
+        &quot;http://mybatis.org/dtd/mybatis-3-mapper.dtd&quot;&gt;
+&lt;!--namespace 是要绑定的类的路径--&gt;
+&lt;mapper namespace=&quot;org.example.dao.StudentMapper&quot;&gt;
+    &lt;!--按照结果嵌套处理--&gt;
+    &lt;select id=&quot;getStudent&quot; resultMap=&quot;StudentTeacher&quot;&gt;
+        select s.id sid, s.name sname, t.name tname
+        from mybatis.student s,mybatis.teacher t
+        where s.tid=t.id;
+    &lt;/select&gt;
 
-}
-</code></pre>
-<pre><code class="language-java">public class MainActivity extends AppCompatActivity implements MinPhotoFragment.ImgClick{
-
-//3.Activity中实现这个接口
-	public void onImgClickListener(ImageView imageView) {
-        maxImg.setImageDrawable(imageView.getDrawable());
-    }
-}
-</code></pre>
-<pre><code class="language-java">//4.在Fragment的onActivityCreated回调方法中添加监听，事件处理环节调用接口，具体操作由Activity进行
-@Override
-public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-    super.onActivityCreated(savedInstanceState);
-    for(int i=0;i&lt;img.length;i++) {
-        ImageView image = (ImageView) this.getActivity().findViewById(img[i]);
-        image.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                imgClick.onImgClickListener((ImageView)v);
-            }
-        });
-    }
-}
-</code></pre>
-<pre><code class="language-java">//5.Activity中的onAttachFragment方法中，调用Fragment设置接口的方法，将自身引用传入
-@Override
-public void onAttachFragment(@NonNull Fragment fragment) {
-    super.onAttachFragment(fragment);
-    if(fragment instanceof  MinPhotoFragment){  //判断fragment是否为目标Fragment
-        MinPhotoFragment minPhotoFragment=(MinPhotoFragment)fragment;
-        minPhotoFragment.setImgClick(this);
-    }
-}
+    &lt;resultMap id=&quot;StudentTeacher&quot; type=&quot;Student&quot;&gt;
+        &lt;result property=&quot;id&quot; column=&quot;sid&quot;/&gt;
+        &lt;result property=&quot;name&quot; column=&quot;sname&quot;/&gt;
+        &lt;association property=&quot;teacher&quot; javaType=&quot;Teacher&quot;&gt;
+            &lt;result property=&quot;name&quot; column=&quot;tname&quot;/&gt;
+        &lt;/association&gt;
+    &lt;/resultMap&gt;
+&lt;/mapper&gt;
 </code></pre>
 ]]></content>
     </entry>
     <entry>
-        <title type="html"><![CDATA[css学习笔记]]></title>
-        <id>https://aruul.github.io/post/vYl9x4xMO/</id>
-        <link href="https://aruul.github.io/post/vYl9x4xMO/">
+        <title type="html"><![CDATA[7-注解开发]]></title>
+        <id>https://aruul.github.io/post/d8DRHzqIN/</id>
+        <link href="https://aruul.github.io/post/d8DRHzqIN/">
         </link>
-        <updated>2020-10-06T12:42:01.000Z</updated>
-        <content type="html"><![CDATA[<!--more-->
-<h3 id="css选择器">css选择器</h3>
-<table>
+        <updated>2021-03-15T14:01:56.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="1面向接口编程">1.面向接口编程</h3>
+<ul>
+<li>
+<p>使用面向接口编程的根本原因：<strong>解耦</strong>，可拓展，提高复用。</p>
+</li>
+<li>
+<p>分层开发中，上层不用管具体的实现，大家都遵循共同的标准，使得开发变得更容易，规范性更好。</p>
+</li>
+</ul>
+<hr>
+<h3 id="2注解的基本步骤">2.注解的基本步骤</h3>
+<ol>
+<li>
+<p>编写基本的配置文件【mybatis-config.xml】</p>
+</li>
+<li>
+<p>编写pojo类</p>
+</li>
+<li>
+<p>编写Dao层接口</p>
+<pre><code class="language-java">//org.example.dao.UserMapper
+public interface UserMapper {
+    @Select(&quot;select * from user&quot;)
+    List&lt;User&gt; getUser();
+}
+</code></pre>
+</li>
+</ol>
+<p>4.在配置文件【mybatis-config.xml】中注册Mappers,绑定接口</p>
+<pre><code>    &lt;mappers&gt;
+        &lt;mapper class=&quot;org.example.dao.UserMapper&quot;/&gt;
+    &lt;/mappers&gt;
+</code></pre>
+<p>5.测试</p>
+<pre><code class="language-java">    @Test
+    public void test(){
+        SqlSession sqlSession = MybatisUtils.getSqlSession();
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+
+        List&lt;User&gt; userList=mapper.getUser();
+        for (User user : userList) {
+            System.out.println(user);
+        }
+        sqlSession.close();
+    }
+</code></pre>
+<h3 id="3本质">3.本质</h3>
+<p>Java反射机制的实现</p>
+<h3 id="4基于注解的增删改查">4.基于注解的增删改查</h3>
+<h4 id="41自动提交">4.1自动提交</h4>
+<p>之前写的工具类</p>
+<pre><code class="language-java">public class MybatisUtils {
+    private static SqlSessionFactory sqlSessionFactory;
+    static {
+        try{
+            //获取 SqlSessionFactory 对象
+            String resource = &quot;mybatis-config.xml&quot;;
+            InputStream inputStream = Resources.getResourceAsStream(resource);
+            sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+    }
+    //获取sqlSession实例
+    public static SqlSession getSqlSession(){
+         //true表示自动提交
+         return sqlSessionFactory.openSession(true);
+    }
+}
+</code></pre>
+<h4 id="42-当parametertype-有多个参数">4.2 当parameterType 有多个参数</h4>
+<p>使用注解的方法----------<mark>@Param</mark></p>
+<pre><code class="language-java">User getUserById(@Param(&quot;id&quot;) int id,@Param(&quot;name&quot;) String name);
+</code></pre>
+<p>无论是采用注解进行增删改查还是用xml, 其他的照常写</p>
+<p><mark><strong>注意</strong>! 在写sql语句提取参数的时候,要写@Param里的参数名字</mark></p>
+<h4 id="43-增删改查">4.3 增删改查</h4>
+<ul>
+<li>
+<p><strong>@Select(&quot;sql语句&quot;)              查</strong></p>
+</li>
+<li>
+<p><strong>@Insert(&quot;sql语句&quot;)              增</strong></p>
+</li>
+<li>
+<p><strong>@Delete(&quot;sql语句&quot;)             删</strong></p>
+</li>
+<li>
+<p><strong>@Update(&quot;sql语句&quot;)           改</strong></p>
+</li>
+</ul>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[6-分页]]></title>
+        <id>https://aruul.github.io/post/INzAInTDR/</id>
+        <link href="https://aruul.github.io/post/INzAInTDR/">
+        </link>
+        <updated>2021-03-15T12:20:45.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="一-使用limit实现分页">一 、使用limit实现分页</h3>
+<h4 id="1分页-sql语句">1.分页  sql语句</h4>
+<pre><code class="language-xml">select * from limit startIndex, pageSize
+</code></pre>
+<ul>
+<li>
+<blockquote>
+<p>startIndex   开始序号</p>
+</blockquote>
+</li>
+<li>
+<blockquote>
+<p>pageSize    一页的大小</p>
+</blockquote>
+</li>
+</ul>
+<p>例如</p>
+<pre><code class="language-xml">&lt;!--从第0个开始查询，每两个为一页--&gt;
+select * from 表名 limit 0, 2
+
+&lt;!--从第0个开始查询，每两个为一页--&gt;
+select * from limit 0, 2
+</code></pre>
+<h4 id="2代码部分">2.代码部分</h4>
+<p>Dao层代码</p>
+<pre><code class="language-java">    //分页查询
+    List&lt;User&gt; getUserByLimit(Map&lt;String,Object&gt;map);
+</code></pre>
+<pre><code class="language-xml">    &lt;select id=&quot;getUserByLimit&quot; resultType=&quot;user&quot; parameterType=&quot;map&quot;&gt;
+        select * from mybatis.user limit #{startIndex},#{pageSize}
+    &lt;/select&gt;
+</code></pre>
+<pre><code class="language-java"> @Test
+    public void getUserByLimit(){
+        SqlSession sqlSession=MybatisUtils.getSqlSession();
+        UserMapper userMapper=sqlSession.getMapper(UserMapper.class);
+
+        Map&lt;String,Object&gt; map=new HashMap&lt;String, Object&gt;();
+        map.put(&quot;startIndex&quot;,0);
+        map.put(&quot;pageSize&quot;,2);
+        List&lt;User&gt; userList=userMapper.getUserByLimit(map);
+        for (User user : userList) {
+            System.out.println(user);
+        }
+    }
+</code></pre>
+<hr>
+<h3 id="二-rowbounds分页不常用">二、RowBounds分页【不常用】</h3>
+<p>略，懒得写了</p>
+<hr>
+<h3 id="三-插件">三、插件</h3>
+<p><a href="https://pagehelper.github.io/">Mybatis PageHelper 插件</a></p>
+<figure data-type="image" tabindex="1"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210315202015.png" alt="image-20210314201120021" loading="lazy"></figure>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[5-日志]]></title>
+        <id>https://aruul.github.io/post/vKl9jV0iW/</id>
+        <link href="https://aruul.github.io/post/vKl9jV0iW/">
+        </link>
+        <updated>2021-03-15T03:19:17.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="1日志工厂">1.日志工厂</h3>
+<p>Mybatis 通过使用内置的日志工厂提供日志功能。内置日志工厂将会把日志工作委托给下面的实现之一：</p>
+<ul>
+<li>SLF4J</li>
+<li>Apache Commons Logging</li>
+<li>Log4j 2</li>
+<li>Log4j   【掌握】</li>
+<li>STDOUT_LOGGING （标准日志输出）【掌握】</li>
+<li>JDK logging</li>
+</ul>
+<p>MyBatis 内置日志工厂会基于运行时检测信息选择日志委托实现。它会（按上面罗列的顺序）使用第一个查找到的实现。当没有找到这些实现时，将会禁用日志功能。</p>
+<hr>
+<p><strong>STDOUT_LOGGING</strong> （标准日志输出）</p>
+<pre><code class="language-xml">&lt;!--设置日志--&gt;
+&lt;settings&gt;
+    &lt;setting name=&quot;logImpl&quot; value=&quot;STDOUT_LOGGING&quot;/&gt;
+&lt;/settings&gt;
+</code></pre>
+<hr>
+<p><strong>Log4j</strong></p>
+<ol>
+<li>
+<p>导包</p>
+<pre><code class="language-xml">&lt;!-- https://mvnrepository.com/artifact/log4j/log4j --&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;log4j&lt;/groupId&gt;
+    &lt;artifactId&gt;log4j&lt;/artifactId&gt;
+    &lt;version&gt;1.2.17&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+<p>--未完待续</p>
+</li>
+</ol>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[4-常见parameterType的别名]]></title>
+        <id>https://aruul.github.io/post/-bkx04iBA/</id>
+        <link href="https://aruul.github.io/post/-bkx04iBA/">
+        </link>
+        <updated>2021-03-14T14:17:44.000Z</updated>
+        <content type="html"><![CDATA[<table>
 <thead>
 <tr>
-<th>选择器名称</th>
-<th>选择的内容</th>
-<th>示例</th>
+<th style="text-align:left">别名</th>
+<th style="text-align:left">映射的类型</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>元素选择器（也称作标签或类型选择器）</td>
-<td>所有指定(该)类型的 HTML 元素</td>
-<td><code>p</code> 选择 <code>&lt;p&gt;</code></td>
+<td style="text-align:left">_byte</td>
+<td style="text-align:left">byte</td>
 </tr>
 <tr>
-<td>ID 选择器</td>
-<td>具有特定 ID 的元素（单一 HTML 页面中，每个 ID 只对应一个元素，一个元素只对应一个 ID）</td>
-<td><code>#my-id</code> 选择 <code>&lt;p id=&quot;my-id&quot;&gt;</code> 或 <code>&lt;a id=&quot;my-id&quot;&gt;</code></td>
+<td style="text-align:left">_long</td>
+<td style="text-align:left">long</td>
 </tr>
 <tr>
-<td>类选择器</td>
-<td>具有特定类的元素（单一页面中，一个类可以有多个实例）</td>
-<td><code>.my-class</code> 选择 <code>&lt;p class=&quot;my-class&quot;&gt;</code> 和 <code>&lt;a class=&quot;my-class&quot;&gt;</code></td>
+<td style="text-align:left">_short</td>
+<td style="text-align:left">short</td>
 </tr>
 <tr>
-<td>属性选择器</td>
-<td>拥有特定属性的元素</td>
-<td><code>img[src]</code> 选择 <code>&lt;img src=&quot;myimage.png&quot;&gt;</code> 而不是 <code>&lt;img&gt;</code></td>
+<td style="text-align:left">_int</td>
+<td style="text-align:left">int</td>
 </tr>
 <tr>
-<td>伪（Pseudo）类选择器</td>
-<td>特定状态下的特定元素（比如鼠标指针悬停）</td>
-<td><code>a:hover</code> 仅在鼠标指针悬停在链接上时选择 <code>&lt;a&gt;</code></td>
+<td style="text-align:left">_integer</td>
+<td style="text-align:left">int</td>
+</tr>
+<tr>
+<td style="text-align:left">_double</td>
+<td style="text-align:left">double</td>
+</tr>
+<tr>
+<td style="text-align:left">_float</td>
+<td style="text-align:left">float</td>
+</tr>
+<tr>
+<td style="text-align:left">_boolean</td>
+<td style="text-align:left">boolean</td>
+</tr>
+<tr>
+<td style="text-align:left">string</td>
+<td style="text-align:left">String</td>
+</tr>
+<tr>
+<td style="text-align:left">byte</td>
+<td style="text-align:left">Byte</td>
+</tr>
+<tr>
+<td style="text-align:left">long</td>
+<td style="text-align:left">Long</td>
+</tr>
+<tr>
+<td style="text-align:left">short</td>
+<td style="text-align:left">Short</td>
+</tr>
+<tr>
+<td style="text-align:left">int</td>
+<td style="text-align:left">Integer</td>
+</tr>
+<tr>
+<td style="text-align:left">integer</td>
+<td style="text-align:left">Integer</td>
+</tr>
+<tr>
+<td style="text-align:left">double</td>
+<td style="text-align:left">Double</td>
+</tr>
+<tr>
+<td style="text-align:left">float</td>
+<td style="text-align:left">Float</td>
+</tr>
+<tr>
+<td style="text-align:left">boolean</td>
+<td style="text-align:left">Boolean</td>
+</tr>
+<tr>
+<td style="text-align:left">date</td>
+<td style="text-align:left">Date</td>
+</tr>
+<tr>
+<td style="text-align:left">decimal</td>
+<td style="text-align:left">BigDecimal</td>
+</tr>
+<tr>
+<td style="text-align:left">bigdecimal</td>
+<td style="text-align:left">BigDecimal</td>
+</tr>
+<tr>
+<td style="text-align:left">object</td>
+<td style="text-align:left">Object</td>
+</tr>
+<tr>
+<td style="text-align:left">map</td>
+<td style="text-align:left">Map</td>
+</tr>
+<tr>
+<td style="text-align:left">hashmap</td>
+<td style="text-align:left">HashMap</td>
+</tr>
+<tr>
+<td style="text-align:left">list</td>
+<td style="text-align:left">List</td>
+</tr>
+<tr>
+<td style="text-align:left">arraylist</td>
+<td style="text-align:left">ArrayList</td>
+</tr>
+<tr>
+<td style="text-align:left">collection</td>
+<td style="text-align:left">Collection</td>
+</tr>
+<tr>
+<td style="text-align:left">iterator</td>
+<td style="text-align:left">Iterator</td>
 </tr>
 </tbody>
 </table>
-<h3 id="常见的属性">常见的属性</h3>
-<ul>
-<li>font-family       你想要你的文本使用的字体</li>
-<li>font-size           字体大小  （px）默认16px</li>
-<li>background-color    背景演示</li>
-<li>color                  字体颜色</li>
-<li>width                  宽度   如：width: 80%</li>
-<li>margin               外边距，围绕元素外部的空间,如margin: auto</li>
-<li>text-decoration: underline;           为文字添加下划线</li>
-<li>letter-spacing      字母间距   单位em</li>
-<li>word-spacing        词间距      单位em</li>
-<li>line-heigh              行高          单位em</li>
-</ul>
-<h4 id="盒子模型">盒子模型</h4>
-<figure data-type="image" tabindex="1"><img src="https://s1.ax1x.com/2020/10/06/0U0Q1g.png" alt="0U0Q1g.png" loading="lazy"></figure>
-<ul>
-<li>
-<p>margin          外边距</p>
-<p>margin-top: 5px</p>
-<p>margin-bottom: 5px</p>
-<p>margin-right:  10px</p>
-<p>margin-left: 10px</p>
-<p>上述属性可以用margin: 5px 10px 5px 10px代替，按照顺时针方向</p>
-<p>上述属性还可以用margin: 5px 10px 代替  第一个值为上下属性，第二个为左右</p>
-<p><strong>内边距同理</strong></p>
-</li>
-<li>
-<p>border           边框</p>
-<p>border: 5px blue solid;     设置边框线大小为5px，颜色为蓝色</p>
-<p>border-radius: 15px           设置边框圆角</p>
-</li>
-<li>
-<p>padding         内边距</p>
-</li>
-<li>
-<p>content          内容</p>
-</li>
-</ul>
-<p>未完待续...</p>
 ]]></content>
     </entry>
     <entry>
-        <title type="html"><![CDATA[idea中导入struts2包]]></title>
-        <id>https://aruul.github.io/post/Al_mw5Fbu/</id>
-        <link href="https://aruul.github.io/post/Al_mw5Fbu/">
+        <title type="html"><![CDATA[3-一些小的知识点]]></title>
+        <id>https://aruul.github.io/post/O6XvSvJBQ/</id>
+        <link href="https://aruul.github.io/post/O6XvSvJBQ/">
         </link>
-        <updated>2020-10-05T12:40:11.000Z</updated>
-        <summary type="html"><![CDATA[<h3 id="前言">前言</h3>
-<p>​       好长时间没有写博客了，趁着国企期间的假期，把之前学的做个总结，国庆期间尽量多写一些。</p>
-]]></summary>
-        <content type="html"><![CDATA[<h3 id="前言">前言</h3>
-<p>​       好长时间没有写博客了，趁着国企期间的假期，把之前学的做个总结，国庆期间尽量多写一些。</p>
-<h2 id="-more-"><!--more--></h2>
-<h3 id="正文">正文</h3>
-<h5 id="1所需材料">1.所需材料</h5>
+        <updated>2021-03-14T13:15:30.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="1map和模糊查询">1.Map和模糊查询</h3>
+<p>可以把map中的key直接提取出来</p>
+<pre><code class="language-java">-----Dao文件  
+//采用Map的形式来传值
+    int updateUserByMap(Map&lt;String,Object&gt; map);
+</code></pre>
+<pre><code class="language-xml">---dao对应的xml文件 
+-----------------------------Map对用的parameterType为&quot;map&quot;
+&lt;update id=&quot;updateUserByMap&quot; parameterType=&quot;map&quot;&gt;
+        update mybatis.user set name = #{userName} where id = #{userId};
+ &lt;/update&gt;
+</code></pre>
+<pre><code class="language-java">---------测试的Java代码
+@Test
+    public void updateUserByMap(){
+        SqlSession sqlSession= MybatisUtils.getSqlSession();
+        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+
+       //map
+        Map&lt;String,Object&gt; mapp = new HashMap&lt;String,Object&gt;();
+        mapp.put(&quot;userName&quot;,&quot;测试3&quot;);
+        mapp.put(&quot;userId&quot;,4);
+
+        int res= userMapper.updateUserByMap(mapp);
+        System.out.println(res);
+        if(res&gt;0){
+            System.out.println(&quot;修改成功&quot;);
+            System.out.println(&quot;-----------------------------------&quot;);
+            List&lt;User&gt; userList= userMapper.getUserList();
+            for (User user : userList) {
+                System.out.println(user);
+            }
+        }
+        //提交事务
+        sqlSession.commit();
+        sqlSession.close();
+    }
+</code></pre>
+<hr>
+<h3 id="2模糊查询">2.模糊查询</h3>
+<p>sql 模糊查询的语句是like%&quot;要查的内容&quot;%</p>
+<pre><code class="language-java">    //模糊查询
+    List&lt;User&gt; getUserByLike(String name);
+</code></pre>
+<pre><code class="language-xml">    &lt;select id=&quot;getUserByLike&quot; resultType=&quot;org.example.pojo.User&quot;&gt;
+        select * from mybatis.user where name like #{name}
+    &lt;/select&gt;
+</code></pre>
+<pre><code class="language-java">@Test
+    public void getUserByLike(){
+        SqlSession sqlSession= MybatisUtils.getSqlSession();
+        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+
+        System.out.println(&quot;模糊查找成功&quot;);
+        System.out.println(&quot;-----------------------------------&quot;);
+        List&lt;User&gt; userList= userMapper.getUserByLike(&quot;%李%&quot;);
+        for (User user : userList) {
+            System.out.println(user);
+        }
+        sqlSession.close();
+    }
+</code></pre>
+<hr>
+<h3 id="3-配置解析">3. 配置解析</h3>
+<h4 id="31-总览">3.1 总览</h4>
 <ul>
-<li>idea版本 2020.1</li>
-<li>struts2 版本  （我现在用的版本是拷贝我老师的，所以不知道具体是什么版本，反正最好不要用最新版本的，有很多坑）<a href="https://aru.lanzous.com/i0bgZh7ckab">点我下载</a></li>
-</ul>
-<p>2.直接开始上图</p>
-<figure data-type="image" tabindex="1"><img src="https://s1.ax1x.com/2020/10/05/0tuUBR.png" alt="0tuUBR.png" loading="lazy"></figure>
-<p>按照上图顺序，选择左侧的Java Enterprise--&gt;在右侧分别勾选Web Application、Struts2--&gt;选择下方的Use library--&gt;点击Create。</p>
-<hr>
-<p>之后弹出如下界面，选中所需要的struts2包，点击ok</p>
-<figure data-type="image" tabindex="2"><img src="https://s1.ax1x.com/2020/10/05/0tuwAx.png" alt="0tuwAx.png" loading="lazy"></figure>
-<hr>
-<p>创建项目完成之后，一次选择File--&gt;Project Structure，或者直接Ctrl+Shift+Alt+S，弹出如下界面。</p>
-<p>选择Artifacts--&gt;展开右侧的commonTest（可能名字不一样），然后双击Struts2</p>
-<figure data-type="image" tabindex="3"><img src="https://s1.ax1x.com/2020/10/05/0tuNu9.png" alt="0tuNu9.png" loading="lazy"></figure>
-<hr>
-<p>双击Struts2之后的效果如下所示，点击ok即可。</p>
-<figure data-type="image" tabindex="4"><img src="https://s1.ax1x.com/2020/10/05/0tuaH1.png" alt="0tuaH1.png" loading="lazy"></figure>
-<hr>
-<p>web.xml配置如下</p>
-<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;web-app xmlns=&quot;http://xmlns.jcp.org/xml/ns/javaee&quot;
-         xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
-         xsi:schemaLocation=&quot;http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd&quot;
-         version=&quot;4.0&quot;&gt;
-    &lt;filter&gt;
-        &lt;filter-name&gt;struts2&lt;/filter-name&gt;
-          &lt;filter-class&gt;
-             org.apache.struts2.dispatcher.filter.StrutsPrepareAndExecuteFilter
-          &lt;/filter-class&gt;
-    &lt;/filter&gt;
-    &lt;filter-mapping&gt;
-        &lt;filter-name&gt;struts2&lt;/filter-name&gt;
-        &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
-    &lt;/filter-mapping&gt;
-&lt;/web-app&gt;
-</code></pre>
-<hr>
-<p>在web目录下新建index.jsp文件</p>
-<pre><code class="language-html">&lt;%@ page contentType=&quot;text/html;charset=UTF-8&quot; language=&quot;java&quot; %&gt;
-&lt;html&gt;
-  &lt;head&gt;
-    &lt;title&gt;$Title$&lt;/title&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-  &lt;form action=&quot;test.action&quot;&gt;
-    &lt;input type=&quot;text&quot; name=&quot;userInput&quot;&gt;&lt;br&gt;
-    &lt;input type=&quot;submit&quot; value=&quot;确定&quot;&gt;
-  &lt;/form&gt;
-  &lt;/body&gt;
-&lt;/html&gt;
-</code></pre>
-<hr>
-<p>新建success.jsp文件</p>
-<pre><code class="language-html">&lt;%@ page contentType=&quot;text/html;charset=UTF-8&quot; language=&quot;java&quot; %&gt;
-&lt;html&gt;
-&lt;head&gt;
-    &lt;title&gt;Title&lt;/title&gt;
-&lt;/head&gt;
-&lt;body&gt;
-welcome!
-&lt;/body&gt;
-&lt;/html&gt;
-</code></pre>
-<hr>
-<p>新建fail.jsp文件</p>
-<pre><code class="language-html">&lt;%@ page contentType=&quot;text/html;charset=UTF-8&quot; language=&quot;java&quot; %&gt;
-&lt;html&gt;
-&lt;head&gt;
-    &lt;title&gt;Title&lt;/title&gt;
-&lt;/head&gt;
-&lt;body&gt;
-fail!
-&lt;/body&gt;
-&lt;/html&gt;
-</code></pre>
-<hr>
-<p>src文件下新建一个java package，命名为testPackage，testPackage包下新建testAction.java，内容如下</p>
-<pre><code class="language-java">package testPackage;
-
-public class testAction {
-    private String userInput;
-    public String getUserInput(){
-        return userInput;
-    }
-    public void setUserInput(String userInput){
-        this.userInput=userInput;
-    }
-    public String Result(){
-        if(userInput.equals(&quot;hello&quot;)){
-            return &quot;success&quot;;
-        }
-        return &quot;fail&quot;;
-    }
-}
-
-</code></pre>
-<hr>
-<p>struts.xml配置如下</p>
-<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-
-&lt;!DOCTYPE struts PUBLIC
-        &quot;-//Apache Software Foundation//DTD Struts Configuration 2.5//EN&quot;
-        &quot;http://struts.apache.org/dtds/struts-2.5.dtd&quot;&gt;
-
-&lt;struts&gt;
-    &lt;package name=&quot;test&quot; extends=&quot;struts-default&quot;&gt;
-        &lt;action name=&quot;test&quot; class=&quot;testPackage.testAction&quot; method=&quot;Result&quot;&gt;
-            &lt;result name=&quot;success&quot;&gt;/welcome.jsp&lt;/result&gt;
-            &lt;result name=&quot;fail&quot;&gt;/fail.jsp&lt;/result&gt;
-        &lt;/action&gt;
-    &lt;/package&gt;
-&lt;/struts&gt;
-</code></pre>
-<p>package name可以随意起，但不要重复； extens默认为struts-default，不要更改；</p>
-<p>action name可以随意起，但不要重复； class为要用的Action的路径，这里是testPackage包下的testAction.java文件的意思，method是要用的方法。</p>
-<hr>
-<h4 id="点击运行就可以啦">点击运行就可以啦</h4>
-<h1 id="完">完</h1>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[模拟登陆cdut教务处(上)]]></title>
-        <id>https://aruul.github.io/post/XtpV5_2y6/</id>
-        <link href="https://aruul.github.io/post/XtpV5_2y6/">
-        </link>
-        <updated>2020-08-24T12:00:41.000Z</updated>
-        <summary type="html"><![CDATA[<ul>
 <li>
-<h4 id="前言">前言</h4>
-<p>感觉学校教务处比较简单，拿来练练手</p>
-</li>
-</ul>
-]]></summary>
-        <content type="html"><![CDATA[<ul>
-<li>
-<h4 id="前言">前言</h4>
-<p>感觉学校教务处比较简单，拿来练练手</p>
-<!--more-->
+<p>官方建议把配置文件命名为 <strong>mybatis-config.xml</strong></p>
+<p>MyBatis 的配置文件包含了会深深影响 MyBatis 行为的设置和属性信息。 配置文档的顶层结构如下：</p>
 </li>
 <li>
-<h4 id="分析网页">分析网页</h4>
-<p>登陆界面如下：</p>
+<p>configuration（配置）</p>
+<ul>
+<li><a href="https://mybatis.org/mybatis-3/zh/configuration.html#properties">properties（属性）</a></li>
+<li><a href="https://mybatis.org/mybatis-3/zh/configuration.html#settings">settings（设置）</a></li>
+<li><a href="https://mybatis.org/mybatis-3/zh/configuration.html#typeAliases">typeAliases（类型别名）</a></li>
+<li><a href="https://mybatis.org/mybatis-3/zh/configuration.html#typeHandlers">typeHandlers（类型处理器）</a></li>
+<li><a href="https://mybatis.org/mybatis-3/zh/configuration.html#objectFactory">objectFactory（对象工厂）</a></li>
+<li><a href="https://mybatis.org/mybatis-3/zh/configuration.html#plugins">plugins（插件）</a></li>
+<li>environments（环境配置）
+<ul>
+<li>environment（环境变量）
+<ul>
+<li>transactionManager（事务管理器）</li>
+<li>dataSource（数据源）</li>
+</ul>
 </li>
 </ul>
-<figure data-type="image" tabindex="1"><img src="https://s1.ax1x.com/2020/08/24/ds9pGQ.png" alt="教务处登陆界面" title="教务处登陆界面" loading="lazy"></figure>
-<p>可以看到我们学校教务处的登陆界面还是比较简单的，没有验证码之类的东西，这就减少了很多工作量。</p>
-<hr>
-<p>浏览器抓包：<br>
-<img src="https://s1.ax1x.com/2020/08/24/dskar9.png" alt="" loading="lazy"><br>
-第一个Login.html就是登陆页面，下面是几个css文件，可以忽略。主要是 md5.js这个js文件，可以知道<code>教务处的加密方式八成是md5加密</code>。</p>
-<p>【md5加密：MD5是一个安全的散列算法，输入两个不同的明文不会得到相同的输出值，根据输出值，不能得到原始的明文，即其过程不可逆】</p>
-<hr>
-<p>输入账号密码点击登陆之后，抓包登陆成功之后的界面</p>
-<figure data-type="image" tabindex="2"><img src="https://s1.ax1x.com/2020/08/24/dsty7t.jpg" alt="" loading="lazy"></figure>
-<p>可以看到，抓包到的第一个就是接收登陆界面账号密码表单的页面【http://202.115.133.173:805/Common/Handler/UserLogin.ashx】 ，因为他的方法为post。 虽然我们在浏览器里登陆时只填了用户名和密码，但表单里包含的数据可不只这些。可以看到在抓包到的表单数据如下（保护个人隐私，所以图片中一些信息打码了，下面列出来的数据是我虚构的，没有任何影响，只是作为演示）</p>
-<pre><code> Action: Login
- userName: 123456789789
- pwd: 723d505516e0c197e42a6be3c0af910e
- sign: 1598267074584
-</code></pre>
-<p>这里的    <code>userName</code>是你的学号，<code>pwd</code>是加密过后一段32位的字符串。<br>
-多登陆抓包几次可以看到<code>sign</code>、<code>pwd</code>是一直在变的。<br>
-初步猜测<code>sign</code>可能是时间戳。然后再百度搜一下时间戳，可以获得当前的时间戳，看到当前的时间戳前几位是跟<code>sign</code>相吻合的，后几位不吻合，再观察分析一波可以看出来<code>sign</code>是毫秒级的时间戳。</p>
-<p>下面就剩下<code>pwd</code>不知道了。</p>
-<hr>
-<p>这时再回到我们的登陆界面</p>
-<figure data-type="image" tabindex="3"><img src="https://s1.ax1x.com/2020/08/24/dskar9.png" alt="" loading="lazy"></figure>
-<p>找到 <strong>LogUserManage.js?xxx=20191107</strong>  双击打开，可以看到下面的代码</p>
-<pre><code class="language-javascript">//for students
-function UserLogin(userName, pwd) {
-
-    var sign = new Date().getTime();
-    var user = userName.trim();
-    var signedpwd = hex_md5(user + sign + hex_md5(pwd.trim()));
-
-    var data = { Action: &quot;Login&quot;, userName: user, pwd: signedpwd, sign: sign };
-    var url = &quot;/Common/Handler/UserLogin.ashx&quot;;
-
-
-    $.post(url, data, function (rs) {
-
-
-        if (rs == &quot;0&quot;) {
-
-            window.location.href = &quot;/Default.aspx&quot;;
-        } else {
-            $(&quot;.loading&quot;).hide();
-            if (rs == &quot;4&quot; || rs == &quot;2&quot; || rs == &quot;1&quot;) {
-                alert(&quot;密码或者用户名错误&quot;);
-            }
-            else if (rs == &quot;3&quot;) {
-                alert(&quot; 账户已经被锁定， 请登陆学生缴费平台核对缴费信息，完成缴费后24小时候解锁系统, 已经办理缓交手续的同学，请联系学生资助管理中心核实，电话84078912\r\n&quot;);
-				
-				
-				window.location.href=&quot;http://wsjf.cdut.edu.cn/&quot;;
-            }
-
-        }
-    });
-}
-
-//用户退出登录
-function UserLoginOut() {
-
-    var data = { Action: &quot;LoginOut&quot; };
-    var url = &quot;/Common/Handler/UserLogin.ashx&quot;;
-    $(&quot;.loading&quot;).show();
-
-    $.post(url, data, function (rs) {
-
-        if (rs == &quot;0&quot;) {
-
-            window.location.href = &quot;/login.html&quot;;
-        } else {
-            //mini.alert(&quot;退出登录失败，请再试&quot;);
-            window.location.href = &quot;/login.html&quot;;
-            //$(&quot;.loading&quot;).hide();
-        }
-    });
-}
-
-
-//菜单操作
-$(document).ready(function () {
-    /*
-    setTimeout(
-    function () {
+</li>
+<li><a href="https://mybatis.org/mybatis-3/zh/configuration.html#databaseIdProvider">databaseIdProvider（数据库厂商标识）</a></li>
+<li><a href="https://mybatis.org/mybatis-3/zh/configuration.html#mappers">mappers（映射器）</a></li>
+</ul>
+</li>
+</ul>
+<h4 id="32-environments环境配置">3.2 environments（环境配置）</h4>
+<p>environments 元素定义了如何配置环境,如下所示的例子：</p>
+<pre><code class="language-xml">&lt;environments default=&quot;development&quot;&gt;
+        &lt;environment id=&quot;development&quot;&gt;
+            &lt;transactionManager type=&quot;JDBC&quot;/&gt;
+            &lt;dataSource type=&quot;POOLED&quot;&gt; 
+                &lt;property name=&quot;driver&quot; value=&quot;com.mysql.cj.jdbc.Driver&quot;/&gt;
+                &lt;property name=&quot;url&quot; value=&quot;jdbc:mysql://localhost:3306/mybatis?serverTimezone=Asia/Shanghai&amp;amp;useSSL=true&amp;amp;useUnicode=true&amp;amp;characterEncoding=UTF-8&quot;/&gt;
+                &lt;property name=&quot;username&quot; value=&quot;root&quot;/&gt;
+                &lt;property name=&quot;password&quot; value=&quot;password&quot;/&gt;
+            &lt;/dataSource&gt;
+        &lt;/environment&gt;
     
-        $('*[target = &quot;main&quot;]').click(function () {
-            var name = $(this).html();
-            var memo = $(this).attr(&quot;memo&quot;);
-
-            $(&quot;#FnName&quot;).html(name);
-            $(&quot;#FnNotice&quot;).html(memo);
-        });
-    }, 500);
-    */
-});
+    &lt;environment id=&quot;test&quot;&gt;
+            &lt;transactionManager type=&quot;JDBC&quot;/&gt;
+            &lt;dataSource type=&quot;POOLED&quot;&gt;
+                &lt;property name=&quot;driver&quot; value=&quot;com.mysql.cj.jdbc.Driver&quot;/&gt;
+                &lt;property name=&quot;url&quot; value=&quot;jdbc:mysql://localhost:3306/mybatis?serverTimezone=Asia/Shanghai&amp;amp;useSSL=true&amp;amp;useUnicode=true&amp;amp;characterEncoding=UTF-8&quot;/&gt;
+                &lt;property name=&quot;username&quot; value=&quot;root&quot;/&gt;
+                &lt;property name=&quot;password&quot; value=&quot;password&quot;/&gt;
+            &lt;/dataSource&gt;
+        &lt;/environment&gt;
+&lt;/environments&gt;
 </code></pre>
-<p>这里面对我们有用的代码也就是第1——9行的代码，代码里很清楚的写着。</p>
-<pre><code class="language-javascript">var sign = new Date().getTime();
+<p>注意一些关键点:</p>
+<ul>
+<li>
+<p><strong>默认使用的环境 ID（比如：default=&quot;development&quot;）。</strong></p>
+</li>
+<li>
+<p><strong>每个 environment 元素定义的环境 ID（比如：id=&quot;development&quot;）。</strong></p>
+</li>
+<li>
+<p>事务管理器的配置（比如：type=&quot;JDBC&quot;）。</p>
+<p>​      在 MyBatis 中有两种类型的事务管理器（也就是 type=&quot;[JDBC|MANAGED]&quot;）</p>
+<ul>
+<li>
+<p>JDBC               这个配置直接使用了 JDBC 的提交和回滚设施，它依赖从数据源获得的连接来管理事务作用域。</p>
+</li>
+<li>
+<p>MANAGED    这个配置几乎没做什么。它从不提交或回滚一个连接，而是让容器来管理事务的整个生命周期（比如 JEE 应用服务器的上下文）。 默认情况下它会关闭连接。然而一些容器并不希望连接被关闭，因此需要将 closeConnection 属性设置为 false 来阻止默认的关闭行为</p>
+<pre><code class="language-xml">&lt;transactionManager type=&quot;MANAGED&quot;&gt;
+  &lt;property name=&quot;closeConnection&quot; value=&quot;false&quot;/&gt;
+&lt;/transactionManager&gt;
 </code></pre>
-<p>可以看到sign就是登陆时的时间戳；</p>
-<pre><code class="language-javascript">var signedpwd = hex_md5(user + sign + hex_md5(pwd.trim()));
-</code></pre>
-<p>这里signedpwd就是pwd，而hex_md5()这个函数在我们前面看到的md5.js中有，也就是标准的md5加密，将输入的字符加密成32位字符串。<br>
-可以看到pwd是由【user（学号）+sign（时间戳）+由md5加密之后的密码】再经过md5加密之后得到的。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>数据源的配置（比如：type=&quot;POOLED&quot;）。</p>
+<p>​       dataSource 元素使用标准的 JDBC 数据源接口来配置 JDBC 连接对象的资源。</p>
+<p>​        有三种内建的数据源类型（也就是 type=&quot;[UNPOOLED|POOLED|JNDI]&quot;）：</p>
+<p><strong>POOLED</strong>– 这种数据源的实现利用“池”的概念将 JDBC 连接对象组织起来，避免了创建新的连接实例时所必需的初始化和认证时间。 这种处理方式很流行，能使并发 Web 应用快速响应请求。</p>
 <hr>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[ical文件代码结构说明]]></title>
-        <id>https://aruul.github.io/post/ical-wen-jian-dai-ma-jie-gou-shuo-ming/</id>
-        <link href="https://aruul.github.io/post/ical-wen-jian-dai-ma-jie-gou-shuo-ming/">
-        </link>
-        <updated>2020-08-11T09:59:39.000Z</updated>
-        <summary type="html"><![CDATA[<h2 id="前言"><strong>前言</strong></h2>
-<p>最近在想着把课表导入到日历里，就研究了一下ical文件</p>
-]]></summary>
-        <content type="html"><![CDATA[<h2 id="前言"><strong>前言</strong></h2>
-<p>最近在想着把课表导入到日历里，就研究了一下ical文件</p>
-<!--more-->
-<h2 id="什么是ical文件"><strong>什么是ical文件</strong></h2>
-<p>iCal 又称 iCalendar，是一种标准的互联网日历格式，让用户能够在各种计算机和各种程序之间创建和共享电子日历。<br>
-一言蔽之，可以理解成可以向日历导入事件的文件。</p>
-<h3 id="具体格式"><strong>具体格式</strong></h3>
-<ol>
-<li>
-<p>ical文件以.ics结尾</p>
-</li>
-<li>
-<p>ical文件的编写格式</p>
-</li>
-</ol>
-<pre><code>BEGIN:VCALENDAR
-VERSION:2.0
-X-WR-CALNAME:北京游玩安排
-X-APPLE-CALENDAR-COLOR:#540EB9
-X-WR-TIMEZONE:Asia/Shanghai
-BEGIN:VEVENT
-UID:2020-0124-0001
-DTSTART;VALUE=DATE:20200807T165000
-DTEND;VALUE=DATE:20200807T165500
-SUMMARY:购物
-DESCRIPTION:买特产
-LOCATION:王府井     
-SEQUENCE:0
-BEGIN:VALARM
-TRIGGER;VALUE=DATE-TIME:19760401T005545Z
-ACTION:NONE
-END:VALARM
-END:VEVENT
-END:VCALENDAR
+<p><strong>不过要记住：尽管可以配置多个环境，但每个 SqlSessionFactory 实例只能选择一种环境。</strong></p>
+<ul>
+<li><strong>每个数据库对应一个 SqlSessionFactory 实例</strong></li>
+</ul>
+<p>为了指定创建哪种环境，只要将它作为可选的参数传递给 SqlSessionFactoryBuilder 即可。可以接受环境配置的两个方法签名是：</p>
+<pre><code class="language-java">SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(reader, environment);
+SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(reader, environment, properties);
 </code></pre>
-<p><em><strong>为了方便理解，我将代码写出下面的格式，但是实际上，上面的代码格式是正确的</strong></em></p>
-<pre><code>BEGIN:VCALENDAR               #固定写法，ical文件以BEGIN:VCALENDAR开头        
-|  VERSION:2.0                #固定写法
-|  X-WR-CALNAME:北京游玩安排   #日历名称
-|  X-APPLE-CALENDAR-COLOR:#540EB9  #该日历事件的颜色
-|  X-WR-TIMEZONE:Asia/Shanghai     #时区，中国默认写Asia/Shanghai
-|  
-|  BEGIN:VEVENT                                  #固定写法，表示一个日历事件的开始
-|  |  UID:2020-0124-0001                         #这个日历事件的id，是唯一的，可自定义
-|  |  DTSTART;VALUE=DATE:20200807T165000         #事件开始时间:年-月-日-T-时-分-秒
-|  |  DTEND;VALUE=DATE:20200807T165500           #事件结束时间:年-月-日-T-时-分-秒
-|  |  SUMMARY:购物                               #事件名称
-|  |  DESCRIPTION:买特产                         #事件描述(备注)
-|  |  LOCATION:北京王府井                        #事件地点
-|  |  SEQUENCE:0                                 #固定写法
-|  |  BEGIN:VALARM                               #设置闹钟提醒，这里设置的是无需闹钟提醒
-|  |  |  TRIGGER;VALUE=DATE-TIME:19760401T005545Z
-|  |  |  ACTION:NONE
-|  |  END:VALARM
-|  END:VEVENT                                    #固定写法，表示一个日历事件的结束
-|
-END:VCALENDAR                #固定写法，ical文件以END:VCALENDAR结尾
+<p>如果忽略了环境参数，那么将会加载默认环境，如下所示：</p>
+<pre><code class="language-java">SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(reader);  //比较常用
+SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(reader, properties);
 </code></pre>
-<p>当想在一个日历中添加多个时间时，只需要在<code>BEGIN:VCALENDAR----END:VCALENDAR</code>之间按照<code>BEGIN:VEVENT----END:VEVENT</code>代码的格式添加日历事件即可</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[使用python生成ical(.ics)文件]]></title>
-        <id>https://aruul.github.io/post/shi-yong-python-sheng-cheng-icalicswen-jian/</id>
-        <link href="https://aruul.github.io/post/shi-yong-python-sheng-cheng-icalicswen-jian/">
-        </link>
-        <updated>2020-08-08T10:07:30.000Z</updated>
-        <summary type="html"><![CDATA[<h4 id="前言">前言</h4>
-<p>在了解了ical文件的基本结构之后，理论上是可以自己写出ical文件了。但是，如果把课程表的所有课全部一个个写出来就很不程序员，毕竟能交给电脑自动干的从不手动干。 一开始我是想着自己写一个可以批量生成ical文件的函数。写完之后感觉自己写很繁琐，不够简洁，毕竟python之蝉是这样说的：</p>
-]]></summary>
-        <content type="html"><![CDATA[<h4 id="前言">前言</h4>
-<p>在了解了ical文件的基本结构之后，理论上是可以自己写出ical文件了。但是，如果把课程表的所有课全部一个个写出来就很不程序员，毕竟能交给电脑自动干的从不手动干。 一开始我是想着自己写一个可以批量生成ical文件的函数。写完之后感觉自己写很繁琐，不够简洁，毕竟python之蝉是这样说的：</p>
-<!--more-->
+</li>
+</ul>
+<hr>
+<h3 id="4别名优化">4.别名优化</h3>
+<p>类型别名可为 Java 类型设置一个缩写名字，<strong>意在降低冗余的全限定类名书写</strong>。</p>
+<h5 id="41-在xml文件中为每个类起别名">4.1 在xml文件中为每个类起别名</h5>
+<p>例如：</p>
+<pre><code class="language-xml">&lt;typeAliases&gt;
+  &lt;typeAlias alias=&quot;Author&quot; type=&quot;domain.blog.Author&quot;/&gt;
+  &lt;typeAlias alias=&quot;Blog&quot; type=&quot;domain.blog.Blog&quot;/&gt;
+  &lt;typeAlias alias=&quot;Comment&quot; type=&quot;domain.blog.Comment&quot;/&gt;
+  &lt;typeAlias alias=&quot;Post&quot; type=&quot;domain.blog.Post&quot;/&gt;
+  &lt;typeAlias alias=&quot;Section&quot; type=&quot;domain.blog.Section&quot;/&gt;
+  &lt;typeAlias alias=&quot;Tag&quot; type=&quot;domain.blog.Tag&quot;/&gt;
+&lt;/typeAliases&gt;
+</code></pre>
+<p>当这样配置时，<code>Blog</code> 可以用在任何使用 <code>domain.blog.Blog</code> 的地方。</p>
+<h5 id="42-指定一个包名">4.2 指定一个包名</h5>
+<p>也可以指定一个包名，MyBatis 会在包名下面搜索需要的 Java Bean，比如：</p>
+<pre><code class="language-xml">&lt;typeAliases&gt;
+  &lt;package name=&quot;domain.blog&quot;/&gt;
+&lt;/typeAliases&gt;
+</code></pre>
+<p>每一个在包 <code>domain.blog</code> 中的 Java Bean，在没有注解的情况下，会使用 Bean 的<strong>首字母小写的</strong>非限定类名来作为它的别名。 比如 <code>domain.blog.Author</code> 的别名为 <code>author</code>；</p>
+<h5 id="43-注解">4.3 注解</h5>
+<p>若有注解，则别名为其注解值。见下面的例子：</p>
+<pre><code class="language-java">@Alias(&quot;author&quot;)
+public class Author {
+    ...
+}
+</code></pre>
+<hr>
+<h3 id="5-映射器mappers">5. 映射器（mappers）</h3>
+<p>映射器要来定义 SQL 映射语句。</p>
+<p>但首先，我们需要告诉 MyBatis 到哪里去找到这些语句。</p>
+<p>你可以使用相对于类路径的资源引用，或完全限定资源定位符（包括 <code>file:///</code> 形式的 URL），或类名和包名等。例如：</p>
+<pre><code class="language-xml">&lt;!-- 使用相对于类路径的资源引用   【推荐使用】 --&gt;
+&lt;mappers&gt;
+  &lt;mapper resource=&quot;org/mybatis/builder/AuthorMapper.xml&quot;/&gt;
+  &lt;mapper resource=&quot;org/mybatis/builder/BlogMapper.xml&quot;/&gt;
+  &lt;mapper resource=&quot;org/mybatis/builder/PostMapper.xml&quot;/&gt;
+&lt;/mappers&gt;
+&lt;!-- 使用完全限定资源定位符（URL） --&gt;
+&lt;mappers&gt;
+  &lt;mapper url=&quot;file:///var/mappers/AuthorMapper.xml&quot;/&gt;
+  &lt;mapper url=&quot;file:///var/mappers/BlogMapper.xml&quot;/&gt;
+  &lt;mapper url=&quot;file:///var/mappers/PostMapper.xml&quot;/&gt;
+&lt;/mappers&gt;
+&lt;!-- 使用映射器接口实现类的完全限定类名  
+**接口和他的Mapper配置文件必须同名**    
+**接口和他的Mapper配置文件必须在同一个包下** --&gt;
+&lt;mappers&gt;
+  &lt;mapper class=&quot;org.mybatis.builder.AuthorMapper&quot;/&gt;
+  &lt;mapper class=&quot;org.mybatis.builder.BlogMapper&quot;/&gt;
+  &lt;mapper class=&quot;org.mybatis.builder.PostMapper&quot;/&gt;
+&lt;/mappers&gt;
+&lt;!-- 将包内的映射器接口实现全部注册为映射器 
+**接口和他的Mapper配置文件必须同名**    
+**接口和他的Mapper配置文件必须在同一个包下** --&gt;
+&lt;mappers&gt;
+  &lt;package name=&quot;org.mybatis.builder&quot;/&gt;
+&lt;/mappers&gt;
+</code></pre>
+<p>这些配置会告诉 MyBatis 去哪里找映射文件。</p>
+<ul>
+<li>
+<p><strong>注意 在使用映射器接口实现类的完全限定类名时  和   将包内的映射器接口实现全部注册为映射器</strong></p>
+<p><strong>接口和他的Mapper配置文件必须同名</strong></p>
+<p><strong>接口和他的Mapper配置文件必须在同一个包下</strong></p>
+<pre><code class="language-xml">&lt;!-- 使用映射器接口实现类的完全限定类名 --&gt;
+&lt;mappers&gt;
+  &lt;mapper class=&quot;org.mybatis.builder.AuthorMapper&quot;/&gt;
+  &lt;mapper class=&quot;org.mybatis.builder.BlogMapper&quot;/&gt;
+  &lt;mapper class=&quot;org.mybatis.builder.PostMapper&quot;/&gt;
+&lt;/mappers&gt;
+</code></pre>
+<hr>
+</li>
+</ul>
+<h3 id="6解决属性名和字段名不一致的问题">6.解决属性名和字段名不一致的问题</h3>
+<p>就是java代码的属性名和数据库字段的名字不一致的问题</p>
+<pre><code>比如 
+数据库字段为  id name pwd
+
+java属性名为 id name password
+</code></pre>
+<h4 id="61-起别名">6.1 起别名</h4>
+<pre><code class="language-xml">&lt;select id=&quot;getUserById&quot; parameterType=&quot;int&quot; resultType=&quot;org.example.pojo.User&quot;&gt;
+    select id,name,pwd as password from mybatis.user where id=#{id}
+&lt;/select&gt;
+</code></pre>
+<h4 id="62-resultmap">6.2 resultMap</h4>
+<p><code>resultMap</code> 元素是 MyBatis 中最重要最强大的元素。它可以让你从 90% 的 JDBC <code>ResultSets</code> 数据提取代码中解放出来，并在一些情形下允许你进行一些 JDBC 不支持的操作。</p>
+<pre><code class="language-xml">&lt;!--结果集映射，id是名字，type是结果类型，数据库中的列和java代码的属性相对应--&gt;
+&lt;resultMap id=&quot;UserMap&quot; type=&quot;org.example.pojo.User&quot;&gt;
+    &lt;result column=&quot;id&quot; property=&quot;id&quot;/&gt;
+    &lt;result column=&quot;name&quot; property=&quot;name&quot;/&gt;
+    &lt;result column=&quot;pwd&quot; property=&quot;password&quot;/&gt;
+&lt;/resultMap&gt; 
+&lt;!--resultMap 引用的上面id为&quot;UserMap&quot;的resultMap--&gt;
+&lt;select id=&quot;getUserById&quot; parameterType=&quot;int&quot; resultMap=&quot;UserMap&quot;&gt;
+    select * from mybatis.user where id=#{id}
+&lt;/select&gt;
+</code></pre>
+<hr>
+<h3 id="7-和的区别">7. #{}和${}的区别</h3>
 <blockquote>
-<p>The Zen of Python, by Tim Peters</p>
-<p>Beautiful is better than ugly.<br>
-Explicit is better than implicit.<br>
-Simple is better than complex.<br>
-Complex is better than complicated.<br>
-Flat is better than nested.<br>
-Sparse is better than dense.<br>
-Readability counts.<br>
-Special cases aren't special enough to break the rules.<br>
-Although practicality beats purity.<br>
-Errors should never pass silently.<br>
-Unless explicitly silenced.<br>
-In the face of ambiguity, refuse the temptation to guess.<br>
-There should be one-- and preferably only one --obvious way to do it.<br>
-Although that way may not be obvious at first unless you're Dutch.<br>
-Now is better than never.<br>
-Although never is often better than <em>right</em> now.<br>
-If the implementation is hard to explain, it's a bad idea.<br>
-If the implementation is easy to explain, it may be a good idea.<br>
-Namespaces are one honking great idea -- let's do more of those!</p>
+<p>a、#{}是预编译处理，${}是字符串替换。</p>
+<p>b、Mybatis 在处理#{}时，会将 sql 中的#{}替换为?号，调用 PreparedStatement 的 set 方法来赋值；<br>
+c、Mybatis 在处理<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mrow></mrow><mi mathvariant="normal">时</mi><mi mathvariant="normal">，</mi><mi mathvariant="normal">就</mi><mi mathvariant="normal">是</mi><mi mathvariant="normal">把</mi></mrow><annotation encoding="application/x-tex">{}时，就是把</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0em;vertical-align:0em;"></span><span class="mord"></span><span class="mord cjk_fallback">时</span><span class="mord cjk_fallback">，</span><span class="mord cjk_fallback">就</span><span class="mord cjk_fallback">是</span><span class="mord cjk_fallback">把</span></span></span></span>{}替换成变量的值。<br>
+d、使用#{}可以有效的防止 SQL 注入，提高系统安全性。</p>
 </blockquote>
-<p>所以，看了好多第三方库，找到了一个感觉还行的第三方库<code>icalendar</code></p>
-<h4 id="icalendar库">icalendar库</h4>
-<p>唯一美中不足的是这个库的<a href="https://icalendar.readthedocs.io/en/latest/usage.html#file-structure">官方文档</a>没有中文，不过也还好理解，比较简单。<br>
-<strong>首先下载该库</strong></p>
-<pre><code class="language-python">    pip install icalendar
-</code></pre>
-<p><strong>引入</strong></p>
-<pre><code class="language-python">    from icalendar import Calendar, Event,Alarm
-</code></pre>
-<p><strong>常用的方法</strong><br>
-1.建立一个日历-----Calendar()方法<br>
-实例：</p>
-<pre><code class="language-python">     cal = Calendar()
-</code></pre>
-<p>2.在日历中添加组件-----add(属性名，值)</p>
-<pre><code class="language-python">    cal.add('VERSION','2.0')
-    cal.add('X-WR-CALNAME','生成ics文件测试')
-    cal.add('X-APPLE-CALENDAR-COLOR','#540EB9')
-    cal.add('X-WR-TIMEZONE','Asia/Shanghai')
-</code></pre>
-<p>这些参数的意义在我的<a href="https://aruul.github.io/2020/08/07/ical%E6%96%87%E4%BB%B6%E4%BB%A3%E7%A0%81%E7%BB%93%E6%9E%84%E8%AF%B4%E6%98%8E/">这篇文章</a>中讲到</p>
-<p>3.在日历中添加子组件(事件)-----Event</p>
-<pre><code>    event=Event()
-</code></pre>
-<p>4.为事件添加属性-----add(属性名，值)</p>
-<pre><code class="language-python">    event.add('UID','2000')
-    event.add('DTSTART;VALUE=DATE','20200808T170500')
-    event.add('DTEND;VALUE=DATE','20200808T172000')
-    event.add('SUMMARY','测试事件键')
-    event.add('SEQUENCE','0')
-    event.add('DESCRIPTION','这是描述')
-    event.add('LOCATION','这是地点')
-</code></pre>
-<p>5.添加子组件(Event)的子组件(Alarm)</p>
-<pre><code class="language-python">    alarm=Alarm()
-    alarm.add('ACTION','NONE')
-    alarm.add('TRIGGER;VALUE=DATE-TIME','19760401T005545Z')
-    event.add_component(alarm)
-</code></pre>
-<p>6.将事件添加到日历-----add_component()</p>
-<pre><code class="language-python">    cal.add_component(event)
-</code></pre>
-<p>一个日历可添加多个事件<br>
-7.生成ical文件</p>
-<pre><code class="language-python">    f = open('example.ics', 'wb')
-    f.write(cal.to_ical())
-    f.close()
-</code></pre>
-<p>其中to_ical()方法将之前写的代码生成字符串，方便我们写入文件</p>
-<p>8.总结</p>
-<p>总的代码，添加多个事件时格式如下</p>
-<pre><code class="language-python">    cal = Calendar()
-    cal.add('VERSION','2.0')
-    cal.add('X-WR-CALNAME','生成ics文件测试')
-    cal.add('X-APPLE-CALENDAR-COLOR','#540EB9')
-    cal.add('X-WR-TIMEZONE','Asia/Shanghai')
-
-    event = Event()
-    event.add('UID','2000')
-    event.add('DTSTART;VALUE=DATE','20200808T170500')
-    event.add('DTEND;VALUE=DATE','20200808T172000')
-    event.add('SUMMARY','测试事件键')
-    event.add('SEQUENCE','0')
-    event.add('DESCRIPTION','这是描述')
-    event.add('LOCATION','这是地点')
-    alarm=Alarm()
-    alarm.add('ACTION','NONE')
-    alarm.add('TRIGGER;VALUE=DATE-TIME','19760401T005545Z')
-    event.add_component(alarm)
-
-    eventt=Event()
-    eventt.add('UID','2001')
-    eventt.add('DTSTART;VALUE=DATE','20200808T180500')
-    eventt.add('DTEND;VALUE=DATE','20200808T182000')
-    eventt.add('SUMMARY','测试事件2')
-    eventt.add('SEQUENCE','0')
-    eventt.add('DESCRIPTION','这是描述2')
-    eventt.add('LOCATION','这是地点2')
-    alarmm=Alarm()
-    alarmm.add('ACTION','NONE')
-    alarmm.add('TRIGGER;VALUE=DATE-TIME','19760401T005545Z')
-    eventt.add_component(alarmm)
-
-    cal.add_component(event)
-    cal.add_component(eventt)
-    f = open('例子.ics', 'wb')
-    f.write(cal.to_ical())
-    f.close()
-</code></pre>
-<p>生成的文件内部代码如下：</p>
-<pre><code>BEGIN:VCALENDAR
-VERSION:2.0
-X-APPLE-CALENDAR-COLOR:#540EB9
-X-WR-CALNAME:生成ics文件测试
-X-WR-TIMEZONE:Asia/Shanghai
-BEGIN:VEVENT
-SUMMARY:测试事件键
-UID:2000
-SEQUENCE:0
-DESCRIPTION:这是描述
-DTEND;VALUE=DATE:20200808T172000
-DTSTART;VALUE=DATE:20200808T170500
-LOCATION:这是地点
-BEGIN:VALARM
-ACTION:NONE
-TRIGGER;VALUE=DATE-TIME:19760401T005545Z
-END:VALARM
-END:VEVENT
-BEGIN:VEVENT
-SUMMARY:测试事件键2
-UID:2000
-SEQUENCE:0
-DESCRIPTION:这是描述2
-DTEND;VALUE=DATE:20200808T182000
-DTSTART;VALUE=DATE:20200808T182000
-LOCATION:这是地点2
-BEGIN:VALARM
-ACTION:NONE
-TRIGGER;VALUE=DATE-TIME:19760401T005545Z
-END:VALARM
-END:VEVENT
-END:VCALENDAR
-</code></pre>
 ]]></content>
     </entry>
     <entry>
-        <title type="html"><![CDATA[b站排行榜爬虫]]></title>
-        <id>https://aruul.github.io/post/b-zhan-pai-xing-bang-pa-chong/</id>
-        <link href="https://aruul.github.io/post/b-zhan-pai-xing-bang-pa-chong/">
+        <title type="html"><![CDATA[2-增删改查]]></title>
+        <id>https://aruul.github.io/post/PjBvXe767/</id>
+        <link href="https://aruul.github.io/post/PjBvXe767/">
         </link>
-        <updated>2020-07-24T13:42:44.000Z</updated>
-        <content type="html"><![CDATA[<!--more-->
-<h2 id="一简单爬取标题-up-播放量等表面数据">（一）简单爬取标题 up 播放量等表面数据</h2>
-<ol>
-<li>前提准备</li>
-</ol>
+        <updated>2021-03-14T12:10:56.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="1每一个dao接口对应一个xml文件">1.每一个Dao接口对应一个xml文件</h3>
 <ul>
-<li>b站排行榜链接 https://www.bilibili.com/ranking</li>
-<li>python编译器一个</li>
-<li>所需要的库：urllib3  BeautifulSoup</li>
+<li>最好名字要一致，方便管理</li>
 </ul>
-<p>2 . 观察<br>
-打开b站排行榜页面，按F12或者鼠标右键检查页面，可以查看b站排行榜页面源码。当你鼠标在源码出浏览时，对应网页部分会高亮提示，可以看到代码对应的网页内容。</p>
-<p>3.伪装<br>
-作为一个爬虫，要先把自己伪装成一个浏览器。在浏览器按F12后，点击 &lt;网络&gt; 选项<br>
-<img src="https://s1.ax1x.com/2020/07/24/UvHCsx.png" alt="UvHCsx.png" loading="lazy"></p>
-<p>找到请求标头<br>
-<a href="https://imgchr.com/i/UvHAoD"><img src="https://s1.ax1x.com/2020/07/24/UvHAoD.png" alt="UvHAoD.png" loading="lazy"></a></p>
-<p>这些就是你浏览器的信息<br>
-这次我们只需要用到user-agent这个内容</p>
-<pre><code class="language-python">import urllib3
-import urllib.request
-from bs4 import BeautifulSoup
-def askURL(url):
-    headersss={
-    &quot;user-agent&quot;: &quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36 Edg/83.0.478.61&quot;,
-    &quot;accept&quot;: &quot;text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9&quot;
+<pre><code class="language-java">//Dao接口
+public interface UserMapper {
+    //查询全部用户
+    List&lt;User&gt; getUserList();
+    //根据id查询用户
+    User getUserById(int id);
+    //添加用户
+    int insertUser(User user);
+    //修改
+    int updateUser(User user);
+    //删除
+    int deleteUser(int id);
+}
+</code></pre>
+<p>对应的xml文件</p>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
+&lt;!DOCTYPE mapper
+        PUBLIC &quot;-//mybatis.org//DTD Mapper 3.0//EN&quot;
+        &quot;http://mybatis.org/dtd/mybatis-3-mapper.dtd&quot;&gt;
+
+&lt;!--namespace 是要绑定的类的路径--&gt;
+&lt;mapper namespace=&quot;org.example.dao.UserMapper&quot;&gt;
+    &lt;!--进行查询操作  id是对应类的方法名 resultType是返回的结果集--&gt;
+    &lt;select id=&quot;getUserList&quot; resultType=&quot;org.example.pojo.User&quot;&gt;
+        select * from mybatis.user
+    &lt;/select&gt;
+
+    &lt;select id=&quot;getUserById&quot; parameterType=&quot;int&quot; resultType=&quot;org.example.pojo.User&quot;&gt;
+        select * from mybatis.user where id=#{id}
+    &lt;/select&gt;
+
+    &lt;insert id=&quot;insertUser&quot; parameterType=&quot;org.example.pojo.User&quot;&gt;
+        insert into mybatis.user (id, name, pwd) values (#{id},#{name},#{pwd})
+    &lt;/insert&gt;
+
+    &lt;update id=&quot;updateUser&quot; parameterType=&quot;org.example.pojo.User&quot;&gt;
+        update mybatis.user set name = #{name},pwd = #{pwd} where id = #{id};
+    &lt;/update&gt;
+
+    &lt;delete id=&quot;deleteUser&quot; parameterType=&quot;int&quot;&gt;
+        delete from mybatis.user where id = #{id}
+    &lt;/delete&gt;
+&lt;/mapper&gt;
+</code></pre>
+<h3 id="2xml文件编写规则">2.xml文件编写规则</h3>
+<ul>
+<li>
+<p>xml文件注意事项</p>
+<pre><code class="language-xml">&lt;mapper namespace=&quot;org.example.dao.UserMapper&quot;&gt;&lt;/mapper&gt;
+</code></pre>
+<p>namespace是对应Dao文件的java路径</p>
+<hr>
+<p>以id查询为例</p>
+<pre><code class="language-java"> //根据id查询用户 java代码
+    User getUserById(int id);
+</code></pre>
+</li>
+</ul>
+<pre><code class="language-xml">  &lt;select id=&quot;getUserById&quot; parameterType=&quot;int&quot; resultType=&quot;org.example.pojo.User&quot;&gt;
+        select * from mybatis.user where id=#{id}
+    &lt;/select&gt;
+</code></pre>
+<p><strong>id为Dao接口中对应的方法名           parameterType是方法中参数的类型       resultType是sql语句执行狗返回的结果类型</strong></p>
+<ul>
+<li>
+<p>sql语法</p>
+<p>遵从基本的sql语法，</p>
+<p><strong>可以通过#{属性}的写法来获取参数中的值</strong></p>
+<h3 id="3测试">3.测试</h3>
+<ul>
+<li>注意在删除、修改操作的时候要提交事务</li>
+<li>注意要关闭事务</li>
+</ul>
+<pre><code class="language-java">@Test
+    public void getUserById(){
+        //获取sqlSession实例
+        SqlSession sqlSession= MybatisUtils.getSqlSession();
+        //获取Dao层类的实例
+        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+        //调用对用Dao层类的方法
+        User user=userMapper.getUserById(1);
+        System.out.println(user);
+		//关闭事务
+        sqlSession.close();
     }
-    req=urllib.request.Request(url=url,headers=headersss)
-    #html=&quot;null&quot;
-    try:
-        response=urllib.request.urlopen(req)
-        html=response.read().decode('utf-8')
-        #print(html)
-    except urllib.error.URLError as e:
-        if hasattr(e,&quot;code&quot;):
-            print(e.code)
-        if hasattr(e,&quot;reason&quot;):
-            print(e.reason)
-    return html
-</code></pre>
-<p>剩下的过几天续上。。。</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Gitalk ---- 勉强能用的博客评论]]></title>
-        <id>https://aruul.github.io/post/gitalk/</id>
-        <link href="https://aruul.github.io/post/gitalk/">
-        </link>
-        <updated>2020-06-21T03:34:49.000Z</updated>
-        <summary type="html"><![CDATA[<h3 id="基于yilia主题配置的评论区">基于yilia主题配置的评论区</h3>
-<p>本打算用Gitment，但发现原作者的服务器好像不能用来<br>
-由于自己懒得去注册别的网站的账号，所以就用了Gitalk。</p>
-]]></summary>
-        <content type="html"><![CDATA[<h3 id="基于yilia主题配置的评论区">基于yilia主题配置的评论区</h3>
-<p>本打算用Gitment，但发现原作者的服务器好像不能用来<br>
-由于自己懒得去注册别的网站的账号，所以就用了Gitalk。</p>
-<!--more-->
-<h6 id="正式开始吧">正式开始吧</h6>
-<p>首先<a href="https://github.com/settings/applications/new" title="点这里">点这里</a>进行注册<br>
-你会看到下面四个选项</p>
-<ol>
-<li>Application name：填写你的应用名称（这个随意，最好是英文，建议跟仓库名一样）</li>
-<li>Homepage URL：填写你的博客主页域名</li>
-<li>Application description：应用描述，非必填项</li>
-<li>Authorization callback URL：这个填写与Homepage URL一致<br>
-点击注册，会获取到 Client ID/scerct 。</li>
-</ol>
-<h6 id="配置-_configyml-文件">配置 _config.yml 文件</h6>
-<p>打开themes\yilia_config.yml ,增加如下代码：</p>
-<pre><code class="language-html">#6、gitalk评论
-gitalk:
-  enable: true
-  githubID: 填写你的 github 账户名即可  
-  repo: 'repo 名字为可新建一个repo 或者使用博客托管的 repo 都行。'
-  ClientID: '就是上步骤中注册的获取的信息'
-  ClientSecret: '就是上步骤中注册的获取的信息'
-  adminUser: 填写你的 github 账户名即可
-  distractionFreeMode: true
-</code></pre>
-<p><strong>注意不要去掉引号！！！！</strong></p>
-<h6 id="在themesyilialayout_partialpost目录下新增gitalkejs文件文件内写入如下代码">在themes/yilia/layout/_partial/post目录下新增gitalk.ejs文件,文件内写入如下代码：</h6>
-<pre><code> &lt;div id=&quot;gitalk-container&quot; style=&quot;padding: 0px 30px 0px 30px;&quot;&gt;&lt;/div&gt; 
 
-&lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css&quot;&gt;
-&lt;script src=&quot;https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js&quot;&gt;&lt;/script&gt;
-&lt;script type=&quot;text/javascript&quot;&gt;
+    @Test
+    public void insertUser(){
+        SqlSession sqlSession= MybatisUtils.getSqlSession();
+        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
 
-if(&lt;%=theme.gitalk.enable%&gt;){
-	var gitalk = new Gitalk({
-  	clientID: '&lt;%=theme.gitalk.ClientID%&gt;',
-  	clientSecret: '&lt;%=theme.gitalk.ClientSecret%&gt;',
-  	repo: '&lt;%=theme.gitalk.repo%&gt;',
-  	owner: '&lt;%=theme.gitalk.githubID%&gt;',
-  	admin: ['&lt;%=theme.gitalk.adminUser%&gt;'],
-  	id: '&lt;%= page.date %&gt;',
-  	distractionFreeMode: '&lt;%=theme.gitalk.distractionFreeMode%&gt;'
-})
-gitalk.render('gitalk-container') 
-}
-&lt;/script&gt;
-</code></pre>
-<h6 id="修改themesyiliasource-srccss目录下commentscss文件">修改themes/yilia/source-src/css/目录下comment.scss文件</h6>
-<pre><code class="language-html">#disqus_thread, .duoshuo, .cloud-tie-wrapper, #SOHUCS, #gitment-ctn, #gitalk-container {
-	padding: 0 30px !important;
-	min-height: 20px;
-}
+        int res= userMapper.insertUser(new User(4,&quot;测试&quot;,&quot;000000&quot;));
+        if(res&gt;0){
+            System.out.println(&quot;插入成功&quot;);
+            System.out.println(&quot;-----------------------------------&quot;);
+            List&lt;User&gt; userList= userMapper.getUserList();
+            for (User user : userList) {
+                System.out.println(user);
+            }
+        }
 
-#SOHUCS {
-	#SOHU_MAIN .module-cmt-list .block-cont-gw {
-		border-bottom: 1px dashed #c8c8c8 !important;
-	}
-}
-</code></pre>
-<h6 id="在themesyilialayout_partial目录下的articleejs文件内新增gitalk相关的配置代码">在themes/yilia/layout/_partial目录下的article.ejs文件内新增gitalk相关的配置代码：</h6>
-<p>先找到</p>
-<pre><code class="language-html">&lt;% if (!index &amp;&amp; post.comments){ %&gt;
-//添加到这里
-&lt;% } %&gt;
-</code></pre>
-<p>然后将：</p>
-<pre><code class="language-html">&lt;% if(theme.gitalk.enable){ %&gt;
-  &lt;%- partial('post/gitalk', {
-      key: post.slug,
-      title: post.title,
-      url: config.url+url_for(post.path)
-    }) %&gt;
-  &lt;% } %&gt;
-</code></pre>
-<p>添加到上述位置处</p>
-<p>否则添加到别处主页中间会出现评论区</p>
-<p><strong>完</strong></p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[hexo+github搭建个人博客]]></title>
-        <id>https://aruul.github.io/post/hexogithub-da-jian-ge-ren-bo-ke/</id>
-        <link href="https://aruul.github.io/post/hexogithub-da-jian-ge-ren-bo-ke/">
-        </link>
-        <updated>2020-06-20T02:19:49.000Z</updated>
-        <summary type="html"><![CDATA[<h1 id="周周转转终于把博客搭建的差不多了">周周转转终于把博客搭建的差不多了</h1>
-]]></summary>
-        <content type="html"><![CDATA[<h1 id="周周转转终于把博客搭建的差不多了">周周转转终于把博客搭建的差不多了</h1>
-<h2 id="-more-本篇博客由aru原创转载请标明出处附上本文链接"><!--more--><br>
-<strong>本篇博客由aRu原创，转载请标明出处，附上本文链接。</strong></h2>
-<p><strong>下面是我的过程</strong>：<br>
-<s>由于还是没找到合适的md编辑器，所以直接用的md在线编辑，<br>
-而在线编辑又不能插入图片，所以这篇文章看起来有点枯燥</s></p>
-<p><strong>1. 准备工作</strong></p>
-<ul>
-<li>
-<p>安装Node.js</p>
-</li>
-<li>
-<p>安装Git</p>
-</li>
-<li>
-<p>注册Github账号 生成静态网页</p>
-</li>
-<li>
-<p>安装Hexo</p>
-</li>
-<li>
-<p>连接Github与本地</p>
-</li>
-<li>
-<p><strong>安装软件大家都会，直接去官网下载就行</strong><br>
-<em><strong>需要注意的是Node.js安装时有一步要选Add To Path，其他默认就行。</strong></em></p>
-</li>
-<li>
-<p><strong>注册GitHub相信聪明的你也会</strong></p>
-</li>
-<li>
-<p><strong>生成静态网页</strong><br>
-1.在 Github 中创建一个名称为 <strong>你的Github名字.github.io</strong>  的Repository。<br>
-<em>这里实在不懂得话可以搜一下怎么创建Github Pages</em><br>
-2.勾选 Initialize this repository with a README<br>
-3.选择Create repository</p>
-</li>
-<li>
-<p><strong>安装Hexo</strong><br>
-以上软件装完之后在你本地磁盘建一个文件夹命名为Blog（名字可以随便取，但要是英文）<br>
-进入Blog文件<br>
-鼠标右键---选择Git Bash Here（之后的步骤会频繁使用它，建议不要教程结束之后在关闭该窗口，每输入一行命令都要回车执行）<br>
-输入</p>
-<pre><code>npm install -g hexo-cli
+        //提交事务
+        sqlSession.commit();
+        //关闭事务
+        sqlSession.close();
+    }
 </code></pre>
 </li>
 </ul>
-<pre><code>然后回车等待安装，安装完成后输入
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[创建第一个myBatis项目]]></title>
+        <id>https://aruul.github.io/post/5z4z3U_A7/</id>
+        <link href="https://aruul.github.io/post/5z4z3U_A7/">
+        </link>
+        <updated>2021-03-11T03:08:26.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="注意使用的是idea202032版本-mysql8-022">注意：使用的是idea2020.3.2版本  mysql8. 0.22</h3>
+<h3 id="1创建一个默认的maven项目">1.创建一个默认的maven项目</h3>
+<p>就是idea里点击maven，什么都不选，默认打开就行；</p>
+<p>删除src目录</p>
+<p>新建一个Module文件,作为子项目</p>
+<h3 id="2导入依赖">2.导入依赖</h3>
+<p>在父项目的pom.xml文件中导入所需依赖  mysql驱动、 mybatis 、junit</p>
+<pre><code class="language-xml">&lt;!--导入依赖--&gt;
+    &lt;dependencies&gt;
+        &lt;!--mysql驱动--&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;mysql&lt;/groupId&gt;
+            &lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt;
+            &lt;version&gt;8.0.22&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;!--mybatis--&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.mybatis&lt;/groupId&gt;
+            &lt;artifactId&gt;mybatis&lt;/artifactId&gt;
+            &lt;version&gt;3.5.2&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;!--junit--&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;junit&lt;/groupId&gt;
+            &lt;artifactId&gt;junit&lt;/artifactId&gt;
+            &lt;version&gt;4.12&lt;/version&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
 </code></pre>
-<p>hexo -v</p>
-<pre><code>出现一堆数据就证明你安装成功了
-
-**连接Github与本地**- 
-还是在刚才打开的Git Bash那里依次输入下面的命令
+<p><strong>注意：除此之外还要在配置pom.xml文件中添加下面的代码</strong></p>
+<pre><code class="language-xml">&lt;!--配置resources，防止资源导出失败--&gt;
+    &lt;build&gt;
+        &lt;resources&gt;
+            &lt;resource&gt;
+                &lt;directory&gt;src/main/java&lt;/directory&gt;
+                &lt;includes&gt;
+                    &lt;include&gt;**/*.xml&lt;/include&gt;
+                    &lt;include&gt;**/*.properties&lt;/include&gt;
+                &lt;/includes&gt;
+            &lt;/resource&gt;
+            &lt;resource&gt;
+                &lt;directory&gt;src/main/resources&lt;/directory&gt;
+                &lt;includes&gt;
+                    &lt;include&gt;**/*.xml&lt;/include&gt;
+                    &lt;include&gt;**/*.properties&lt;/include&gt;
+                &lt;/includes&gt;
+            &lt;/resource&gt;
+        &lt;/resources&gt;
+    &lt;/build&gt;
 </code></pre>
-<p>git config --global user.name &quot;username&quot;<br>
-git config --global user.email &quot;Email&quot;</p>
-<pre><code>其中username是你的GitHub名字
-Email是你注册时的邮箱   （两个参数都不用去引号）  
+<h3 id="3在新建的module文件下编写代码">3.在新建的Module文件下编写代码</h3>
+<h4 id="30-编写全局配置文件-mybatis-configxml">3.0 编写全局配置文件 <strong>mybatis-config.xml</strong></h4>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
+&lt;!DOCTYPE configuration
+        PUBLIC &quot;-//mybatis.org//DTD Config 3.0//EN&quot;
+        &quot;http://mybatis.org/dtd/mybatis-3-config.dtd&quot;&gt;
+&lt;configuration&gt;
 
-然后生成密钥SSH key：
+    &lt;!--设置日志--&gt;
+    &lt;settings&gt;
+        &lt;setting name=&quot;logImpl&quot; value=&quot;STDOUT_LOGGING&quot;/&gt;
+    &lt;/settings&gt;
+
+    &lt;typeAliases&gt;
+        &lt;package name=&quot;org.example.pojo&quot;/&gt;
+    &lt;/typeAliases&gt;
+
+    &lt;!--环境配置--&gt;
+    &lt;environments default=&quot;development&quot;&gt;
+        &lt;environment id=&quot;development&quot;&gt;
+            &lt;transactionManager type=&quot;JDBC&quot;/&gt;
+            &lt;dataSource type=&quot;POOLED&quot;&gt;
+                &lt;property name=&quot;driver&quot; value=&quot;com.mysql.cj.jdbc.Driver&quot;/&gt;
+                &lt;property name=&quot;url&quot; value=&quot;jdbc:mysql://localhost:3306/mybatis?serverTimezone=Asia/Shanghai&amp;amp;useSSL=true&amp;amp;useUnicode=true&amp;amp;characterEncoding=UTF-8&quot;/&gt;
+                &lt;property name=&quot;username&quot; value=&quot;root&quot;/&gt;
+                &lt;property name=&quot;password&quot; value=&quot;password&quot;/&gt;
+            &lt;/dataSource&gt;
+        &lt;/environment&gt;
+    &lt;/environments&gt;
+
+    &lt;!--mapper映射--&gt;
+    &lt;mappers&gt;
+        &lt;mapper resource=&quot;org/example/dao/UserMapper.xml&quot;/&gt;
+    &lt;/mappers&gt;
+&lt;/configuration&gt;
 </code></pre>
-<p>ssh-keygen -t rsa -C &quot;Email&quot;</p>
-<pre><code>Email是你注册时的邮箱，引号不用去
+<h4 id="31实体类pojo">3.1实体类（pojo）</h4>
+<pre><code class="language-java">public class User {
+    private int id;
+    private String name;
+    private String pwd;
 
-然后打开github，在头像下面点击settings，再点击SSH and GPG keys，新建一个SSH，名字随便。
+    public User() {
+    }
 
-然后git bash中输入
+    public User(int id, String name, String pwd) {
+        this.id = id;
+        this.name = name;
+        this.pwd = pwd;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPwd() {
+        return pwd;
+    }
+
+    public void setPwd(String pwd) {
+        this.pwd = pwd;
+    }
+
+    @Override
+    public String toString() {
+        return &quot;User{&quot; +
+                &quot;id=&quot; + id +
+                &quot;, name='&quot; + name + '\'' +
+                &quot;, pwd='&quot; + pwd + '\'' +
+                '}';
+    }
+}
 </code></pre>
-<p>cat ~/.ssh/id_rsa.pub</p>
-<pre><code>这时候会出现一堆字符，复制下来，粘贴到GitHub刚才的页面框中，点击确定保存。
-
-然后再Git Bash输入
+<h4 id="32dao接口">3.2Dao接口</h4>
+<pre><code class="language-java">public interface UserDao {
+    List&lt;User&gt; getUserList();
+}
 </code></pre>
-<p>ssh -T git@github.com</p>
-<pre><code>如果看到出现 **You successfly**就证明链接成功。
+<h4 id="33由xml文件实现dao接口">3.3由xml文件实现Dao接口</h4>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
+&lt;!DOCTYPE mapper
+        PUBLIC &quot;-//mybatis.org//DTD Mapper 3.0//EN&quot;
+        &quot;http://mybatis.org/dtd/mybatis-3-mapper.dtd&quot;&gt;
 
-**2.创建本地博客**
+&lt;!--namespace 是要绑定的类的路径--&gt;
+&lt;mapper namespace=&quot;org.example.dao.UserDao&quot;&gt;
+    &lt;!--进行查询操作  id是对应类的方法名 resultType sql语句执行是返回的值--&gt;
+    &lt;select id=&quot;getUserList&quot; resultType=&quot;org.example.pojo.User&quot;&gt;
+        select * from mybatis.user
+    &lt;/select&gt;
+&lt;/mapper&gt;
+</code></pre>
+<h4 id="34在-mybatis-configxml中绑定注册mapper">3.4在 <strong>mybatis-config.xml</strong>中绑定注册Mapper</h4>
+<pre><code class="language-xml"> &lt;!--mapper映射--&gt;
+&lt;mappers&gt;
+    &lt;mapper resource=&quot;org/example/dao/UserMapper.xml&quot;/&gt;
+&lt;/mappers&gt;
+</code></pre>
+<h4 id="35测试">3.5测试</h4>
+<p>XML 文件中构建 SqlSessionFactory 的实例非常简单，建议使用类路径下的<strong>资源文件</strong>进行配置。 但也可以使用任意的输入流（InputStream）实例，比如用文件路径字符串或 file:// URL 构造的输入流。MyBatis 包含一个名叫 Resources 的工具类，它包含一些实用方法，使得从类路径或其它位置加载资源文件更加容易。</p>
+<p>​      <strong>每个基于 MyBatis 的应用都是以一个 SqlSessionFactory 的实例为核心的。</strong></p>
+<p>​      <strong>SqlSessionFactory 的实例可以通SqlSessionFactoryBuilder 获得。</strong></p>
+<p>​      <strong>而 SqlSessionFactoryBuilder 则可以从 XML 配置文件或一个预先配置的 Configuration 实例来构建出 SqlSessionFactory 实例。</strong></p>
+<pre><code class="language-java">//读取配置文件
+String resource = &quot;mybatis-config.xml&quot;; 
+InputStream inputStream = Resources.getResourceAsStream(resource);
+//获取SqlSessionFactory实例
+SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
 
-还是在刚才打开的Git Bush中输入：```
-hexo init
-​```将 blog 文件夹初始化成一个博客文件夹。
+public void test(){
+    //从 SqlSessionFactory 中获取 SqlSession
+    //既然有了 SqlSessionFactory，顾名思义，我们可以从中获得 SqlSession 的实例。
+        SqlSession sqlSession= sqlSessionFactory.openSession();
+      //SqlSession 提供了在数据库执行 SQL 命令所需的所有方法。
+      //通过getMapper方法得到Dao层的实例
+        UserDao userDao= sqlSession.getMapper(UserDao.class);
+      //通过调用Dao层实例的方法来操作数据库
+        List&lt;User&gt; userList=userDao.getUserList();
+        for (User user : userList) {
+            System.out.println(user);
+        }
+      //关闭sqlSession
+        sqlSession.close();
 
-输入 ```
-npm install
-​``` 安装依赖包。
-
-输入```hexo g``` 生成（generate）网页。 
-
-由于我们还没创建任何博客，生成的网页会展示 Hexo 里面自带了一个 Hello World 的博客。
-
-输入```hexo s``` 将生成的网页放在了本地服务器（server）。
-
-浏览器里输入 http://localhost:4000/  就可以看到刚才的成果了。
-
-回到 Git Bash，按 Ctrl+C 结束，此时再看 http://localhost:4000/ 就是无法访问了。
-
-**3.将本地 Hexo 博客部署在 Github 上**
-
- - 获取 Github 对应的 Repository 的链接
-登陆 Github，进入到 你之前创建的仓库页面下，点击 Clone or download复制 URL 
-
-- 修改博客的配置文件打开配置文件 /blog/_config.yml 
-找到 #Deployment，
-填入以下内容：
-deploy:   
- type: git  
- repository: 填刚才复制的url  
- branch: master 
-保存退出
-- 部署
-回到 Git Bash
-输入 ```npm install hexo-deployer-git --save
-​``` 安装 hexo-deployer-git 
-此步骤只需要做一次。
-输入 ```hexo d
-​```得到  INFO Deploy done: git  即为部署成功
-前往你的仓库页面即可查看成果。
-
-**4.选择你的博客主题**
-打开[Hexo 主题](https://hexo.io/themes/ &quot;Hexo 主题&quot;)
-或者[Easy Hexo](https://easyhexo.com/2-Theme-use-and-config/ &quot;Easy Hexo&quot;)
-第一个网页有很多主题可以选，选择你心仪的主题，找到对应的github仓库，仓库里一般会有操作说明
-这里我更推荐第二个网页，都是现成的教程和主题，我的博客主题（名字是yilia）就是安照这个教程来设置的
-
-**5.重新上传**
-
-*我们采用的是静态网页，所以每次改动之后都要重新上传*
-
-- **重新上传前你要知道的**
-~~似乎聪明的你会发现前面啰里啰唆一大堆，怎么没有教你怎么写博客和上传博客。~~
-**以发布一篇博客为例子：**
-
-***第一种方式：***
-继续在 Git Bash 里，所在路径还是 /d/blog
-输入 ``hexo new &quot;My First Post&quot;``
-在 \blog\source\_posts 路径下，会有一个 My-First-Post.md 的文件。 
-编辑这个文件，随便写一些什么，然后保存。
-回到 Git Bash，输入 ``hexo g``
-输入 ``hexo s``
-前往 http://localhost:4000/ 查看成果。
-回到 Git Bash，按 Ctrl+C 结束。
-
-**第二种方式：**
-直接打开\blog\source\_posts（或者\blog\source下其他的文件夹）
-然后新建一个以 .md结尾的文件
-打开并输入内容即可
-这里是[md语法规则](https://blog.csdn.net/qq_27870421/article/details/86541868 &quot;md语法规则&quot;)的教程，还是很简单的。你也可以选择用md编辑器来操作。
-
-**6.更新博客**
-
-每次配置本地博客或者更新博客内容后都需要重新上传部署
-
-回到 Git Bash，输入 ``hexo g -d``就可以了。
-
-**7.后记**
-可以在评论区跟我互动哦，github互关也可以（逃
-
-
------------
-**本篇博客由aRu原创，转载请标明出处。**
+    }
+</code></pre>
+<hr>
+<h3 id="4基本理论">4.基本理论</h3>
+<h4 id="sqlsessionfactorybuilder">SqlSessionFactoryBuilder</h4>
+<p>这个类可以被实例化、使用和丢弃，<strong>一旦创建了 SqlSessionFactory，就不再需要它了</strong>。 因此 SqlSessionFactoryBuilder 实例的最佳作用域是方法作用域（也就是局部方法变量）。 你可以重用 SqlSessionFactoryBuilder 来创建多个 SqlSessionFactory 实例，但最好还是不要一直保留着它，以保证所有的 XML 解析资源可以被释放给更重要的事情。</p>
+<h4 id="sqlsessionfactory">SqlSessionFactory</h4>
+<p><strong>SqlSessionFactory 一旦被创建就应该在应用的运行期间一直存在</strong>，<strong>没有任何理由丢弃它或重新创建另一个实例。</strong> 使用 SqlSessionFactory 的最佳实践是在应用运行期间不要重复创建多次，多次重建 SqlSessionFactory 被视为一种代码“坏习惯”。因此 SqlSessionFactory 的最佳作用域是应用作用域。 有很多方法可以做到，最简单的就是使用单例模式或者静态单例模式。</p>
+<h4 id="sqlsession">SqlSession</h4>
+<p><strong>每个线程都应该有它自己的 SqlSession 实例。SqlSession 的实例不是线程安全的，因此是不能被共享的</strong>，所以它的最佳的作用域是请求或方法作用域。 绝对不能将 SqlSession 实例的引用放在一个类的静态域，甚至一个类的实例变量也不行。 也绝不能将 SqlSession 实例的引用放在任何类型的托管作用域中，比如 Servlet 框架中的 HttpSession。 如果你现在正在使用一种 Web 框架，考虑将 SqlSession 放在一个和 HTTP 请求相似的作用域中。 换句话说，每次收到 HTTP 请求，就可以打开一个 SqlSession，返回一个响应后，就关闭它。 这个关闭操作很重要，为了确保每次都能执行关闭操作，你应该把这个关闭操作放到 finally 块中。 下面的示例就是一个确保 SqlSession 关闭的标准模式：</p>
+<pre><code>try (SqlSession session = sqlSessionFactory.openSession()) {
+  // 你的应用逻辑代码
+}
+</code></pre>
+<p>在所有代码中都遵循这种使用模式，可以保证所有数据库资源都能被正确地关闭。</p>
+<h4 id="映射器实例">映射器实例</h4>
+<p>映射器是一些绑定映射语句的接口。映射器接口的实例是从 SqlSession 中获得的。虽然从技术层面上来讲，任何映射器实例的最大作用域与请求它们的 SqlSession 相同。但方法作用域才是映射器实例的最合适的作用域。 也就是说，映射器实例应该在调用它们的方法中被获取，使用完毕之后即可丢弃。 映射器实例并不需要被显式地关闭。尽管在整个请求作用域保留映射器实例不会有什么问题，但是你很快会发现，在这个作用域上管理太多像 SqlSession 的资源会让你忙不过来。 因此，最好将映射器放在方法作用域内。就像下面的例子一样：</p>
+<pre><code>try (SqlSession session = sqlSessionFactory.openSession()) {
+  BlogMapper mapper = session.getMapper(BlogMapper.class);
+  // 你的应用逻辑代码
+}
 </code></pre>
 ]]></content>
     </entry>

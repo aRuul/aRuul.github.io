@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>Lombook | aRuul的无名小站</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://aruul.github.io/favicon.ico?v=1618111547851">
+<link rel="stylesheet" href="https://aruul.github.io/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+<script async src="//code.tidio.co/0llaydzaqpj2momyrcycfplv2h2my3av.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+    <meta name="description" content="使用步骤
+
+
+在idea中装Lombok插件
+
+
+导入jar包
+&lt;!-- https://mvnrepository.com/artifact/org.projectlombok/lombok --&gt;
+&lt;dependenc..." />
+    <meta name="keywords" content="idea,mybatis,java" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://aruul.github.io">
+        <img src="https://aruul.github.io/images/avatar.png?v=1618111547851" class="site-logo">
+        <h1 class="site-title">aRuul的无名小站</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+          <a class="social-link" href="https://github.com/aRuul" target="_blank">
+            <i class="fab fa-github"></i>
+          </a>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+<span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+</span> | <a class="rss" href="https://aruul.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">Lombook</h2>
+            <div class="post-date">2021-03-17</div>
+            
+            <div class="post-content" v-pre>
+              <p>使用步骤</p>
+<ol>
+<li>
+<p>在idea中装Lombok插件</p>
+</li>
+<li>
+<p>导入jar包</p>
+<pre><code class="language-xml">&lt;!-- https://mvnrepository.com/artifact/org.projectlombok/lombok --&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.projectlombok&lt;/groupId&gt;
+    &lt;artifactId&gt;lombok&lt;/artifactId&gt;
+    &lt;version&gt;1.18.10&lt;/version&gt;
+    &lt;scope&gt;provided&lt;/scope&gt;
+&lt;/dependency&gt;
+</code></pre>
+<p>3.使用注解</p>
+<hr>
+<h2 id="有哪些注解">有哪些注解？</h2>
+<ul>
+<li>@Data</li>
+<li>@Setter</li>
+<li>@Getter</li>
+<li>@Log4j</li>
+<li>@AllArgsConstructor</li>
+<li>@NoArgsConstructor</li>
+<li>@EqualsAndHashCode</li>
+<li>@NonNull</li>
+<li>@Cleanup</li>
+<li>@ToString</li>
+<li>@RequiredArgsConstructor</li>
+<li>@Value</li>
+<li>@SneakyThrows</li>
+<li>@Synchronized</li>
+</ul>
+<h2 id="注解详解">注解详解</h2>
+<p><strong>@Data</strong></p>
+<p>注解在 <strong>类</strong> 上；提供类所有属性的 get 和 set 方法，此外还提供了equals、canEqual、hashCode、toString 方法。</p>
+<figure data-type="image" tabindex="1"><img src="https://pic4.zhimg.com/80/v2-9b36bb6fd37372cee213b118d7e26c7b_720w.jpg" alt="img" loading="lazy"></figure>
+<p><strong>@Setter</strong></p>
+<p>注解在 <strong>属性</strong> 上；为单个属性提供 set 方法; 注解在 <strong>类</strong> 上，为该类所有的属性提供 set 方法， 都提供默认构造方法。</p>
+<figure data-type="image" tabindex="2"><img src="https://pic2.zhimg.com/80/v2-12139fea446022a1986ba2042f886a7d_720w.jpg" alt="img" loading="lazy"></figure>
+<figure data-type="image" tabindex="3"><img src="https://pic3.zhimg.com/80/v2-994e89f3c9c6976b05e345fcd0848692_720w.jpg" alt="img" loading="lazy"></figure>
+<p><strong>@Getter</strong></p>
+<p>注解在 <strong>属性</strong> 上；为单个属性提供 get 方法; 注解在 <strong>类</strong> 上，为该类所有的属性提供 get 方法，都提供默认构造方法。</p>
+<figure data-type="image" tabindex="4"><img src="https://pic3.zhimg.com/80/v2-18149a8d23a4e3673b9441b198a1f976_720w.jpg" alt="img" loading="lazy"></figure>
+<figure data-type="image" tabindex="5"><img src="https://pic4.zhimg.com/80/v2-2cb156b6d93198d271f2ff4bca1c21ff_720w.jpg" alt="img" loading="lazy"></figure>
+<p><strong>@Log4j</strong></p>
+<p>注解在 <strong>类</strong> 上；为类提供一个 属性名为 log 的 log4j 日志对象，提供默认构造方法。</p>
+<figure data-type="image" tabindex="6"><img src="https://pic1.zhimg.com/80/v2-ce28a344baae222aa0c4ea0b84461000_720w.jpg" alt="img" loading="lazy"></figure>
+<p><strong>@AllArgsConstructor</strong></p>
+<p>注解在 <strong>类</strong> 上；为类提供一个全参的构造方法，加了这个注解后，类中不提供默认构造方法了。</p>
+<figure data-type="image" tabindex="7"><img src="https://pic4.zhimg.com/80/v2-31bca5c4da7e9c475bade1eaa400802f_720w.jpg" alt="img" loading="lazy"></figure>
+<p><strong>@NoArgsConstructor</strong></p>
+<p>注解在 <strong>类</strong> 上；为类提供一个无参的构造方法。</p>
+<figure data-type="image" tabindex="8"><img src="https://pic2.zhimg.com/80/v2-518a849c9d5fffde690b2a801e951275_720w.jpg" alt="img" loading="lazy"></figure>
+<p><strong>@EqualsAndHashCode</strong></p>
+<p>注解在 <strong>类</strong> 上, 可以生成 equals、canEqual、hashCode 方法。</p>
+<figure data-type="image" tabindex="9"><img src="https://pic1.zhimg.com/80/v2-6bddfeaa77e8dd29b05bb8b499da65f4_720w.jpg" alt="img" loading="lazy"></figure>
+<p><strong>@NonNull</strong></p>
+<p>注解在 <strong>属性</strong> 上，会自动产生一个关于此参数的非空检查，如果参数为空，则抛出一个空指针异常，也会有一个默认的无参构造方法。</p>
+<figure data-type="image" tabindex="10"><img src="https://pic2.zhimg.com/80/v2-268671034ed3141e117c99f055a3f2ad_720w.jpg" alt="img" loading="lazy"></figure>
+<p><strong>@Cleanup</strong></p>
+<p>这个注解用在 <strong>变量</strong> 前面，可以保证此变量代表的资源会被自动关闭，默认是调用资源的 close() 方法，如果该资源有其它关闭方法，可使用 @Cleanup(“methodName”) 来指定要调用的方法，也会生成默认的构造方法</p>
+<figure data-type="image" tabindex="11"><img src="https://pic3.zhimg.com/80/v2-6408e68a5f77eba5add53abe3ee8abf2_720w.jpg" alt="img" loading="lazy"></figure>
+<p><strong>@ToString</strong></p>
+<p>这个注解用在 <strong>类</strong> 上，可以生成所有参数的 toString 方法，还会生成默认的构造方法。</p>
+<figure data-type="image" tabindex="12"><img src="https://pic1.zhimg.com/80/v2-28b29cc1b5940f31de246e719cfcd9e8_720w.jpg" alt="img" loading="lazy"></figure>
+<p><strong>@RequiredArgsConstructor</strong></p>
+<p>这个注解用在 <strong>类</strong> 上，使用类中所有带有 @NonNull 注解的或者带有 final 修饰的成员变量生成对应的构造方法。</p>
+<figure data-type="image" tabindex="13"><img src="https://pic3.zhimg.com/80/v2-866a42cd03707c5095b44721be5e17ba_720w.jpg" alt="img" loading="lazy"></figure>
+<p><strong>@Value</strong></p>
+<p>这个注解用在 <strong>类</strong> 上，会生成含所有参数的构造方法，get 方法，此外还提供了equals、hashCode、toString 方法。</p>
+<figure data-type="image" tabindex="14"><img src="https://pic1.zhimg.com/80/v2-159c62a7a9f545505246939abe6cfcc0_720w.jpg" alt="img" loading="lazy"></figure>
+<p><strong>@SneakyThrows</strong></p>
+<p>这个注解用在 <strong>方法</strong> 上，可以将方法中的代码用 try-catch 语句包裹起来，捕获异常并在 catch 中用 Lombok.sneakyThrow(e) 把异常抛出，可以使用 @SneakyThrows(Exception.class) 的形式指定抛出哪种异常，也会生成默认的构造方法。</p>
+<figure data-type="image" tabindex="15"><img src="https://pic3.zhimg.com/80/v2-2cd23582188406e3301a318d37bfa426_720w.jpg" alt="img" loading="lazy"></figure>
+<p><strong>@Synchronized</strong></p>
+<p>这个注解用在 <strong>类方法</strong> 或者 <strong>实例方法</strong> 上，效果和 synchronized 关键字相同，区别在于锁对象不同，对于类方法和实例方法，synchronized 关键字的锁对象分别是类的 class 对象和 this 对象，而 @Synchronized 的锁对象分别是 私有静态 final 对象 lock 和 私有 final 对象 lock，当然，也可以自己指定锁对象，此外也提供默认的构造方法。</p>
+<figure data-type="image" tabindex="16"><img src="https://pic4.zhimg.com/80/v2-7f38c354c3ca8ba9205ecbcaae04d1d3_720w.jpg" alt="img" loading="lazy"></figure>
+</li>
+</ol>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://aruul.github.io/tag/iUOLJzywp/" class="tag">
+                    idea
+                  </a>
+                
+                  <a href="https://aruul.github.io/tag/vFNp_g0Hb/" class="tag">
+                    mybatis
+                  </a>
+                
+                  <a href="https://aruul.github.io/tag/fABi2KP6qR/" class="tag">
+                    java
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://aruul.github.io/post/q2Mgvtj6L/">
+                  <h3 class="post-title">
+                    8-多对一
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+  <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad()
+  </script>
+
+
+
+
+
+  </body>
+</html>

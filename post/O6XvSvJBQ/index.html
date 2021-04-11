@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>3-一些小的知识点 | aRuul的无名小站</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://aruul.github.io/favicon.ico?v=1618111547851">
+<link rel="stylesheet" href="https://aruul.github.io/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+<script async src="//code.tidio.co/0llaydzaqpj2momyrcycfplv2h2my3av.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+    <meta name="description" content="1.Map和模糊查询
+可以把map中的key直接提取出来
+-----Dao文件  
+//采用Map的形式来传值
+    int updateUserByMap(Map&lt;String,Object&gt; map);
+
+---dao对应..." />
+    <meta name="keywords" content="mybatis,java" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://aruul.github.io">
+        <img src="https://aruul.github.io/images/avatar.png?v=1618111547851" class="site-logo">
+        <h1 class="site-title">aRuul的无名小站</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+          <a class="social-link" href="https://github.com/aRuul" target="_blank">
+            <i class="fab fa-github"></i>
+          </a>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+<span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+</span> | <a class="rss" href="https://aruul.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">3-一些小的知识点</h2>
+            <div class="post-date">2021-03-14</div>
+            
+            <div class="post-content" v-pre>
+              <h3 id="1map和模糊查询">1.Map和模糊查询</h3>
+<p>可以把map中的key直接提取出来</p>
+<pre><code class="language-java">-----Dao文件  
+//采用Map的形式来传值
+    int updateUserByMap(Map&lt;String,Object&gt; map);
+</code></pre>
+<pre><code class="language-xml">---dao对应的xml文件 
+-----------------------------Map对用的parameterType为&quot;map&quot;
+&lt;update id=&quot;updateUserByMap&quot; parameterType=&quot;map&quot;&gt;
+        update mybatis.user set name = #{userName} where id = #{userId};
+ &lt;/update&gt;
+</code></pre>
+<pre><code class="language-java">---------测试的Java代码
+@Test
+    public void updateUserByMap(){
+        SqlSession sqlSession= MybatisUtils.getSqlSession();
+        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+
+       //map
+        Map&lt;String,Object&gt; mapp = new HashMap&lt;String,Object&gt;();
+        mapp.put(&quot;userName&quot;,&quot;测试3&quot;);
+        mapp.put(&quot;userId&quot;,4);
+
+        int res= userMapper.updateUserByMap(mapp);
+        System.out.println(res);
+        if(res&gt;0){
+            System.out.println(&quot;修改成功&quot;);
+            System.out.println(&quot;-----------------------------------&quot;);
+            List&lt;User&gt; userList= userMapper.getUserList();
+            for (User user : userList) {
+                System.out.println(user);
+            }
+        }
+        //提交事务
+        sqlSession.commit();
+        sqlSession.close();
+    }
+</code></pre>
+<hr>
+<h3 id="2模糊查询">2.模糊查询</h3>
+<p>sql 模糊查询的语句是like%&quot;要查的内容&quot;%</p>
+<pre><code class="language-java">    //模糊查询
+    List&lt;User&gt; getUserByLike(String name);
+</code></pre>
+<pre><code class="language-xml">    &lt;select id=&quot;getUserByLike&quot; resultType=&quot;org.example.pojo.User&quot;&gt;
+        select * from mybatis.user where name like #{name}
+    &lt;/select&gt;
+</code></pre>
+<pre><code class="language-java">@Test
+    public void getUserByLike(){
+        SqlSession sqlSession= MybatisUtils.getSqlSession();
+        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+
+        System.out.println(&quot;模糊查找成功&quot;);
+        System.out.println(&quot;-----------------------------------&quot;);
+        List&lt;User&gt; userList= userMapper.getUserByLike(&quot;%李%&quot;);
+        for (User user : userList) {
+            System.out.println(user);
+        }
+        sqlSession.close();
+    }
+</code></pre>
+<hr>
+<h3 id="3-配置解析">3. 配置解析</h3>
+<h4 id="31-总览">3.1 总览</h4>
+<ul>
+<li>
+<p>官方建议把配置文件命名为 <strong>mybatis-config.xml</strong></p>
+<p>MyBatis 的配置文件包含了会深深影响 MyBatis 行为的设置和属性信息。 配置文档的顶层结构如下：</p>
+</li>
+<li>
+<p>configuration（配置）</p>
+<ul>
+<li><a href="https://mybatis.org/mybatis-3/zh/configuration.html#properties">properties（属性）</a></li>
+<li><a href="https://mybatis.org/mybatis-3/zh/configuration.html#settings">settings（设置）</a></li>
+<li><a href="https://mybatis.org/mybatis-3/zh/configuration.html#typeAliases">typeAliases（类型别名）</a></li>
+<li><a href="https://mybatis.org/mybatis-3/zh/configuration.html#typeHandlers">typeHandlers（类型处理器）</a></li>
+<li><a href="https://mybatis.org/mybatis-3/zh/configuration.html#objectFactory">objectFactory（对象工厂）</a></li>
+<li><a href="https://mybatis.org/mybatis-3/zh/configuration.html#plugins">plugins（插件）</a></li>
+<li>environments（环境配置）
+<ul>
+<li>environment（环境变量）
+<ul>
+<li>transactionManager（事务管理器）</li>
+<li>dataSource（数据源）</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="https://mybatis.org/mybatis-3/zh/configuration.html#databaseIdProvider">databaseIdProvider（数据库厂商标识）</a></li>
+<li><a href="https://mybatis.org/mybatis-3/zh/configuration.html#mappers">mappers（映射器）</a></li>
+</ul>
+</li>
+</ul>
+<h4 id="32-environments环境配置">3.2 environments（环境配置）</h4>
+<p>environments 元素定义了如何配置环境,如下所示的例子：</p>
+<pre><code class="language-xml">&lt;environments default=&quot;development&quot;&gt;
+        &lt;environment id=&quot;development&quot;&gt;
+            &lt;transactionManager type=&quot;JDBC&quot;/&gt;
+            &lt;dataSource type=&quot;POOLED&quot;&gt; 
+                &lt;property name=&quot;driver&quot; value=&quot;com.mysql.cj.jdbc.Driver&quot;/&gt;
+                &lt;property name=&quot;url&quot; value=&quot;jdbc:mysql://localhost:3306/mybatis?serverTimezone=Asia/Shanghai&amp;amp;useSSL=true&amp;amp;useUnicode=true&amp;amp;characterEncoding=UTF-8&quot;/&gt;
+                &lt;property name=&quot;username&quot; value=&quot;root&quot;/&gt;
+                &lt;property name=&quot;password&quot; value=&quot;password&quot;/&gt;
+            &lt;/dataSource&gt;
+        &lt;/environment&gt;
+    
+    &lt;environment id=&quot;test&quot;&gt;
+            &lt;transactionManager type=&quot;JDBC&quot;/&gt;
+            &lt;dataSource type=&quot;POOLED&quot;&gt;
+                &lt;property name=&quot;driver&quot; value=&quot;com.mysql.cj.jdbc.Driver&quot;/&gt;
+                &lt;property name=&quot;url&quot; value=&quot;jdbc:mysql://localhost:3306/mybatis?serverTimezone=Asia/Shanghai&amp;amp;useSSL=true&amp;amp;useUnicode=true&amp;amp;characterEncoding=UTF-8&quot;/&gt;
+                &lt;property name=&quot;username&quot; value=&quot;root&quot;/&gt;
+                &lt;property name=&quot;password&quot; value=&quot;password&quot;/&gt;
+            &lt;/dataSource&gt;
+        &lt;/environment&gt;
+&lt;/environments&gt;
+</code></pre>
+<p>注意一些关键点:</p>
+<ul>
+<li>
+<p><strong>默认使用的环境 ID（比如：default=&quot;development&quot;）。</strong></p>
+</li>
+<li>
+<p><strong>每个 environment 元素定义的环境 ID（比如：id=&quot;development&quot;）。</strong></p>
+</li>
+<li>
+<p>事务管理器的配置（比如：type=&quot;JDBC&quot;）。</p>
+<p>​      在 MyBatis 中有两种类型的事务管理器（也就是 type=&quot;[JDBC|MANAGED]&quot;）</p>
+<ul>
+<li>
+<p>JDBC               这个配置直接使用了 JDBC 的提交和回滚设施，它依赖从数据源获得的连接来管理事务作用域。</p>
+</li>
+<li>
+<p>MANAGED    这个配置几乎没做什么。它从不提交或回滚一个连接，而是让容器来管理事务的整个生命周期（比如 JEE 应用服务器的上下文）。 默认情况下它会关闭连接。然而一些容器并不希望连接被关闭，因此需要将 closeConnection 属性设置为 false 来阻止默认的关闭行为</p>
+<pre><code class="language-xml">&lt;transactionManager type=&quot;MANAGED&quot;&gt;
+  &lt;property name=&quot;closeConnection&quot; value=&quot;false&quot;/&gt;
+&lt;/transactionManager&gt;
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p>数据源的配置（比如：type=&quot;POOLED&quot;）。</p>
+<p>​       dataSource 元素使用标准的 JDBC 数据源接口来配置 JDBC 连接对象的资源。</p>
+<p>​        有三种内建的数据源类型（也就是 type=&quot;[UNPOOLED|POOLED|JNDI]&quot;）：</p>
+<p><strong>POOLED</strong>– 这种数据源的实现利用“池”的概念将 JDBC 连接对象组织起来，避免了创建新的连接实例时所必需的初始化和认证时间。 这种处理方式很流行，能使并发 Web 应用快速响应请求。</p>
+<hr>
+<p><strong>不过要记住：尽管可以配置多个环境，但每个 SqlSessionFactory 实例只能选择一种环境。</strong></p>
+<ul>
+<li><strong>每个数据库对应一个 SqlSessionFactory 实例</strong></li>
+</ul>
+<p>为了指定创建哪种环境，只要将它作为可选的参数传递给 SqlSessionFactoryBuilder 即可。可以接受环境配置的两个方法签名是：</p>
+<pre><code class="language-java">SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(reader, environment);
+SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(reader, environment, properties);
+</code></pre>
+<p>如果忽略了环境参数，那么将会加载默认环境，如下所示：</p>
+<pre><code class="language-java">SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(reader);  //比较常用
+SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(reader, properties);
+</code></pre>
+</li>
+</ul>
+<hr>
+<h3 id="4别名优化">4.别名优化</h3>
+<p>类型别名可为 Java 类型设置一个缩写名字，<strong>意在降低冗余的全限定类名书写</strong>。</p>
+<h5 id="41-在xml文件中为每个类起别名">4.1 在xml文件中为每个类起别名</h5>
+<p>例如：</p>
+<pre><code class="language-xml">&lt;typeAliases&gt;
+  &lt;typeAlias alias=&quot;Author&quot; type=&quot;domain.blog.Author&quot;/&gt;
+  &lt;typeAlias alias=&quot;Blog&quot; type=&quot;domain.blog.Blog&quot;/&gt;
+  &lt;typeAlias alias=&quot;Comment&quot; type=&quot;domain.blog.Comment&quot;/&gt;
+  &lt;typeAlias alias=&quot;Post&quot; type=&quot;domain.blog.Post&quot;/&gt;
+  &lt;typeAlias alias=&quot;Section&quot; type=&quot;domain.blog.Section&quot;/&gt;
+  &lt;typeAlias alias=&quot;Tag&quot; type=&quot;domain.blog.Tag&quot;/&gt;
+&lt;/typeAliases&gt;
+</code></pre>
+<p>当这样配置时，<code>Blog</code> 可以用在任何使用 <code>domain.blog.Blog</code> 的地方。</p>
+<h5 id="42-指定一个包名">4.2 指定一个包名</h5>
+<p>也可以指定一个包名，MyBatis 会在包名下面搜索需要的 Java Bean，比如：</p>
+<pre><code class="language-xml">&lt;typeAliases&gt;
+  &lt;package name=&quot;domain.blog&quot;/&gt;
+&lt;/typeAliases&gt;
+</code></pre>
+<p>每一个在包 <code>domain.blog</code> 中的 Java Bean，在没有注解的情况下，会使用 Bean 的<strong>首字母小写的</strong>非限定类名来作为它的别名。 比如 <code>domain.blog.Author</code> 的别名为 <code>author</code>；</p>
+<h5 id="43-注解">4.3 注解</h5>
+<p>若有注解，则别名为其注解值。见下面的例子：</p>
+<pre><code class="language-java">@Alias(&quot;author&quot;)
+public class Author {
+    ...
+}
+</code></pre>
+<hr>
+<h3 id="5-映射器mappers">5. 映射器（mappers）</h3>
+<p>映射器要来定义 SQL 映射语句。</p>
+<p>但首先，我们需要告诉 MyBatis 到哪里去找到这些语句。</p>
+<p>你可以使用相对于类路径的资源引用，或完全限定资源定位符（包括 <code>file:///</code> 形式的 URL），或类名和包名等。例如：</p>
+<pre><code class="language-xml">&lt;!-- 使用相对于类路径的资源引用   【推荐使用】 --&gt;
+&lt;mappers&gt;
+  &lt;mapper resource=&quot;org/mybatis/builder/AuthorMapper.xml&quot;/&gt;
+  &lt;mapper resource=&quot;org/mybatis/builder/BlogMapper.xml&quot;/&gt;
+  &lt;mapper resource=&quot;org/mybatis/builder/PostMapper.xml&quot;/&gt;
+&lt;/mappers&gt;
+&lt;!-- 使用完全限定资源定位符（URL） --&gt;
+&lt;mappers&gt;
+  &lt;mapper url=&quot;file:///var/mappers/AuthorMapper.xml&quot;/&gt;
+  &lt;mapper url=&quot;file:///var/mappers/BlogMapper.xml&quot;/&gt;
+  &lt;mapper url=&quot;file:///var/mappers/PostMapper.xml&quot;/&gt;
+&lt;/mappers&gt;
+&lt;!-- 使用映射器接口实现类的完全限定类名  
+**接口和他的Mapper配置文件必须同名**    
+**接口和他的Mapper配置文件必须在同一个包下** --&gt;
+&lt;mappers&gt;
+  &lt;mapper class=&quot;org.mybatis.builder.AuthorMapper&quot;/&gt;
+  &lt;mapper class=&quot;org.mybatis.builder.BlogMapper&quot;/&gt;
+  &lt;mapper class=&quot;org.mybatis.builder.PostMapper&quot;/&gt;
+&lt;/mappers&gt;
+&lt;!-- 将包内的映射器接口实现全部注册为映射器 
+**接口和他的Mapper配置文件必须同名**    
+**接口和他的Mapper配置文件必须在同一个包下** --&gt;
+&lt;mappers&gt;
+  &lt;package name=&quot;org.mybatis.builder&quot;/&gt;
+&lt;/mappers&gt;
+</code></pre>
+<p>这些配置会告诉 MyBatis 去哪里找映射文件。</p>
+<ul>
+<li>
+<p><strong>注意 在使用映射器接口实现类的完全限定类名时  和   将包内的映射器接口实现全部注册为映射器</strong></p>
+<p><strong>接口和他的Mapper配置文件必须同名</strong></p>
+<p><strong>接口和他的Mapper配置文件必须在同一个包下</strong></p>
+<pre><code class="language-xml">&lt;!-- 使用映射器接口实现类的完全限定类名 --&gt;
+&lt;mappers&gt;
+  &lt;mapper class=&quot;org.mybatis.builder.AuthorMapper&quot;/&gt;
+  &lt;mapper class=&quot;org.mybatis.builder.BlogMapper&quot;/&gt;
+  &lt;mapper class=&quot;org.mybatis.builder.PostMapper&quot;/&gt;
+&lt;/mappers&gt;
+</code></pre>
+<hr>
+</li>
+</ul>
+<h3 id="6解决属性名和字段名不一致的问题">6.解决属性名和字段名不一致的问题</h3>
+<p>就是java代码的属性名和数据库字段的名字不一致的问题</p>
+<pre><code>比如 
+数据库字段为  id name pwd
+
+java属性名为 id name password
+</code></pre>
+<h4 id="61-起别名">6.1 起别名</h4>
+<pre><code class="language-xml">&lt;select id=&quot;getUserById&quot; parameterType=&quot;int&quot; resultType=&quot;org.example.pojo.User&quot;&gt;
+    select id,name,pwd as password from mybatis.user where id=#{id}
+&lt;/select&gt;
+</code></pre>
+<h4 id="62-resultmap">6.2 resultMap</h4>
+<p><code>resultMap</code> 元素是 MyBatis 中最重要最强大的元素。它可以让你从 90% 的 JDBC <code>ResultSets</code> 数据提取代码中解放出来，并在一些情形下允许你进行一些 JDBC 不支持的操作。</p>
+<pre><code class="language-xml">&lt;!--结果集映射，id是名字，type是结果类型，数据库中的列和java代码的属性相对应--&gt;
+&lt;resultMap id=&quot;UserMap&quot; type=&quot;org.example.pojo.User&quot;&gt;
+    &lt;result column=&quot;id&quot; property=&quot;id&quot;/&gt;
+    &lt;result column=&quot;name&quot; property=&quot;name&quot;/&gt;
+    &lt;result column=&quot;pwd&quot; property=&quot;password&quot;/&gt;
+&lt;/resultMap&gt; 
+&lt;!--resultMap 引用的上面id为&quot;UserMap&quot;的resultMap--&gt;
+&lt;select id=&quot;getUserById&quot; parameterType=&quot;int&quot; resultMap=&quot;UserMap&quot;&gt;
+    select * from mybatis.user where id=#{id}
+&lt;/select&gt;
+</code></pre>
+<hr>
+<h3 id="7-和的区别">7. #{}和${}的区别</h3>
+<blockquote>
+<p>a、#{}是预编译处理，${}是字符串替换。</p>
+<p>b、Mybatis 在处理#{}时，会将 sql 中的#{}替换为?号，调用 PreparedStatement 的 set 方法来赋值；<br>
+c、Mybatis 在处理<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mrow></mrow><mi mathvariant="normal">时</mi><mi mathvariant="normal">，</mi><mi mathvariant="normal">就</mi><mi mathvariant="normal">是</mi><mi mathvariant="normal">把</mi></mrow><annotation encoding="application/x-tex">{}时，就是把</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0em;vertical-align:0em;"></span><span class="mord"></span><span class="mord cjk_fallback">时</span><span class="mord cjk_fallback">，</span><span class="mord cjk_fallback">就</span><span class="mord cjk_fallback">是</span><span class="mord cjk_fallback">把</span></span></span></span>{}替换成变量的值。<br>
+d、使用#{}可以有效的防止 SQL 注入，提高系统安全性。</p>
+</blockquote>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://aruul.github.io/tag/vFNp_g0Hb/" class="tag">
+                    mybatis
+                  </a>
+                
+                  <a href="https://aruul.github.io/tag/fABi2KP6qR/" class="tag">
+                    java
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://aruul.github.io/post/PjBvXe767/">
+                  <h3 class="post-title">
+                    2-增删改查
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+  <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad()
+  </script>
+
+
+
+
+
+  </body>
+</html>

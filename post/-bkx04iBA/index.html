@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>css学习笔记 | aRuul的无名小站</title>
+<title>4-常见parameterType的别名 | aRuul的无名小站</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -23,25 +23,44 @@
 </script>
 
     <meta name="description" content="
-css选择器
 
 
-
-选择器名称
-选择的内容
-示例
+别名
+映射的类型
 
 
 
 
-元素选择器（也称作标签或类型选择器）
-所有指定(该)类型的 HTML 元素
-p 选择 &lt;p&gt;
+_byte
+byte
 
 
-ID 选择器
-具有特定 ID 的元素（单一 HTML 页面中，每个 I..." />
-    <meta name="keywords" content="css" />
+_long
+long
+
+
+_short
+short
+
+
+_int
+int
+
+
+_integer
+int
+
+
+_double
+double
+
+
+_float
+float
+
+
+_bool..." />
+    <meta name="keywords" content="mybatis,java" />
   </head>
   <body>
     <div id="app" class="main">
@@ -119,94 +138,139 @@ ID 选择器
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">css学习笔记</h2>
-            <div class="post-date">2020-10-06</div>
+            <h2 class="post-title">4-常见parameterType的别名</h2>
+            <div class="post-date">2021-03-14</div>
             
             <div class="post-content" v-pre>
-              <!--more-->
-<h3 id="css选择器">css选择器</h3>
-<table>
+              <table>
 <thead>
 <tr>
-<th>选择器名称</th>
-<th>选择的内容</th>
-<th>示例</th>
+<th style="text-align:left">别名</th>
+<th style="text-align:left">映射的类型</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>元素选择器（也称作标签或类型选择器）</td>
-<td>所有指定(该)类型的 HTML 元素</td>
-<td><code>p</code> 选择 <code>&lt;p&gt;</code></td>
+<td style="text-align:left">_byte</td>
+<td style="text-align:left">byte</td>
 </tr>
 <tr>
-<td>ID 选择器</td>
-<td>具有特定 ID 的元素（单一 HTML 页面中，每个 ID 只对应一个元素，一个元素只对应一个 ID）</td>
-<td><code>#my-id</code> 选择 <code>&lt;p id=&quot;my-id&quot;&gt;</code> 或 <code>&lt;a id=&quot;my-id&quot;&gt;</code></td>
+<td style="text-align:left">_long</td>
+<td style="text-align:left">long</td>
 </tr>
 <tr>
-<td>类选择器</td>
-<td>具有特定类的元素（单一页面中，一个类可以有多个实例）</td>
-<td><code>.my-class</code> 选择 <code>&lt;p class=&quot;my-class&quot;&gt;</code> 和 <code>&lt;a class=&quot;my-class&quot;&gt;</code></td>
+<td style="text-align:left">_short</td>
+<td style="text-align:left">short</td>
 </tr>
 <tr>
-<td>属性选择器</td>
-<td>拥有特定属性的元素</td>
-<td><code>img[src]</code> 选择 <code>&lt;img src=&quot;myimage.png&quot;&gt;</code> 而不是 <code>&lt;img&gt;</code></td>
+<td style="text-align:left">_int</td>
+<td style="text-align:left">int</td>
 </tr>
 <tr>
-<td>伪（Pseudo）类选择器</td>
-<td>特定状态下的特定元素（比如鼠标指针悬停）</td>
-<td><code>a:hover</code> 仅在鼠标指针悬停在链接上时选择 <code>&lt;a&gt;</code></td>
+<td style="text-align:left">_integer</td>
+<td style="text-align:left">int</td>
+</tr>
+<tr>
+<td style="text-align:left">_double</td>
+<td style="text-align:left">double</td>
+</tr>
+<tr>
+<td style="text-align:left">_float</td>
+<td style="text-align:left">float</td>
+</tr>
+<tr>
+<td style="text-align:left">_boolean</td>
+<td style="text-align:left">boolean</td>
+</tr>
+<tr>
+<td style="text-align:left">string</td>
+<td style="text-align:left">String</td>
+</tr>
+<tr>
+<td style="text-align:left">byte</td>
+<td style="text-align:left">Byte</td>
+</tr>
+<tr>
+<td style="text-align:left">long</td>
+<td style="text-align:left">Long</td>
+</tr>
+<tr>
+<td style="text-align:left">short</td>
+<td style="text-align:left">Short</td>
+</tr>
+<tr>
+<td style="text-align:left">int</td>
+<td style="text-align:left">Integer</td>
+</tr>
+<tr>
+<td style="text-align:left">integer</td>
+<td style="text-align:left">Integer</td>
+</tr>
+<tr>
+<td style="text-align:left">double</td>
+<td style="text-align:left">Double</td>
+</tr>
+<tr>
+<td style="text-align:left">float</td>
+<td style="text-align:left">Float</td>
+</tr>
+<tr>
+<td style="text-align:left">boolean</td>
+<td style="text-align:left">Boolean</td>
+</tr>
+<tr>
+<td style="text-align:left">date</td>
+<td style="text-align:left">Date</td>
+</tr>
+<tr>
+<td style="text-align:left">decimal</td>
+<td style="text-align:left">BigDecimal</td>
+</tr>
+<tr>
+<td style="text-align:left">bigdecimal</td>
+<td style="text-align:left">BigDecimal</td>
+</tr>
+<tr>
+<td style="text-align:left">object</td>
+<td style="text-align:left">Object</td>
+</tr>
+<tr>
+<td style="text-align:left">map</td>
+<td style="text-align:left">Map</td>
+</tr>
+<tr>
+<td style="text-align:left">hashmap</td>
+<td style="text-align:left">HashMap</td>
+</tr>
+<tr>
+<td style="text-align:left">list</td>
+<td style="text-align:left">List</td>
+</tr>
+<tr>
+<td style="text-align:left">arraylist</td>
+<td style="text-align:left">ArrayList</td>
+</tr>
+<tr>
+<td style="text-align:left">collection</td>
+<td style="text-align:left">Collection</td>
+</tr>
+<tr>
+<td style="text-align:left">iterator</td>
+<td style="text-align:left">Iterator</td>
 </tr>
 </tbody>
 </table>
-<h3 id="常见的属性">常见的属性</h3>
-<ul>
-<li>font-family       你想要你的文本使用的字体</li>
-<li>font-size           字体大小  （px）默认16px</li>
-<li>background-color    背景演示</li>
-<li>color                  字体颜色</li>
-<li>width                  宽度   如：width: 80%</li>
-<li>margin               外边距，围绕元素外部的空间,如margin: auto</li>
-<li>text-decoration: underline;           为文字添加下划线</li>
-<li>letter-spacing      字母间距   单位em</li>
-<li>word-spacing        词间距      单位em</li>
-<li>line-heigh              行高          单位em</li>
-</ul>
-<h4 id="盒子模型">盒子模型</h4>
-<figure data-type="image" tabindex="1"><img src="https://s1.ax1x.com/2020/10/06/0U0Q1g.png" alt="0U0Q1g.png" loading="lazy"></figure>
-<ul>
-<li>
-<p>margin          外边距</p>
-<p>margin-top: 5px</p>
-<p>margin-bottom: 5px</p>
-<p>margin-right:  10px</p>
-<p>margin-left: 10px</p>
-<p>上述属性可以用margin: 5px 10px 5px 10px代替，按照顺时针方向</p>
-<p>上述属性还可以用margin: 5px 10px 代替  第一个值为上下属性，第二个为左右</p>
-<p><strong>内边距同理</strong></p>
-</li>
-<li>
-<p>border           边框</p>
-<p>border: 5px blue solid;     设置边框线大小为5px，颜色为蓝色</p>
-<p>border-radius: 15px           设置边框圆角</p>
-</li>
-<li>
-<p>padding         内边距</p>
-</li>
-<li>
-<p>content          内容</p>
-</li>
-</ul>
-<p>未完待续...</p>
 
             </div>
             
               <div class="tag-container">
                 
-                  <a href="https://aruul.github.io/tag/6rvOGvEbj/" class="tag">
-                    css
+                  <a href="https://aruul.github.io/tag/vFNp_g0Hb/" class="tag">
+                    mybatis
+                  </a>
+                
+                  <a href="https://aruul.github.io/tag/fABi2KP6qR/" class="tag">
+                    java
                   </a>
                 
               </div>
@@ -214,9 +278,9 @@ ID 选择器
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://aruul.github.io/post/Al_mw5Fbu/">
+                <a href="https://aruul.github.io/post/O6XvSvJBQ/">
                   <h3 class="post-title">
-                    idea中导入struts2包
+                    3-一些小的知识点
                   </h3>
                 </a>
               </div>

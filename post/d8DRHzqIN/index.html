@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>7-注解开发 | aRuul的无名小站</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://aruul.github.io/favicon.ico?v=1618111547851">
+<link rel="stylesheet" href="https://aruul.github.io/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+<script async src="//code.tidio.co/0llaydzaqpj2momyrcycfplv2h2my3av.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+    <meta name="description" content="1.面向接口编程
+
+
+使用面向接口编程的根本原因：解耦，可拓展，提高复用。
+
+
+分层开发中，上层不用管具体的实现，大家都遵循共同的标准，使得开发变得更容易，规范性更好。
+
+
+
+2.注解的基本步骤
+
+
+编写基本的配置文件【mybatis-co..." />
+    <meta name="keywords" content="mybatis,java" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://aruul.github.io">
+        <img src="https://aruul.github.io/images/avatar.png?v=1618111547851" class="site-logo">
+        <h1 class="site-title">aRuul的无名小站</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+          <a class="social-link" href="https://github.com/aRuul" target="_blank">
+            <i class="fab fa-github"></i>
+          </a>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+<span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+</span> | <a class="rss" href="https://aruul.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">7-注解开发</h2>
+            <div class="post-date">2021-03-15</div>
+            
+            <div class="post-content" v-pre>
+              <h3 id="1面向接口编程">1.面向接口编程</h3>
+<ul>
+<li>
+<p>使用面向接口编程的根本原因：<strong>解耦</strong>，可拓展，提高复用。</p>
+</li>
+<li>
+<p>分层开发中，上层不用管具体的实现，大家都遵循共同的标准，使得开发变得更容易，规范性更好。</p>
+</li>
+</ul>
+<hr>
+<h3 id="2注解的基本步骤">2.注解的基本步骤</h3>
+<ol>
+<li>
+<p>编写基本的配置文件【mybatis-config.xml】</p>
+</li>
+<li>
+<p>编写pojo类</p>
+</li>
+<li>
+<p>编写Dao层接口</p>
+<pre><code class="language-java">//org.example.dao.UserMapper
+public interface UserMapper {
+    @Select(&quot;select * from user&quot;)
+    List&lt;User&gt; getUser();
+}
+</code></pre>
+</li>
+</ol>
+<p>4.在配置文件【mybatis-config.xml】中注册Mappers,绑定接口</p>
+<pre><code>    &lt;mappers&gt;
+        &lt;mapper class=&quot;org.example.dao.UserMapper&quot;/&gt;
+    &lt;/mappers&gt;
+</code></pre>
+<p>5.测试</p>
+<pre><code class="language-java">    @Test
+    public void test(){
+        SqlSession sqlSession = MybatisUtils.getSqlSession();
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+
+        List&lt;User&gt; userList=mapper.getUser();
+        for (User user : userList) {
+            System.out.println(user);
+        }
+        sqlSession.close();
+    }
+</code></pre>
+<h3 id="3本质">3.本质</h3>
+<p>Java反射机制的实现</p>
+<h3 id="4基于注解的增删改查">4.基于注解的增删改查</h3>
+<h4 id="41自动提交">4.1自动提交</h4>
+<p>之前写的工具类</p>
+<pre><code class="language-java">public class MybatisUtils {
+    private static SqlSessionFactory sqlSessionFactory;
+    static {
+        try{
+            //获取 SqlSessionFactory 对象
+            String resource = &quot;mybatis-config.xml&quot;;
+            InputStream inputStream = Resources.getResourceAsStream(resource);
+            sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+    }
+    //获取sqlSession实例
+    public static SqlSession getSqlSession(){
+         //true表示自动提交
+         return sqlSessionFactory.openSession(true);
+    }
+}
+</code></pre>
+<h4 id="42-当parametertype-有多个参数">4.2 当parameterType 有多个参数</h4>
+<p>使用注解的方法----------<mark>@Param</mark></p>
+<pre><code class="language-java">User getUserById(@Param(&quot;id&quot;) int id,@Param(&quot;name&quot;) String name);
+</code></pre>
+<p>无论是采用注解进行增删改查还是用xml, 其他的照常写</p>
+<p><mark><strong>注意</strong>! 在写sql语句提取参数的时候,要写@Param里的参数名字</mark></p>
+<h4 id="43-增删改查">4.3 增删改查</h4>
+<ul>
+<li>
+<p><strong>@Select(&quot;sql语句&quot;)              查</strong></p>
+</li>
+<li>
+<p><strong>@Insert(&quot;sql语句&quot;)              增</strong></p>
+</li>
+<li>
+<p><strong>@Delete(&quot;sql语句&quot;)             删</strong></p>
+</li>
+<li>
+<p><strong>@Update(&quot;sql语句&quot;)           改</strong></p>
+</li>
+</ul>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://aruul.github.io/tag/vFNp_g0Hb/" class="tag">
+                    mybatis
+                  </a>
+                
+                  <a href="https://aruul.github.io/tag/fABi2KP6qR/" class="tag">
+                    java
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://aruul.github.io/post/INzAInTDR/">
+                  <h3 class="post-title">
+                    6-分页
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+  <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad()
+  </script>
+
+
+
+
+
+  </body>
+</html>

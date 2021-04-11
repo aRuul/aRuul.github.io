@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>2-增删改查 | aRuul的无名小站</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://aruul.github.io/favicon.ico?v=1618111547851">
+<link rel="stylesheet" href="https://aruul.github.io/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+<script async src="//code.tidio.co/0llaydzaqpj2momyrcycfplv2h2my3av.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+    <meta name="description" content="1.每一个Dao接口对应一个xml文件
+
+最好名字要一致，方便管理
+
+//Dao接口
+public interface UserMapper {
+    //查询全部用户
+    List&lt;User&gt; getUserList()..." />
+    <meta name="keywords" content="mybatis,java" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://aruul.github.io">
+        <img src="https://aruul.github.io/images/avatar.png?v=1618111547851" class="site-logo">
+        <h1 class="site-title">aRuul的无名小站</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+          <a class="social-link" href="https://github.com/aRuul" target="_blank">
+            <i class="fab fa-github"></i>
+          </a>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+<span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+</span> | <a class="rss" href="https://aruul.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">2-增删改查</h2>
+            <div class="post-date">2021-03-14</div>
+            
+            <div class="post-content" v-pre>
+              <h3 id="1每一个dao接口对应一个xml文件">1.每一个Dao接口对应一个xml文件</h3>
+<ul>
+<li>最好名字要一致，方便管理</li>
+</ul>
+<pre><code class="language-java">//Dao接口
+public interface UserMapper {
+    //查询全部用户
+    List&lt;User&gt; getUserList();
+    //根据id查询用户
+    User getUserById(int id);
+    //添加用户
+    int insertUser(User user);
+    //修改
+    int updateUser(User user);
+    //删除
+    int deleteUser(int id);
+}
+</code></pre>
+<p>对应的xml文件</p>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
+&lt;!DOCTYPE mapper
+        PUBLIC &quot;-//mybatis.org//DTD Mapper 3.0//EN&quot;
+        &quot;http://mybatis.org/dtd/mybatis-3-mapper.dtd&quot;&gt;
+
+&lt;!--namespace 是要绑定的类的路径--&gt;
+&lt;mapper namespace=&quot;org.example.dao.UserMapper&quot;&gt;
+    &lt;!--进行查询操作  id是对应类的方法名 resultType是返回的结果集--&gt;
+    &lt;select id=&quot;getUserList&quot; resultType=&quot;org.example.pojo.User&quot;&gt;
+        select * from mybatis.user
+    &lt;/select&gt;
+
+    &lt;select id=&quot;getUserById&quot; parameterType=&quot;int&quot; resultType=&quot;org.example.pojo.User&quot;&gt;
+        select * from mybatis.user where id=#{id}
+    &lt;/select&gt;
+
+    &lt;insert id=&quot;insertUser&quot; parameterType=&quot;org.example.pojo.User&quot;&gt;
+        insert into mybatis.user (id, name, pwd) values (#{id},#{name},#{pwd})
+    &lt;/insert&gt;
+
+    &lt;update id=&quot;updateUser&quot; parameterType=&quot;org.example.pojo.User&quot;&gt;
+        update mybatis.user set name = #{name},pwd = #{pwd} where id = #{id};
+    &lt;/update&gt;
+
+    &lt;delete id=&quot;deleteUser&quot; parameterType=&quot;int&quot;&gt;
+        delete from mybatis.user where id = #{id}
+    &lt;/delete&gt;
+&lt;/mapper&gt;
+</code></pre>
+<h3 id="2xml文件编写规则">2.xml文件编写规则</h3>
+<ul>
+<li>
+<p>xml文件注意事项</p>
+<pre><code class="language-xml">&lt;mapper namespace=&quot;org.example.dao.UserMapper&quot;&gt;&lt;/mapper&gt;
+</code></pre>
+<p>namespace是对应Dao文件的java路径</p>
+<hr>
+<p>以id查询为例</p>
+<pre><code class="language-java"> //根据id查询用户 java代码
+    User getUserById(int id);
+</code></pre>
+</li>
+</ul>
+<pre><code class="language-xml">  &lt;select id=&quot;getUserById&quot; parameterType=&quot;int&quot; resultType=&quot;org.example.pojo.User&quot;&gt;
+        select * from mybatis.user where id=#{id}
+    &lt;/select&gt;
+</code></pre>
+<p><strong>id为Dao接口中对应的方法名           parameterType是方法中参数的类型       resultType是sql语句执行狗返回的结果类型</strong></p>
+<ul>
+<li>
+<p>sql语法</p>
+<p>遵从基本的sql语法，</p>
+<p><strong>可以通过#{属性}的写法来获取参数中的值</strong></p>
+<h3 id="3测试">3.测试</h3>
+<ul>
+<li>注意在删除、修改操作的时候要提交事务</li>
+<li>注意要关闭事务</li>
+</ul>
+<pre><code class="language-java">@Test
+    public void getUserById(){
+        //获取sqlSession实例
+        SqlSession sqlSession= MybatisUtils.getSqlSession();
+        //获取Dao层类的实例
+        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+        //调用对用Dao层类的方法
+        User user=userMapper.getUserById(1);
+        System.out.println(user);
+		//关闭事务
+        sqlSession.close();
+    }
+
+    @Test
+    public void insertUser(){
+        SqlSession sqlSession= MybatisUtils.getSqlSession();
+        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+
+        int res= userMapper.insertUser(new User(4,&quot;测试&quot;,&quot;000000&quot;));
+        if(res&gt;0){
+            System.out.println(&quot;插入成功&quot;);
+            System.out.println(&quot;-----------------------------------&quot;);
+            List&lt;User&gt; userList= userMapper.getUserList();
+            for (User user : userList) {
+                System.out.println(user);
+            }
+        }
+
+        //提交事务
+        sqlSession.commit();
+        //关闭事务
+        sqlSession.close();
+    }
+</code></pre>
+</li>
+</ul>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://aruul.github.io/tag/vFNp_g0Hb/" class="tag">
+                    mybatis
+                  </a>
+                
+                  <a href="https://aruul.github.io/tag/fABi2KP6qR/" class="tag">
+                    java
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://aruul.github.io/post/5z4z3U_A7/">
+                  <h3 class="post-title">
+                    创建第一个myBatis项目
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+  <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad()
+  </script>
+
+
+
+
+
+  </body>
+</html>
