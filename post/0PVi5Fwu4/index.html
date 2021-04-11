@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>SSM整合 | aRuul的无名小站</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://aruul.github.io/favicon.ico?v=1618112213225">
+<link rel="stylesheet" href="https://aruul.github.io/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+<script async src="//code.tidio.co/0llaydzaqpj2momyrcycfplv2h2my3av.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+    <meta name="description" content="
+
+
+
+
+0.导入依赖
+1.整合mybatis
+
+1.1建数据库
+1.2编写对应的pojo层
+1.3编写对应的dao层
+1.4编写mybatis-config.xml
+1.5编写mybatis-config.xml
+
+
+2.整合servic..." />
+    <meta name="keywords" content="ssm,idea,java" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://aruul.github.io">
+        <img src="https://aruul.github.io/images/avatar.png?v=1618112213225" class="site-logo">
+        <h1 class="site-title">aRuul的无名小站</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+          <a class="social-link" href="https://github.com/aRuul" target="_blank">
+            <i class="fab fa-github"></i>
+          </a>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+<span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+</span> | <a class="rss" href="https://aruul.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">SSM整合</h2>
+            <div class="post-date">2021-03-25</div>
+            
+            <div class="post-content" v-pre>
+              <p><ul class="markdownIt-TOC">
+<li>
+<ul>
+<li>
+<ul>
+<li><a href="#0%E5%AF%BC%E5%85%A5%E4%BE%9D%E8%B5%96">0.导入依赖</a></li>
+<li><a href="#1%E6%95%B4%E5%90%88mybatis">1.整合mybatis</a>
+<ul>
+<li><a href="#11%E5%BB%BA%E6%95%B0%E6%8D%AE%E5%BA%93">1.1建数据库</a></li>
+<li><a href="#12%E7%BC%96%E5%86%99%E5%AF%B9%E5%BA%94%E7%9A%84pojo%E5%B1%82">1.2编写对应的pojo层</a></li>
+<li><a href="#13%E7%BC%96%E5%86%99%E5%AF%B9%E5%BA%94%E7%9A%84dao%E5%B1%82">1.3编写对应的dao层</a></li>
+<li><a href="#14%E7%BC%96%E5%86%99mybatis-configxml">1.4编写mybatis-config.xml</a></li>
+<li><a href="#15%E7%BC%96%E5%86%99mybatis-configxml">1.5编写mybatis-config.xml</a></li>
+</ul>
+</li>
+<li><a href="#2%E6%95%B4%E5%90%88service%E5%B1%82">2.整合service层</a>
+<ul>
+<li><a href="#21%E7%BC%96%E5%86%99service%E5%B1%82java%E4%BB%A3%E7%A0%81">2.1编写service层java代码</a></li>
+<li><a href="#22%E7%BC%96%E5%86%99service%E5%B1%82%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6spring-servicexml">2.2编写service层配置文件spring-service.xml</a></li>
+</ul>
+</li>
+<li><a href="#3%E6%95%B4%E5%90%88springmvc%E5%B1%82">3.整合SpringMVC层</a>
+<ul>
+<li><a href="#31%E7%BC%96%E5%86%99spring-mvcxml">3.1编写spring-mvc.xml</a></li>
+<li><a href="#32%E7%BC%96%E5%86%99applicationcontextxml">3.2编写applicationContext.xml</a></li>
+<li><a href="#33%E7%BC%96%E5%86%99webxml%E6%96%87%E4%BB%B6">3.3编写web.xml文件</a></li>
+<li><a href="#34%E7%BC%96%E5%86%99controller%E5%B1%82">3.4编写controller层</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</p>
+<h3 id="0导入依赖">0.导入依赖</h3>
+<pre><code class="language-xml"> &lt;!--依赖  junit 数据库驱动 连接池  servlet jsp mybatis mybatis-spring spring --&gt;
+    &lt;dependencies&gt;
+        &lt;!--Junit--&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;junit&lt;/groupId&gt;
+            &lt;artifactId&gt;junit&lt;/artifactId&gt;
+            &lt;version&gt;4.12&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;!--数据库驱动--&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;mysql&lt;/groupId&gt;
+            &lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt;
+            &lt;version&gt;8.0.22&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;!-- 数据库连接池 --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.mchange&lt;/groupId&gt;
+            &lt;artifactId&gt;c3p0&lt;/artifactId&gt;
+            &lt;version&gt;0.9.5.2&lt;/version&gt;
+        &lt;/dependency&gt;
+
+        &lt;!--Servlet - JSP --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
+            &lt;artifactId&gt;servlet-api&lt;/artifactId&gt;
+            &lt;version&gt;2.5&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;javax.servlet.jsp&lt;/groupId&gt;
+            &lt;artifactId&gt;jsp-api&lt;/artifactId&gt;
+            &lt;version&gt;2.2&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
+            &lt;artifactId&gt;jstl&lt;/artifactId&gt;
+            &lt;version&gt;1.2&lt;/version&gt;
+        &lt;/dependency&gt;
+
+        &lt;!--Mybatis--&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.mybatis&lt;/groupId&gt;
+            &lt;artifactId&gt;mybatis&lt;/artifactId&gt;
+            &lt;version&gt;3.5.2&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.mybatis&lt;/groupId&gt;
+            &lt;artifactId&gt;mybatis-spring&lt;/artifactId&gt;
+            &lt;version&gt;2.0.4&lt;/version&gt;
+        &lt;/dependency&gt;
+
+        &lt;!--Spring--&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-webmvc&lt;/artifactId&gt;
+            &lt;version&gt;5.1.9.RELEASE&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-jdbc&lt;/artifactId&gt;
+            &lt;version&gt;5.2.7.RELEASE&lt;/version&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+
+    &lt;!--静态资源导出问题--&gt;
+    &lt;build&gt;
+        &lt;resources&gt;
+            &lt;resource&gt;
+                &lt;directory&gt;src/main/java&lt;/directory&gt;
+                &lt;includes&gt;
+                    &lt;include&gt;**/*.properties&lt;/include&gt;
+                    &lt;include&gt;**/*.xml&lt;/include&gt;
+                &lt;/includes&gt;
+                &lt;filtering&gt;false&lt;/filtering&gt;
+            &lt;/resource&gt;
+            &lt;resource&gt;
+                &lt;directory&gt;src/main/resources&lt;/directory&gt;
+                &lt;includes&gt;
+                    &lt;include&gt;**/*.properties&lt;/include&gt;
+                    &lt;include&gt;**/*.xml&lt;/include&gt;
+                &lt;/includes&gt;
+                &lt;filtering&gt;false&lt;/filtering&gt;
+            &lt;/resource&gt;
+        &lt;/resources&gt;
+    &lt;/build&gt;
+</code></pre>
+<h3 id="1整合mybatis">1.整合mybatis</h3>
+<h4 id="11建数据库">1.1建数据库</h4>
+<figure data-type="image" tabindex="1"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210325091806.png" alt="image-20210325091806560" loading="lazy"></figure>
+<h4 id="12编写对应的pojo层">1.2编写对应的pojo层</h4>
+<pre><code class="language-java">public class Books {
+    private int bookID;
+    private String bookName;
+    private int bookCounts;
+    private String detail;
+
+    public Books() {
+    }
+
+    public Books(int bookID, String bookName, int bookCounts, String detail) {
+        this.bookID = bookID;
+        this.bookName = bookName;
+        this.bookCounts = bookCounts;
+        this.detail = detail;
+    }
+
+    public int getBookID() {
+        return bookID;
+    }
+
+    public void setBookID(int bookID) {
+        this.bookID = bookID;
+    }
+
+    public String getBookName() {
+        return bookName;
+    }
+
+    public void setBookName(String bookName) {
+        this.bookName = bookName;
+    }
+
+    public int getBookCounts() {
+        return bookCounts;
+    }
+
+    public void setBookCounts(int bookCounts) {
+        this.bookCounts = bookCounts;
+    }
+
+    public String getDetail() {
+        return detail;
+    }
+
+    public void setDetail(String detail) {
+        this.detail = detail;
+    }
+
+    @Override
+    public String toString() {
+        return &quot;Books{&quot; +
+                &quot;bookID=&quot; + bookID +
+                &quot;, bookName='&quot; + bookName + '\'' +
+                &quot;, bookCounts=&quot; + bookCounts +
+                &quot;, detail='&quot; + detail + '\'' +
+                '}';
+    }
+}
+</code></pre>
+<h4 id="13编写对应的dao层">1.3编写对应的dao层</h4>
+<ul>
+<li>UserMapper.java</li>
+</ul>
+<pre><code class="language-java">public interface BookMapper {
+
+    //增
+    int addBook(Books books);
+    // 删
+    int deleteBookById(@Param(&quot;bookID&quot;) int id);
+    // 改
+    int updateBook(Books books);
+    // 查
+    Books queryBookBuId(@Param(&quot;bookID&quot;) int id);
+    //查全部的书
+    List&lt;Books&gt; queryAllBook();
+
+}
+</code></pre>
+<ul>
+<li>UserMapper.xml</li>
+</ul>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
+&lt;!DOCTYPE mapper
+        PUBLIC &quot;-//mybatis.org//DTD Mapper 3.0//EN&quot;
+        &quot;http://mybatis.org/dtd/mybatis-3-mapper.dtd&quot;&gt;
+
+&lt;!--namespace 是要绑定的类的路径--&gt;
+&lt;mapper namespace=&quot;org.example.dao.BookMapper&quot;&gt;
+
+    &lt;insert id=&quot;addBook&quot; parameterType=&quot;books&quot;&gt;
+        insert into ssmbuild.books (bookID, bookName, bookCounts, detail)
+        values (#{bookID},#{bookName},#{bookCounts},#{detail})
+    &lt;/insert&gt;
+
+    &lt;delete id=&quot;deleteBookById&quot; parameterType=&quot;int&quot;&gt;
+        delete from ssmbuild.books where bookID = #{bookID}
+    &lt;/delete&gt;
+
+    &lt;update id=&quot;updateBook&quot; parameterType=&quot;books&quot;&gt;
+        update ssmbuild.books set bookName=#{bookName},bookCounts=#{bookCounts}，detail=#{detail}
+        where bookID=#{bookID}
+    &lt;/update&gt;
+
+    &lt;select id=&quot;queryBookBuId&quot; parameterType=&quot;int&quot; resultType=&quot;books&quot;&gt;
+        select * from ssmbuild.books where bookID=#{bookID}
+    &lt;/select&gt;
+
+    &lt;select id=&quot;queryAllBook&quot; resultType=&quot;books&quot;&gt;
+        select * from ssmbuild.books
+    &lt;/select&gt;
+
+&lt;/mapper&gt;
+</code></pre>
+<h4 id="14编写mybatis-configxml">1.4编写mybatis-config.xml</h4>
+<p><mark>这里的话mybatis-config.xml中不用写数据库连接池，而是统一交由spring来处理</mark></p>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
+&lt;!DOCTYPE configuration
+        PUBLIC &quot;-//mybatis.org//DTD Config 3.0//EN&quot;
+        &quot;http://mybatis.org/dtd/mybatis-3-config.dtd&quot;&gt;
+&lt;configuration&gt;
+
+    &lt;!--设置日志--&gt;
+    &lt;settings&gt;
+        &lt;setting name=&quot;logImpl&quot; value=&quot;STDOUT_LOGGING&quot;/&gt;
+    &lt;/settings&gt;
+    &lt;!--别名--&gt;
+    &lt;typeAliases&gt;
+        &lt;package name=&quot;org.example.pojo&quot;/&gt;
+    &lt;/typeAliases&gt;
+
+    &lt;!--mapper映射  扫描dao包--&gt;
+    &lt;mappers&gt;
+        &lt;package name=&quot;org.example.dao&quot;/&gt;
+    &lt;/mappers&gt;
+&lt;/configuration&gt;
+</code></pre>
+<h4 id="15编写mybatis-configxml">1.5编写mybatis-config.xml</h4>
+<p><mark>也就是将dao层整合到spring中</mark></p>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+       xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+       xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd&quot;&gt;
+
+    &lt;!--关联数据库 c3p0连接池 --&gt;
+    &lt;bean id=&quot;dataSource&quot; class=&quot;com.mchange.v2.c3p0.ComboPooledDataSource&quot;&gt;
+        &lt;property name=&quot;driverClass&quot; value=&quot;com.mysql.cj.jdbc.Driver&quot;/&gt;
+        &lt;property name=&quot;jdbcUrl&quot;
+                  value=&quot;jdbc:mysql://localhost:3306/ssmbuild?serverTimezone=Asia/Shanghai&amp;amp;useSSL=true&amp;amp;useUnicode=true&amp;amp;characterEncoding=UTF-8&quot;/&gt;
+        &lt;property name=&quot;user&quot; value=&quot;root&quot;/&gt;
+        &lt;property name=&quot;password&quot; value=&quot;password&quot;/&gt;
+
+        &lt;!-- c3p0连接池的私有属性 --&gt;
+        &lt;property name=&quot;maxPoolSize&quot; value=&quot;30&quot;/&gt;
+        &lt;property name=&quot;minPoolSize&quot; value=&quot;10&quot;/&gt;
+        &lt;!-- 关闭连接后不自动commit --&gt;
+        &lt;property name=&quot;autoCommitOnClose&quot; value=&quot;false&quot;/&gt;
+        &lt;!-- 获取连接超时时间 --&gt;
+        &lt;property name=&quot;checkoutTimeout&quot; value=&quot;10000&quot;/&gt;
+        &lt;!-- 当获取连接失败重试次数 --&gt;
+        &lt;property name=&quot;acquireRetryAttempts&quot; value=&quot;2&quot;/&gt;
+    &lt;/bean&gt;
+
+    &lt;!--SqlSessionFactory--&gt;
+    &lt;bean id=&quot;sqlSessionFactory&quot; class=&quot;org.mybatis.spring.SqlSessionFactoryBean&quot;&gt;
+        &lt;property name=&quot;dataSource&quot; ref=&quot;dataSource&quot;/&gt;
+        &lt;!-- 绑定mybatis全局配置文件:mybatis-config.xml --&gt;
+        &lt;property name=&quot;configLocation&quot; value=&quot;classpath:mybatis-config.xml&quot;/&gt;
+    &lt;/bean&gt;
+
+    &lt;!--配置dao接口扫描包，动态的实现了Dao接口可以注册到Spring容器--&gt;
+    &lt;bean class=&quot;org.mybatis.spring.mapper.MapperScannerConfigurer&quot;&gt;
+        &lt;!--注入sqlSessionFactory--&gt;
+        &lt;property name=&quot;sqlSessionFactoryBeanName&quot; value=&quot;sqlSessionFactory&quot;/&gt;
+        &lt;!--扫描要扫描的包--&gt;
+        &lt;property name=&quot;basePackage&quot; value=&quot;org.example.dao&quot;/&gt;
+    &lt;/bean&gt;
+
+&lt;/beans&gt;
+</code></pre>
+<hr>
+<h3 id="2整合service层">2.整合service层</h3>
+<h4 id="21编写service层java代码">2.1编写service层java代码</h4>
+<pre><code class="language-java">package org.example.service;
+
+import org.apache.ibatis.annotations.Param;
+import org.example.pojo.Books;
+
+import java.util.List;
+
+/**
+ * @author aRu
+ * @date 2021/3/24 21:29
+ */
+public interface BookService {
+    //增
+    int addBook(Books books);
+    // 删
+    int deleteBookById(@Param(&quot;bookID&quot;) int id);
+    // 改
+    int updateBook(Books books);
+    // 查
+    Books queryBookBuId(@Param(&quot;bookID&quot;) int id);
+    //查全部的书
+    List&lt;Books&gt; queryAllBook();
+}
+</code></pre>
+<pre><code class="language-java">package org.example.service;
+
+import org.example.dao.BookMapper;
+import org.example.pojo.Books;
+
+import java.util.List;
+
+/**
+ * @author aRu
+ * @date 2021/3/24 21:30
+ */
+public class BookServiceImp implements BookService{
+    //service调用dao层   组合dao
+    private BookMapper bookMapper;
+
+    public void setBookMapper(BookMapper bookMapper) {
+        this.bookMapper = bookMapper;
+    }
+
+    @Override
+    public int addBook(Books books) {
+        return bookMapper.addBook(books);
+    }
+
+    @Override
+    public int deleteBookById(int id) {
+        return bookMapper.deleteBookById(id);
+    }
+
+    @Override
+    public int updateBook(Books books) {
+        return bookMapper.updateBook(books);
+    }
+
+    @Override
+    public Books queryBookBuId(int id) {
+        return bookMapper.queryBookBuId(id);
+    }
+
+    @Override
+    public List&lt;Books&gt; queryAllBook() {
+        return bookMapper.queryAllBook();
+    }
+}
+</code></pre>
+<h4 id="22编写service层配置文件spring-servicexml">2.2编写service层配置文件spring-service.xml</h4>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+       xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+       xmlns:context=&quot;http://www.springframework.org/schema/context&quot;
+       xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
+   http://www.springframework.org/schema/beans/spring-beans.xsd
+   http://www.springframework.org/schema/context
+   http://www.springframework.org/schema/context/spring-context.xsd&quot;&gt;
+
+    &lt;!--扫描service下的包--&gt;
+    &lt;context:component-scan base-package=&quot;org.example.service&quot; /&gt;
+
+    &lt;!--ServiceImpl注入到IOC容器中--&gt;
+    &lt;bean id=&quot;BookServiceImp&quot; class=&quot;org.example.service.BookServiceImp&quot;&gt;
+        &lt;property name=&quot;bookMapper&quot; ref=&quot;bookMapper&quot;/&gt;
+    &lt;/bean&gt;
+
+    &lt;!-- 配置事务管理器 --&gt;
+    &lt;bean id=&quot;transactionManager&quot; class=&quot;org.springframework.jdbc.datasource.DataSourceTransactionManager&quot;&gt;
+        &lt;!-- 注入数据库连接池 --&gt;
+        &lt;property name=&quot;dataSource&quot; ref=&quot;dataSource&quot; /&gt;
+    &lt;/bean&gt;
+
+&lt;/beans&gt;
+</code></pre>
+<hr>
+<h3 id="3整合springmvc层">3.整合SpringMVC层</h3>
+<figure data-type="image" tabindex="2"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210325093214.png" alt="image-20210325093214157" loading="lazy"></figure>
+<p>添加 Framework Support</p>
+<h4 id="31编写spring-mvcxml">3.1编写spring-mvc.xml</h4>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+       xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+       xmlns:context=&quot;http://www.springframework.org/schema/context&quot;
+       xmlns:mvc=&quot;http://www.springframework.org/schema/mvc&quot;
+       xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd&quot;&gt;
+
+    &lt;!-- 1.开启SpringMVC注解驱动 --&gt;
+    &lt;mvc:annotation-driven/&gt;
+    &lt;!-- 2.静态资源默认servlet配置--&gt;
+    &lt;mvc:default-servlet-handler/&gt;
+
+    &lt;!-- 3.配置jsp 显示ViewResolver视图解析器 --&gt;
+    &lt;bean class=&quot;org.springframework.web.servlet.view.InternalResourceViewResolver&quot;&gt;
+        &lt;property name=&quot;viewClass&quot; value=&quot;org.springframework.web.servlet.view.JstlView&quot; /&gt;
+        &lt;property name=&quot;prefix&quot; value=&quot;/WEB-INF/jsp/&quot; /&gt;
+        &lt;property name=&quot;suffix&quot; value=&quot;.jsp&quot; /&gt;
+    &lt;/bean&gt;
+
+    &lt;!-- 4.扫描web相关的bean --&gt;
+    &lt;context:component-scan base-package=&quot;org.example.controller&quot; /&gt;
+
+&lt;/beans&gt;
+</code></pre>
+<p><mark>记得在WEB-INF在新建jsp的文件</mark></p>
+<h4 id="32编写applicationcontextxml">3.2编写applicationContext.xml</h4>
+<p>将之前的<strong>spring-dao.xml  spring-service.xml spring-mvc.xml</strong>引入<strong>applicationContext.xml</strong>中</p>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+       xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+       xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd&quot;&gt;
+
+    &lt;import resource=&quot;classpath:spring-dao.xml&quot;/&gt;
+    &lt;import resource=&quot;classpath:spring-service.xml&quot;/&gt;
+    &lt;import resource=&quot;classpath:spring-mvc.xml&quot;/&gt;
+
+&lt;/beans&gt;
+</code></pre>
+<h4 id="33编写webxml文件">3.3编写web.xml文件</h4>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;web-app xmlns=&quot;http://xmlns.jcp.org/xml/ns/javaee&quot;
+         xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+         xsi:schemaLocation=&quot;http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd&quot;
+         version=&quot;4.0&quot;&gt;
+
+    &lt;!--DispatcherServlet--&gt;
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;DispatcherServlet&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;org.springframework.web.servlet.DispatcherServlet&lt;/servlet-class&gt;
+        &lt;init-param&gt;
+            &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;
+            &lt;!--一定要注意:这里加载的是总的配置文件，之前被这里坑了！--&gt;
+            &lt;param-value&gt;classpath:applicationContext.xml&lt;/param-value&gt;
+        &lt;/init-param&gt;
+        &lt;load-on-startup&gt;1&lt;/load-on-startup&gt;
+    &lt;/servlet&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;DispatcherServlet&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+
+    &lt;!--encodingFilter--&gt;
+    &lt;filter&gt;
+        &lt;filter-name&gt;encodingFilter&lt;/filter-name&gt;
+        &lt;filter-class&gt;
+            org.springframework.web.filter.CharacterEncodingFilter
+        &lt;/filter-class&gt;
+        &lt;init-param&gt;
+            &lt;param-name&gt;encoding&lt;/param-name&gt;
+            &lt;param-value&gt;utf-8&lt;/param-value&gt;
+        &lt;/init-param&gt;
+    &lt;/filter&gt;
+    &lt;filter-mapping&gt;
+        &lt;filter-name&gt;encodingFilter&lt;/filter-name&gt;
+        &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+    &lt;/filter-mapping&gt;
+
+    &lt;!--Session过期时间--&gt;
+    &lt;session-config&gt;
+        &lt;session-timeout&gt;15&lt;/session-timeout&gt;
+    &lt;/session-config&gt;
+
+&lt;/web-app&gt;
+</code></pre>
+<h4 id="34编写controller层">3.4编写controller层</h4>
+<pre><code class="language-java">@Controller
+@RequestMapping(&quot;/book&quot;)
+public class BookController {
+    //controller层 调用service层
+    @Autowired
+    @Qualifier(&quot;BookServiceImp&quot;)
+    private BookService bookService;
+
+    //查询全部书籍，并返回给展示页
+    @RequestMapping(&quot;/allBook&quot;)
+    public String list(Model model){
+        List&lt;Books&gt; books=bookService.queryAllBook();
+        model.addAttribute(&quot;list&quot;,books);
+
+        return &quot;allBook&quot;;
+    }
+    
+}
+</code></pre>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://aruul.github.io/tag/AwblzgGk3/" class="tag">
+                    ssm
+                  </a>
+                
+                  <a href="https://aruul.github.io/tag/iUOLJzywp/" class="tag">
+                    idea
+                  </a>
+                
+                  <a href="https://aruul.github.io/tag/fABi2KP6qR/" class="tag">
+                    java
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://aruul.github.io/post/E7oM6mwEJ/">
+                  <h3 class="post-title">
+                    Spring5课堂笔记
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+  <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad()
+  </script>
+
+
+
+
+
+  </body>
+</html>

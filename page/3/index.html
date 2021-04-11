@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>6-分页 | aRuul的无名小站</title>
+<title>aRuul的无名小站</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -22,25 +22,10 @@
 <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
 </script>
 
-    <meta name="description" content="一 、使用limit实现分页
-1.分页  sql语句
-select * from limit startIndex, pageSize
-
-
-
-
-startIndex   开始序号
-
-
-
-
-pageSize    一页的大小
-
-
-
-例如
-&l..." />
-    <meta name="keywords" content="mybatis,java" />
+    <meta name="description" content="温故而知新">
+    
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    
   </head>
   <body>
     <div id="app" class="main">
@@ -117,93 +102,52 @@ pageSize    一页的大小
 
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
-          <div class="post-detail">
-            <h2 class="post-title">6-分页</h2>
-            <div class="post-date">2021-03-15</div>
-            
-            <div class="post-content" v-pre>
-              <h3 id="一-使用limit实现分页">一 、使用limit实现分页</h3>
-<h4 id="1分页-sql语句">1.分页  sql语句</h4>
-<pre><code class="language-xml">select * from limit startIndex, pageSize
-</code></pre>
-<ul>
-<li>
-<blockquote>
-<p>startIndex   开始序号</p>
-</blockquote>
-</li>
-<li>
-<blockquote>
-<p>pageSize    一页的大小</p>
-</blockquote>
-</li>
-</ul>
-<p>例如</p>
-<pre><code class="language-xml">&lt;!--从第0个开始查询，每两个为一页--&gt;
-select * from 表名 limit 0, 2
-
-&lt;!--从第0个开始查询，每两个为一页--&gt;
-select * from limit 0, 2
-</code></pre>
-<h4 id="2代码部分">2.代码部分</h4>
-<p>Dao层代码</p>
-<pre><code class="language-java">    //分页查询
-    List&lt;User&gt; getUserByLimit(Map&lt;String,Object&gt;map);
-</code></pre>
-<pre><code class="language-xml">    &lt;select id=&quot;getUserByLimit&quot; resultType=&quot;user&quot; parameterType=&quot;map&quot;&gt;
-        select * from mybatis.user limit #{startIndex},#{pageSize}
-    &lt;/select&gt;
-</code></pre>
-<pre><code class="language-java"> @Test
-    public void getUserByLimit(){
-        SqlSession sqlSession=MybatisUtils.getSqlSession();
-        UserMapper userMapper=sqlSession.getMapper(UserMapper.class);
-
-        Map&lt;String,Object&gt; map=new HashMap&lt;String, Object&gt;();
-        map.put(&quot;startIndex&quot;,0);
-        map.put(&quot;pageSize&quot;,2);
-        List&lt;User&gt; userList=userMapper.getUserByLimit(map);
-        for (User user : userList) {
-            System.out.println(user);
-        }
-    }
-</code></pre>
-<hr>
-<h3 id="二-rowbounds分页不常用">二、RowBounds分页【不常用】</h3>
-<p>略，懒得写了</p>
-<hr>
-<h3 id="三-插件">三、插件</h3>
-<p><a href="https://pagehelper.github.io/">Mybatis PageHelper 插件</a></p>
-<figure data-type="image" tabindex="1"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210315202015.png" alt="image-20210314201120021" loading="lazy"></figure>
-
-            </div>
-            
-              <div class="tag-container">
-                
-                  <a href="https://aruul.github.io/tag/vFNp_g0Hb/" class="tag">
-                    mybatis
-                  </a>
-                
-                  <a href="https://aruul.github.io/tag/fABi2KP6qR/" class="tag">
-                    java
-                  </a>
-                
-              </div>
-            
-            
-              <div class="next-post">
-                <div class="next">下一篇</div>
-                <a href="https://aruul.github.io/post/vKl9jV0iW/">
-                  <h3 class="post-title">
-                    5-日志
-                  </h3>
+          
+            <article class="post-item">
+              <div class="left">
+                <a href="https://aruul.github.io/post/hexogithub-da-jian-ge-ren-bo-ke/">
+                  <h2 class="post-title">hexo+github搭建个人博客</h2>
                 </a>
+                <div class="post-date">
+                  2020-06-20
+                </div>
+                <div class="post-abstract">
+                  <h1 id="周周转转终于把博客搭建的差不多了">周周转转终于把博客搭建的差不多了</h1>
+
+                </div>
               </div>
-            
+              
+            </article>
+          
+            <article class="post-item">
+              <div class="left">
+                <a href="https://aruul.github.io/post/hello-gridea/">
+                  <h2 class="post-title">Hello Gridea</h2>
+                </a>
+                <div class="post-date">
+                  2018-12-12
+                </div>
+                <div class="post-abstract">
+                  <p>👏  欢迎使用 <strong>Gridea</strong> ！<br>
+✍️  <strong>Gridea</strong> 一个静态博客写作客户端。你可以用它来记录你的生活、心情、知识、笔记、创意... ...</p>
 
-            
+                </div>
+              </div>
+              
+                <a class="right" href="https://aruul.github.io/post/hello-gridea/">
+                  <div class="feature-container" style="background-image: url('https://aruul.github.io/post-images/hello-gridea.png')">
+                  </div>
+                </a>
+              
+            </article>
+          
 
-          </div>
+          <div class="pagination-container">
+  
+    <a href="https://aruul.github.io/page/2/" class="prev"><i class="icon-arrow-ios-back-outline"></i> 上一页</a>
+  
+  
+</div>
 
         </div>
       </div>
