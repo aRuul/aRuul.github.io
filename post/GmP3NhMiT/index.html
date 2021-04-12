@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>在idea中使用Maven | aRuul的无名小站</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://aruul.github.io/favicon.ico?v=1618225792362">
+<link rel="stylesheet" href="https://aruul.github.io/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+<script async src="//code.tidio.co/0llaydzaqpj2momyrcycfplv2h2my3av.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+    <meta name="description" content="注意！
+千万别用idea2020.1版本，坑爹的一批！！！
+
+还有，maven别放在只有管理员才能读写的文件夹下！！
+
+正式开始
+1.下载maven
+官网下载
+官网下载的是压缩包，解压之后放在一个合适的文件中就行；
+2.配置环境变量
+
+系统..." />
+    <meta name="keywords" content="maven,idea" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://aruul.github.io">
+        <img src="https://aruul.github.io/images/avatar.png?v=1618225792362" class="site-logo">
+        <h1 class="site-title">aRuul的无名小站</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+          <a class="social-link" href="https://github.com/aRuul" target="_blank">
+            <i class="fab fa-github"></i>
+          </a>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+<span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+</span> | <a class="rss" href="https://aruul.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">在idea中使用Maven</h2>
+            <div class="post-date">2021-03-12</div>
+            
+              <div class="feature-container" style="background-image: url('https://gitee.com/aruul/a-ru-img/raw/master/img/20210412190937.png')">
+              </div>
+            
+            <div class="post-content" v-pre>
+              <h2 id="注意">注意！</h2>
+<p><strong>千万别用idea2020.1版本，坑爹的一批！！！</strong></p>
+<!--more-->
+<p><strong>还有，maven别放在只有管理员才能读写的文件夹下！！</strong></p>
+<hr>
+<h2 id="正式开始">正式开始</h2>
+<h3 id="1下载maven">1.下载maven</h3>
+<p><a href="https://maven.apache.org/download.cgi">官网下载</a></p>
+<p>官网下载的是压缩包，解压之后放在一个合适的文件中就行；</p>
+<h3 id="2配置环境变量">2.配置环境变量</h3>
+<ul>
+<li>系统变量:MAVEN_HOME = {maven所在的文件的路径}</li>
+<li>系统变量:path = %MAVEN_HOME%\bin</li>
+</ul>
+<h3 id="3检验是否配置成功">3.检验是否配置成功</h3>
+<p>然后win+R 运行cmd 输入 mvn -version，成功的话会提示你安装的maven的版本信息和一些其他的信息。</p>
+<h3 id="4配置maven的settingsxml文件">4.配置maven的settings.xml文件</h3>
+<h4 id="41添加本地仓库">4.1添加本地仓库</h4>
+<p>首先，在maven文件目录下新建一个repository文件夹</p>
+<p>然后找到conf文件夹下的settings.xml文件</p>
+<pre><code class="language-xml">&lt;!-- localRepository
+   | The path to the local repository maven will use to store artifacts.
+   |
+   | Default: ${user.home}/.m2/repository
+  &lt;localRepository&gt;/path/to/local/repo&lt;/localRepository&gt;
+  --&gt;
+
+&lt;!--找到上面这些代码，在下面添加如下的代码，表示仓库的位置--&gt;
+  &lt;localRepository&gt;D:\Program Files (x86)\apache-maven-3.6.3\repository&lt;/localRepository&gt;
+</code></pre>
+<h4 id="42添加镜像">4.2添加镜像</h4>
+<pre><code class="language-xml">&lt;mirrors&gt;
+    &lt;!-- mirror
+     | Specifies a repository mirror site to use instead of a given repository. The repository that
+     | this mirror serves has an ID that matches the mirrorOf element of this mirror. IDs are used
+     | for inheritance and direct lookup purposes, and must be unique across the set of mirrors.
+     |
+    &lt;mirror&gt;
+      &lt;id&gt;mirrorId&lt;/id&gt;
+      &lt;mirrorOf&gt;repositoryId&lt;/mirrorOf&gt;
+      &lt;name&gt;Human Readable Name for this Mirror.&lt;/name&gt;
+      &lt;url&gt;http://my.repository.com/repo/path&lt;/url&gt;
+    &lt;/mirror&gt;
+     --&gt;
+    
+    &lt;!--找到上面这些代码，在下面添加如下的代码，表示使用阿里的镜像，提高下载速度--&gt;
+	 &lt;mirror&gt;
+       &lt;id&gt;nexus-aliyun&lt;/id&gt;
+       &lt;mirrorOf&gt;*&lt;/mirrorOf&gt;
+       &lt;name&gt;Nexus aliyun&lt;/name&gt;
+       &lt;url&gt;http://maven.aliyun.com/nexus/content/groups/public&lt;/url&gt;
+     &lt;/mirror&gt;
+  &lt;/mirrors&gt;
+</code></pre>
+<h4 id="43检验仓库和镜像是否配置成功">4.3检验仓库和镜像是否配置成功</h4>
+<p>win+R 运行cmd 输入mvn help:system测试，成功的话应该会提示下载成功，而且速度很快，可以看到repository文件夹下多了一些东西</p>
+<h3 id="5在idea中配置maven">5.在idea中配置maven</h3>
+<ul>
+<li>
+<p>快捷键 Ctrl+Alt+S，打开设计界面</p>
+</li>
+<li>
+<p>找到  <em>Build，Execution，Deployment</em>这一栏</p>
+</li>
+<li>
+<p>再选中Build Tools----Maven，修改即可</p>
+</li>
+</ul>
+<h3 id="千万别用idea20201版本">千万别用idea2020.1版本！！！！！</h3>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://aruul.github.io/tag/pTAeC4om6/" class="tag">
+                    maven
+                  </a>
+                
+                  <a href="https://aruul.github.io/tag/iUOLJzywp/" class="tag">
+                    idea
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://aruul.github.io/post/5z4z3U_A7/">
+                  <h3 class="post-title">
+                    创建第一个myBatis项目
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+  <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad()
+  </script>
+
+
+
+
+
+  </body>
+</html>
