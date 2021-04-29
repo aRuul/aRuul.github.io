@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>阿里云白嫖SSL证书并用nginx配置 | aRuul的无名小站</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://aruul.github.io/favicon.ico?v=1619689131660">
+<link rel="stylesheet" href="https://aruul.github.io/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+<script async src="//code.tidio.co/0llaydzaqpj2momyrcycfplv2h2my3av.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+    <meta name="description" content="1.白嫖阿里云ssl证书
+
+进入购买网址
+选择如下图所示
+
+
+
+点击购买
+
+2.控制台证书申请
+毕竟是免费的，所以有点麻烦，买了之后还要去ssl控制台去申请，   SSL控制台
+
+选择右侧的SSL证书------》再点击证书申请
+
+
+
+
+弹..." />
+    <meta name="keywords" content="" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://aruul.github.io">
+        <img src="https://aruul.github.io/images/avatar.png?v=1619689131660" class="site-logo">
+        <h1 class="site-title">aRuul的无名小站</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/essay" class="site-nav">
+            随笔
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+          <a class="social-link" href="https://github.com/aRuul" target="_blank">
+            <i class="fab fa-github"></i>
+          </a>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+<span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+</span> | <a class="rss" href="https://aruul.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">阿里云白嫖SSL证书并用nginx配置</h2>
+            <div class="post-date">2021-04-29</div>
+            
+              <div class="feature-container" style="background-image: url('https://gitee.com/aruul/a-ru-img/raw/master/img/20210429173833.png')">
+              </div>
+            
+            <div class="post-content" v-pre>
+              <h3 id="1白嫖阿里云ssl证书">1.白嫖阿里云ssl证书</h3>
+<ul>
+<li><a href="https://common-buy.aliyun.com/?spm=5176.15089375.J_5834642020.3.360f65c3prTSPX&amp;commodityCode=cas_dv_public_cn&amp;request=%7B%22ord_time%22:%221:Year%22,%22order_num%22:1,%22product%22:%22cert_product%22,%22domain%22:%22all%22,%22productCode%22:%22symantec-dv-1-starter%22,%22service_num%22:2%7D">进入购买网址</a></li>
+<li>选择如下图所示</li>
+</ul>
+<figure data-type="image" tabindex="1"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210429170518.png" alt="image-20210429170510021" loading="lazy"></figure>
+<ul>
+<li>点击购买</li>
+</ul>
+<h3 id="2控制台证书申请">2.控制台证书申请</h3>
+<p>毕竟是免费的，所以有点麻烦，买了之后还要去ssl控制台去申请，   <a href="https://yundun.console.aliyun.com/?p=cas#/certExtend">SSL控制台</a></p>
+<ul>
+<li>选择右侧的SSL证书------》再点击证书申请</li>
+</ul>
+<figure data-type="image" tabindex="2"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210429171100.png" alt="image-20210429171051664" loading="lazy"></figure>
+<ul>
+<li>
+<p>弹出如下界面，点击确认</p>
+<img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210429171318.png" alt="image-20210429171314073" style="zoom: 67%;" />
+</li>
+<li>
+<p>证书申请之后，点击【免费证书】</p>
+</li>
+</ul>
+<figure data-type="image" tabindex="3"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210429171555.png" alt="image-20210429171553744" loading="lazy"></figure>
+<ul>
+<li>
+<p>再点击证书申请，再弹出的页面中填写个人信息即可，之后再点击验证，验证成功后就可以领证书了</p>
+</li>
+<li>
+<p>之后再根据自己的情况下载对应的证书</p>
+</li>
+</ul>
+<hr>
+<h3 id="3nginx配置https">3.nginx配置https</h3>
+<p>在阿里云在点击证书下载的时候会有相关的文档，我这里配置的是nginx</p>
+<figure data-type="image" tabindex="4"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210429172922.png" alt="image-20210429172920399" loading="lazy"></figure>
+<p>下载证书后将其上传的nginx的配置文件conf根目录中，可以建立一个cert文件夹，然后放入。</p>
+<p>接着在配置文件中添加一个新的server</p>
+<pre><code class="language-xml">#以下属性中以ssl开头的属性代表与证书配置有关，其他属性请根据自己的需要进行配置。
+server {
+         listen 443 ssl; #配置HTTPS的默认访问端口号为443。此处如果未配置HTTPS的默认访问端口，可能会造成Nginx无法启动。Nginx 1.15.0以上版本请使用listen 443 ssl代替listen 443和ssl on。
+         server_name www.certificatestests.com; #将www.certificatestests.com修改为您证书绑定的域名，例如：www.example.com。如果您购买的是通配符域名证书，要修改为通配符域名，例如：*.aliyun.com。
+         root html;
+         index index.html index.htm;
+         ssl_certificate cert/domain name.pem;  #将domain name.pem替换成您证书的文件名称。
+         ssl_certificate_key cert/domain name.key; #将domain name.key替换成您证书的密钥文件名称。
+         ssl_session_timeout 5m;
+         ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4; #使用此加密套件。
+         ssl_protocols TLSv1 TLSv1.1 TLSv1.2; #使用该协议进行配置。
+         ssl_prefer_server_ciphers on;
+         location / {
+         	root html;  #站点目录。
+         	index index.html index.htm;
+         }
+}
+</code></pre>
+<p><mark>注意开启443端口哈</mark></p>
+<h4 id="3-1-可能出现的错误">3. 1 可能出现的错误</h4>
+<pre><code class="language-xml">the &quot;ssl&quot; parameter requires ngx_http_ssl_module
+</code></pre>
+<p>原因是在你装nginx的时候没有配置SSL模块</p>
+<p><strong>说明：我的nginx安装目录为：/usr/local/nginx ， 源码包在/usr/src/nginx-1.8.0目录</strong></p>
+<h4 id="nginx开启ssl模块">Nginx开启SSL模块：</h4>
+<p>切换到源码包：<br>
+<code>cd /usr/src/nginx-1.8.0</code></p>
+<p>查看nginx原有的模块<br>
+<code>/usr/local/nginx/sbin/nginx -V</code></p>
+<p>在configure arguments:后面显示的原有的configure参数如下：<br>
+<code>--prefix=/usr/local/nginx --with-http_stub_status_module</code></p>
+<h4 id="二从新配置ssl模块">二：从新配置SSL模块：</h4>
+<p>进入nginx源码包目录，运行：<br>
+<code>./configure --prefix=/usr/local/nginx --with-http_stub_status_module --with-http_ssl_module</code></p>
+<p>配置完成后，运行命令make命令：</p>
+<h4 id="make">make</h4>
+<p>注意：此处不能进行make install，否则就是覆盖安装</p>
+<h4 id="三替换已安装好的nginx包">三：替换已安装好的nginx包</h4>
+<p>替换之前先备份：<br>
+<code>cp /usr/local/nginx/sbin/nginx /usr/local/nginx/sbin/nginx.bak</code></p>
+<h4 id="先停止nginx服务">先停止nginx服务：</h4>
+<p>//查询nginx主进程号<br>
+<code>$ ps -ef | grep nginx</code></p>
+<p>//从容停止Nginx：<br>
+<code>$kill -QUIT 主进程号</code></p>
+<p>//快速停止Nginx：<br>
+<code>kill -TERM 主进程号</code></p>
+<p>//强制停止Nginx：<br>
+<code>pkill -9 nginx</code><br>
+将刚刚编译好的nginx覆盖掉原有的nginx</p>
+<p><code>cp ./objs/nginx /usr/local/nginx/sbin/</code><br>
+然后启动nginx，仍可以通过命令查看是否已经加入成功</p>
+<pre><code>/usr/local/nginx/sbin/nginx -V
+</code></pre>
+<p>此时应该显示为即配置成功：<br>
+<code>configure arguments: --prefix=/usr/local/nginx --with-http_stub_status_module --with-http_ssl_module</code></p>
+<hr>
+<p>之后照常开启nginx即可</p>
+
+            </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://aruul.github.io/post/newbegain/">
+                  <h3 class="post-title">
+                    新的开始
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+  <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad()
+  </script>
+
+
+
+
+
+  </body>
+</html>
