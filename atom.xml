@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://aruul.github.io</id>
     <title>aRuul的无名小站</title>
-    <updated>2021-04-29T09:46:59.379Z</updated>
+    <updated>2021-04-29T09:50:10.520Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://aruul.github.io"/>
     <link rel="self" href="https://aruul.github.io/atom.xml"/>
@@ -11,11 +11,11 @@
     <icon>https://aruul.github.io/favicon.ico</icon>
     <rights>All rights reserved 2021, aRuul的无名小站</rights>
     <entry>
-        <title type="html"><![CDATA[阿里云白嫖SSL证书并用nginx配置]]></title>
-        <id>https://aruul.github.io/post/aliyun/</id>
-        <link href="https://aruul.github.io/post/aliyun/">
+        <title type="html"><![CDATA[阿里云https]]></title>
+        <id>https://aruul.github.io/post/j3kVP0ZjV/</id>
+        <link href="https://aruul.github.io/post/j3kVP0ZjV/">
         </link>
-        <updated>2021-04-29T09:36:44.000Z</updated>
+        <updated>2021-04-29T09:49:08.000Z</updated>
         <content type="html"><![CDATA[<h3 id="1白嫖阿里云ssl证书">1.白嫖阿里云ssl证书</h3>
 <ul>
 <li><a href="https://common-buy.aliyun.com/?spm=5176.15089375.J_5834642020.3.360f65c3prTSPX&amp;commodityCode=cas_dv_public_cn&amp;request=%7B%22ord_time%22:%221:Year%22,%22order_num%22:1,%22product%22:%22cert_product%22,%22domain%22:%22all%22,%22productCode%22:%22symantec-dv-1-starter%22,%22service_num%22:2%7D">进入购买网址</a></li>
