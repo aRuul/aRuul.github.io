@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://aruul.github.io</id>
     <title>aRuul的无名小站</title>
-    <updated>2021-04-29T09:50:10.520Z</updated>
+    <updated>2021-04-29T14:19:43.229Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://aruul.github.io"/>
     <link rel="self" href="https://aruul.github.io/atom.xml"/>
@@ -10,6 +10,82 @@
     <logo>https://aruul.github.io/images/avatar.png</logo>
     <icon>https://aruul.github.io/favicon.ico</icon>
     <rights>All rights reserved 2021, aRuul的无名小站</rights>
+    <entry>
+        <title type="html"><![CDATA[LC15出现一次的数字]]></title>
+        <id>https://aruul.github.io/post/AyhAIG8Q_/</id>
+        <link href="https://aruul.github.io/post/AyhAIG8Q_/">
+        </link>
+        <updated>2021-04-29T14:19:06.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="题目描述">题目描述</h2>
+<p>现在有一个整数类型的数组，数组中素只有一个元素只出现一次，其余的元素都出现两次。</p>
+<p><strong>注意：</strong></p>
+<p>你需要给出一个线性时间复杂度的算法，你能在不使用额外内存空间的情况下解决这个问题么？</p>
+<p>示例1</p>
+<h2 id="输入">输入</h2>
+<p>[复制](javascript:void(0)😉</p>
+<pre><code>[1,0,1]
+</code></pre>
+<h2 id="返回值">返回值</h2>
+<p>[复制](javascript:void(0)😉</p>
+<pre><code>0
+</code></pre>
+<hr>
+<h4 id="本菜鸡的解题代码">本菜鸡的解题代码</h4>
+<p>大概思路是暴力对比，暴力就完事了。</p>
+<p>二重循环，先提前在外层循环设定一个初始标志，为0，</p>
+<p>内存循环 ，如果找到相同的，则将标志设为1。</p>
+<p>外层在根据标志判断是否找到相同的，否则返回出不同的值。</p>
+<pre><code class="language-java">public class Solution {
+    /**
+     * 
+     * @param A int整型一维数组 
+     * @return int整型
+     */
+    public int singleNumber (int[] A) {
+        // write code here
+        for (int i = 0; i&lt;A.length ;i++) {
+            int hasSame=0;
+            for (int j = 0; j&lt;A.length; j++){
+                if(i==j){
+                    System.out.println(&quot;相同索引  A[&quot;+i+&quot;]=&quot;+A[i]+&quot; ,i=&quot;+i+&quot;, j=&quot;+j);
+                    continue;
+                }
+                if(A[i]==A[j]){
+                    hasSame=1;
+                    break;
+                }
+            }
+            if(hasSame==0){
+                return A[i];
+            }
+        }
+        return 0;
+    }
+}
+</code></pre>
+<hr>
+<h3 id="大佬的代码">大佬的代码</h3>
+<blockquote>
+<p>链接：https://www.nowcoder.com/questionTerminal/0bc646909e474ac5b031ec6836a47768<br>
+来源：牛客网</p>
+</blockquote>
+<p>根据异或运算特点：</p>
+<p>两个相同的数进行异或，结果为0</p>
+<pre><code class="language-java">	public static int singleNumber(int[] A) {
+		int num = 0;
+		for(int i=0;i&lt;A.length;i++){
+			num^=A[i];
+		}
+		return num;
+	}
+</code></pre>
+<p>其实只要记住：</p>
+<p>​    1.异或满足交换律。</p>
+<p>​    2.相同两个数异或为0。</p>
+<p>​    3.0异或一个数为那个数本身。</p>
+<p>最后结果即出现1次的那个数。</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[阿里云https]]></title>
         <id>https://aruul.github.io/post/j3kVP0ZjV/</id>
@@ -3266,132 +3342,6 @@ select * from limit 0, 2
 <p>--未完待续</p>
 </li>
 </ol>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[4-常见parameterType的别名]]></title>
-        <id>https://aruul.github.io/post/-bkx04iBA/</id>
-        <link href="https://aruul.github.io/post/-bkx04iBA/">
-        </link>
-        <updated>2021-03-14T14:17:44.000Z</updated>
-        <content type="html"><![CDATA[<table>
-<thead>
-<tr>
-<th style="text-align:left">别名</th>
-<th style="text-align:left">映射的类型</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">_byte</td>
-<td style="text-align:left">byte</td>
-</tr>
-<tr>
-<td style="text-align:left">_long</td>
-<td style="text-align:left">long</td>
-</tr>
-<tr>
-<td style="text-align:left">_short</td>
-<td style="text-align:left">short</td>
-</tr>
-<tr>
-<td style="text-align:left">_int</td>
-<td style="text-align:left">int</td>
-</tr>
-<tr>
-<td style="text-align:left">_integer</td>
-<td style="text-align:left">int</td>
-</tr>
-<tr>
-<td style="text-align:left">_double</td>
-<td style="text-align:left">double</td>
-</tr>
-<tr>
-<td style="text-align:left">_float</td>
-<td style="text-align:left">float</td>
-</tr>
-<tr>
-<td style="text-align:left">_boolean</td>
-<td style="text-align:left">boolean</td>
-</tr>
-<tr>
-<td style="text-align:left">string</td>
-<td style="text-align:left">String</td>
-</tr>
-<tr>
-<td style="text-align:left">byte</td>
-<td style="text-align:left">Byte</td>
-</tr>
-<tr>
-<td style="text-align:left">long</td>
-<td style="text-align:left">Long</td>
-</tr>
-<tr>
-<td style="text-align:left">short</td>
-<td style="text-align:left">Short</td>
-</tr>
-<tr>
-<td style="text-align:left">int</td>
-<td style="text-align:left">Integer</td>
-</tr>
-<tr>
-<td style="text-align:left">integer</td>
-<td style="text-align:left">Integer</td>
-</tr>
-<tr>
-<td style="text-align:left">double</td>
-<td style="text-align:left">Double</td>
-</tr>
-<tr>
-<td style="text-align:left">float</td>
-<td style="text-align:left">Float</td>
-</tr>
-<tr>
-<td style="text-align:left">boolean</td>
-<td style="text-align:left">Boolean</td>
-</tr>
-<tr>
-<td style="text-align:left">date</td>
-<td style="text-align:left">Date</td>
-</tr>
-<tr>
-<td style="text-align:left">decimal</td>
-<td style="text-align:left">BigDecimal</td>
-</tr>
-<tr>
-<td style="text-align:left">bigdecimal</td>
-<td style="text-align:left">BigDecimal</td>
-</tr>
-<tr>
-<td style="text-align:left">object</td>
-<td style="text-align:left">Object</td>
-</tr>
-<tr>
-<td style="text-align:left">map</td>
-<td style="text-align:left">Map</td>
-</tr>
-<tr>
-<td style="text-align:left">hashmap</td>
-<td style="text-align:left">HashMap</td>
-</tr>
-<tr>
-<td style="text-align:left">list</td>
-<td style="text-align:left">List</td>
-</tr>
-<tr>
-<td style="text-align:left">arraylist</td>
-<td style="text-align:left">ArrayList</td>
-</tr>
-<tr>
-<td style="text-align:left">collection</td>
-<td style="text-align:left">Collection</td>
-</tr>
-<tr>
-<td style="text-align:left">iterator</td>
-<td style="text-align:left">Iterator</td>
-</tr>
-</tbody>
-</table>
 ]]></content>
     </entry>
 </feed>

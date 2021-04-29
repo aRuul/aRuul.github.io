@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>css学习笔记 | aRuul的无名小站</title>
+<title>LC15出现一次的数字 | aRuul的无名小站</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -22,26 +22,14 @@
 <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
 </script>
 
-    <meta name="description" content="
-css选择器
-
-
-
-选择器名称
-选择的内容
-示例
-
-
-
-
-元素选择器（也称作标签或类型选择器）
-所有指定(该)类型的 HTML 元素
-p 选择 &lt;p&gt;
-
-
-ID 选择器
-具有特定 ID 的元素（单一 HTML 页面中，每个 I..." />
-    <meta name="keywords" content="css" />
+    <meta name="description" content="题目描述
+现在有一个整数类型的数组，数组中素只有一个元素只出现一次，其余的元素都出现两次。
+注意：
+你需要给出一个线性时间复杂度的算法，你能在不使用额外内存空间的情况下解决这个问题么？
+示例1
+输入
+[复制](javascript:void..." />
+    <meta name="keywords" content="算法" />
   </head>
   <body>
     <div id="app" class="main">
@@ -125,97 +113,85 @@ ID 选择器
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">css学习笔记</h2>
-            <div class="post-date">2020-10-06</div>
-            
-              <div class="feature-container" style="background-image: url('https://gitee.com/aruul/a-ru-img/raw/master/img/20210411122258.png')">
-              </div>
+            <h2 class="post-title">LC15出现一次的数字</h2>
+            <div class="post-date">2021-04-29</div>
             
             <div class="post-content" v-pre>
-              <!--more-->
-<h3 id="css选择器">css选择器</h3>
-<table>
-<thead>
-<tr>
-<th>选择器名称</th>
-<th>选择的内容</th>
-<th>示例</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>元素选择器（也称作标签或类型选择器）</td>
-<td>所有指定(该)类型的 HTML 元素</td>
-<td><code>p</code> 选择 <code>&lt;p&gt;</code></td>
-</tr>
-<tr>
-<td>ID 选择器</td>
-<td>具有特定 ID 的元素（单一 HTML 页面中，每个 ID 只对应一个元素，一个元素只对应一个 ID）</td>
-<td><code>#my-id</code> 选择 <code>&lt;p id=&quot;my-id&quot;&gt;</code> 或 <code>&lt;a id=&quot;my-id&quot;&gt;</code></td>
-</tr>
-<tr>
-<td>类选择器</td>
-<td>具有特定类的元素（单一页面中，一个类可以有多个实例）</td>
-<td><code>.my-class</code> 选择 <code>&lt;p class=&quot;my-class&quot;&gt;</code> 和 <code>&lt;a class=&quot;my-class&quot;&gt;</code></td>
-</tr>
-<tr>
-<td>属性选择器</td>
-<td>拥有特定属性的元素</td>
-<td><code>img[src]</code> 选择 <code>&lt;img src=&quot;myimage.png&quot;&gt;</code> 而不是 <code>&lt;img&gt;</code></td>
-</tr>
-<tr>
-<td>伪（Pseudo）类选择器</td>
-<td>特定状态下的特定元素（比如鼠标指针悬停）</td>
-<td><code>a:hover</code> 仅在鼠标指针悬停在链接上时选择 <code>&lt;a&gt;</code></td>
-</tr>
-</tbody>
-</table>
-<h3 id="常见的属性">常见的属性</h3>
-<ul>
-<li>font-family       你想要你的文本使用的字体</li>
-<li>font-size           字体大小  （px）默认16px</li>
-<li>background-color    背景演示</li>
-<li>color                  字体颜色</li>
-<li>width                  宽度   如：width: 80%</li>
-<li>margin               外边距，围绕元素外部的空间,如margin: auto</li>
-<li>text-decoration: underline;           为文字添加下划线</li>
-<li>letter-spacing      字母间距   单位em</li>
-<li>word-spacing        词间距      单位em</li>
-<li>line-heigh              行高          单位em</li>
-</ul>
-<h4 id="盒子模型">盒子模型</h4>
-<figure data-type="image" tabindex="1"><img src="https://s1.ax1x.com/2020/10/06/0U0Q1g.png" alt="0U0Q1g.png" loading="lazy"></figure>
-<ul>
-<li>
-<p>margin          外边距</p>
-<p>margin-top: 5px</p>
-<p>margin-bottom: 5px</p>
-<p>margin-right:  10px</p>
-<p>margin-left: 10px</p>
-<p>上述属性可以用margin: 5px 10px 5px 10px代替，按照顺时针方向</p>
-<p>上述属性还可以用margin: 5px 10px 代替  第一个值为上下属性，第二个为左右</p>
-<p><strong>内边距同理</strong></p>
-</li>
-<li>
-<p>border           边框</p>
-<p>border: 5px blue solid;     设置边框线大小为5px，颜色为蓝色</p>
-<p>border-radius: 15px           设置边框圆角</p>
-</li>
-<li>
-<p>padding         内边距</p>
-</li>
-<li>
-<p>content          内容</p>
-</li>
-</ul>
-<p>未完待续...</p>
+              <h2 id="题目描述">题目描述</h2>
+<p>现在有一个整数类型的数组，数组中素只有一个元素只出现一次，其余的元素都出现两次。</p>
+<p><strong>注意：</strong></p>
+<p>你需要给出一个线性时间复杂度的算法，你能在不使用额外内存空间的情况下解决这个问题么？</p>
+<p>示例1</p>
+<h2 id="输入">输入</h2>
+<p>[复制](javascript:void(0)😉</p>
+<pre><code>[1,0,1]
+</code></pre>
+<h2 id="返回值">返回值</h2>
+<p>[复制](javascript:void(0)😉</p>
+<pre><code>0
+</code></pre>
+<hr>
+<h4 id="本菜鸡的解题代码">本菜鸡的解题代码</h4>
+<p>大概思路是暴力对比，暴力就完事了。</p>
+<p>二重循环，先提前在外层循环设定一个初始标志，为0，</p>
+<p>内存循环 ，如果找到相同的，则将标志设为1。</p>
+<p>外层在根据标志判断是否找到相同的，否则返回出不同的值。</p>
+<pre><code class="language-java">public class Solution {
+    /**
+     * 
+     * @param A int整型一维数组 
+     * @return int整型
+     */
+    public int singleNumber (int[] A) {
+        // write code here
+        for (int i = 0; i&lt;A.length ;i++) {
+            int hasSame=0;
+            for (int j = 0; j&lt;A.length; j++){
+                if(i==j){
+                    System.out.println(&quot;相同索引  A[&quot;+i+&quot;]=&quot;+A[i]+&quot; ,i=&quot;+i+&quot;, j=&quot;+j);
+                    continue;
+                }
+                if(A[i]==A[j]){
+                    hasSame=1;
+                    break;
+                }
+            }
+            if(hasSame==0){
+                return A[i];
+            }
+        }
+        return 0;
+    }
+}
+</code></pre>
+<hr>
+<h3 id="大佬的代码">大佬的代码</h3>
+<blockquote>
+<p>链接：https://www.nowcoder.com/questionTerminal/0bc646909e474ac5b031ec6836a47768<br>
+来源：牛客网</p>
+</blockquote>
+<p>根据异或运算特点：</p>
+<p>两个相同的数进行异或，结果为0</p>
+<pre><code class="language-java">	public static int singleNumber(int[] A) {
+		int num = 0;
+		for(int i=0;i&lt;A.length;i++){
+			num^=A[i];
+		}
+		return num;
+	}
+</code></pre>
+<p>其实只要记住：</p>
+<p>​    1.异或满足交换律。</p>
+<p>​    2.相同两个数异或为0。</p>
+<p>​    3.0异或一个数为那个数本身。</p>
+<p>最后结果即出现1次的那个数。</p>
 
             </div>
             
               <div class="tag-container">
                 
-                  <a href="https://aruul.github.io/tag/6rvOGvEbj/" class="tag">
-                    css
+                  <a href="https://aruul.github.io/tag/CSsooy82n/" class="tag">
+                    算法
                   </a>
                 
               </div>
@@ -223,9 +199,9 @@ ID 选择器
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://aruul.github.io/post/Al_mw5Fbu/">
+                <a href="https://aruul.github.io/post/j3kVP0ZjV/">
                   <h3 class="post-title">
-                    idea中导入struts2包
+                    阿里云https
                   </h3>
                 </a>
               </div>
