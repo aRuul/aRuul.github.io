@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>ubuntu ngnix的安装和配置 | aRuul的无名小站</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://aruul.github.io/favicon.ico?v=1619745922379">
+<link rel="stylesheet" href="https://aruul.github.io/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+<script async src="//code.tidio.co/0llaydzaqpj2momyrcycfplv2h2my3av.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+    <meta name="description" content="基本概念
+什么是 Nginx
+一个项目或平台，用户使用量少，并发量小的情况下，一台 Tomcat 服务器就可以满足需求。但当平台用户量增多，并发量增大时，一台 Tomcat 服务器就不能够很好地支撑。于是就需要做横向扩展，多增加几台服务器，..." />
+    <meta name="keywords" content="ngnix,服务器" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://aruul.github.io">
+        <img src="https://aruul.github.io/images/avatar.png?v=1619745922379" class="site-logo">
+        <h1 class="site-title">aRuul的无名小站</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/essay" class="site-nav">
+            随笔
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+          <a class="social-link" href="https://github.com/aRuul" target="_blank">
+            <i class="fab fa-github"></i>
+          </a>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+<span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+</span> | <a class="rss" href="https://aruul.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">ubuntu ngnix的安装和配置</h2>
+            <div class="post-date">2021-04-30</div>
+            
+            <div class="post-content" v-pre>
+              <h1 id="基本概念">基本概念</h1>
+<h2 id="什么是-nginx">什么是 Nginx</h2>
+<p>一个项目或平台，用户使用量少，并发量小的情况下，一台 Tomcat 服务器就可以满足需求。但当平台用户量增多，并发量增大时，一台 Tomcat 服务器就不能够很好地支撑。于是就需要做横向扩展，多增加几台服务器，并设置一个代理服务器。用户如果要访问平台首先会经过代理服务器，代理服务器实现处理用户的请求和转发到真实服务器，也就是反向代理。在做横向扩展后，每台服务器的大小、性能可能各不相同。代理服务器需要根据用户的请求，服务器的状态等实际情况实现选择和转发，也就是负载均衡。<br>
+<img src="https://kuangstudy.oss-cn-beijing.aliyuncs.com/bbs/2021/04/23/kuangstudybda5ac84-227d-47b9-8711-d19567828c6d.png" alt="img" loading="lazy"><br>
+Nginx（ engine x ）是一个高性能的 HTTP 和反向代理 web 服务器。<br>
+Nginx 特点是占用内存少，并发能力强。1M 左右的内存支持高达 50000 个并发连接数的响应，而 Tomcat 只支持 500~600 个响应。<br>
+Nginx 安装简单，配置文件简洁，启动容易且能持续运行。<br>
+Nginx 的作用简单来说就是反向代理和负载均衡。</p>
+<h2 id="正向代理和反向代理">正向代理和反向代理</h2>
+<p>正向代理基于客户端，代理客户端，是一种主动地行为。比如使用 VPN 访问外网，用户需要手动选择香港、日本或美国的节点，通过节点转发到外网服务器，这些节点代理了外网的服务器。<br>
+<img src="https://kuangstudy.oss-cn-beijing.aliyuncs.com/bbs/2021/04/23/kuangstudy872b3db7-d641-4ef7-9811-73a748fd1c27.png" alt="img" loading="lazy"><br>
+反向代理基于服务端，代理服务端，是一种被动地行为。比如访问百度，百度的服务器可能不在同一个地方，但是用户可以通过访问百度的域名 www.baidu.com，由代理服务器实现转发，这个过程用户是无感知的。<br>
+<img src="https://kuangstudy.oss-cn-beijing.aliyuncs.com/bbs/2021/04/23/kuangstudyeacfb3ba-66bf-467e-b414-33bd466b046c.png" alt="img" loading="lazy"></p>
+<h2 id="负载均衡">负载均衡</h2>
+<p>Nginx 提供的负载均衡策略有 2 种：内置策略和扩展策略。内置策略分为轮询，加权轮询，Ip hash。扩展策略由程序员自行创造。<br>
+轮询<br>
+<img src="https://kuangstudy.oss-cn-beijing.aliyuncs.com/bbs/2021/04/23/kuangstudy33a6e959-9de6-4361-9452-63add93d36db.png" alt="img" loading="lazy"><br>
+加权轮询<br>
+<img src="https://kuangstudy.oss-cn-beijing.aliyuncs.com/bbs/2021/04/23/kuangstudyce51f657-9c95-44eb-a473-46b12f3e173c.png" alt="img" loading="lazy"><br>
+Ip hash<br>
+<img src="https://kuangstudy.oss-cn-beijing.aliyuncs.com/bbs/2021/04/23/kuangstudy8406dd2c-6596-4292-8890-3423e095f28f.png" alt="img" loading="lazy"><br>
+动静分离<br>
+一个项目中，有些请求需要后台处理，而有些请求不需要后台处理，如 HTML、CSS、JavaScript 等文件，这些文件统称为静态资源。在开发中将不经常变动地资源与经常变动地资源分离，将这些静态资源缓存到本地 Nginx 中，由 Nginx 直接返回，可以大大提高资源响应的速度和网页的健壮性。<br>
+<img src="https://kuangstudy.oss-cn-beijing.aliyuncs.com/bbs/2021/04/23/kuangstudy4ffdae63-5189-4289-b465-94b1be9e731d.png" alt="img" loading="lazy"></p>
+<hr>
+<h1 id="nginx-安装">Nginx 安装</h1>
+<p>1、下载 nginx。<br>
+下载 Linux 安装包，使用<code>tar -zxvf</code>命令解压到对应的目录即可。<br>
+<img src="https://kuangstudy.oss-cn-beijing.aliyuncs.com/bbs/2021/04/23/kuangstudy2700bc18-8194-43ba-aa31-6fbb78906ed1.png" alt="img" loading="lazy"><br>
+2、安装 nginx 所需依赖。</p>
+<pre><code>yum install gcc-c++
+yum install -y pcre pcre-devel
+yum install -y openssl openssl-devel
+</code></pre>
+<p>3、进入 nginx 目录，执行以下两个命令。</p>
+<pre><code>./configuremake install
+</code></pre>
+<p>4、查找 nginx 安装路径并进入。<br>
+<img src="https://kuangstudy.oss-cn-beijing.aliyuncs.com/bbs/2021/04/23/kuangstudyf7a7e81f-7e8c-49af-a17a-b2a5794fb73c.png" alt="img" loading="lazy"><br>
+5、启动 nginx。</p>
+<pre><code>./nginx
+</code></pre>
+<p><img src="https://kuangstudy.oss-cn-beijing.aliyuncs.com/bbs/2021/04/23/kuangstudycedd22d3-3f9a-4672-8262-403135731260.png" alt="img" loading="lazy"><br>
+6、查看 nginx 配置文件.<br>
+<img src="https://kuangstudy.oss-cn-beijing.aliyuncs.com/bbs/2021/04/23/kuangstudyda8d055d-e44a-45f3-937e-6c9eefc4877a.png" alt="img" loading="lazy"><br>
+<img src="https://kuangstudy.oss-cn-beijing.aliyuncs.com/bbs/2021/04/23/kuangstudy47e6db4a-df2b-43a9-a501-47e1e2fbc1df.png" alt="img" loading="lazy"><br>
+7、检查 nginx 是否启动成功。<br>
+访问 服务器 ip:80，如果出现以下画面则说明 nginx 启动成功。<br>
+<img src="https://kuangstudy.oss-cn-beijing.aliyuncs.com/bbs/2021/04/23/kuangstudy5d020ccc-718c-4774-a07b-70168482f697.png" alt="img" loading="lazy"><br>
+如果访问失败，检查服务器防火墙和阿里云安全组的端口是否开启。</p>
+<hr>
+<h1 id="nginx-常用命令">Nginx 常用命令</h1>
+<pre><code class="language-java">cd /usr/local/nginx/sbin/
+./nginx  启动
+./nginx -s stop  停止
+./nginx -s quit  安全退出
+# reload命令十分常用，如果在线上部署的时候想要更改配置文件，完成后直接使用reload就可以快速重新加载。
+./nginx -s reload  重新加载配置文件
+ps aux|grep nginx  查看nginx进程
+</code></pre>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://aruul.github.io/tag/WMeJ9Wyw4/" class="tag">
+                    ngnix
+                  </a>
+                
+                  <a href="https://aruul.github.io/tag/s5PyGij_s/" class="tag">
+                    服务器
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://aruul.github.io/post/AyhAIG8Q_/">
+                  <h3 class="post-title">
+                    LC15出现一次的数字
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+  <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad()
+  </script>
+
+
+
+
+
+  </body>
+</html>
