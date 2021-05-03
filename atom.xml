@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://aruul.github.io</id>
     <title>aRuul的无名小站</title>
-    <updated>2021-05-03T13:18:36.709Z</updated>
+    <updated>2021-05-03T13:35:44.174Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://aruul.github.io"/>
     <link rel="self" href="https://aruul.github.io/atom.xml"/>
@@ -10,6 +10,105 @@
     <logo>https://aruul.github.io/images/avatar.png</logo>
     <icon>https://aruul.github.io/favicon.ico</icon>
     <rights>All rights reserved 2021, aRuul的无名小站</rights>
+    <entry>
+        <title type="html"><![CDATA[java 反射(1)--快速开始]]></title>
+        <id>https://aruul.github.io/post/s8pJIRpaT/</id>
+        <link href="https://aruul.github.io/post/s8pJIRpaT/">
+        </link>
+        <updated>2021-05-03T13:18:47.000Z</updated>
+        <content type="html"><![CDATA[<h4 id="1什么是反射">1.什么是反射？</h4>
+<p>如果你研究过框架的底层原理或者咱们自己写过框架的话，一定对反射这个概念不陌生。</p>
+<p>反射之所以被称为框架的灵魂，主要是因为它赋予了我们在运行时分析类以及执行类中方法的能力。</p>
+<p>通过反射你可以获取任意一个类的所有属性和方法，你还可以调用这些方法和属性。</p>
+<p><strong>反射 (Reflection) 是 Java 的特征之一，它允许运行中的 Java 程序获取自身的信息，并且可以操作类或对象的内部属性。</strong></p>
+<h4 id="2反射机制优缺点">2.反射机制优缺点</h4>
+<ul>
+<li><strong>优点</strong> ： 可以让咱们的代码更加灵活、为各种框架提供开箱即用的功能提供了便利</li>
+<li><strong>缺点</strong> ：让我们在运行时有了分析操作类的能力，这同样也增加了安全问题。比如可以无视泛型参数的安全检查（泛型参数的安全检查发生在编译时）。另外，反射的性能也要稍差点，不过，对于框架来说实际是影响不大的</li>
+</ul>
+<h4 id="3由一个例子引出反射">3.由一个例子引出反射</h4>
+<h5 id="31需求">3.1需求</h5>
+<blockquote>
+<p>根据配置文件re. properties指定信息，创建Cat过象并调用方法say</p>
+</blockquote>
+<p>re. properties文件</p>
+<pre><code class="language-properties">classfullpath=org.example.Cat
+method=say
+</code></pre>
+<p>Cat</p>
+<pre><code class="language-java">package org.example;
+
+/**
+ * @author aRu
+ * @date 2021/5/3 10:01
+ */
+public class Cat {
+    private String name = &quot;招财猫&quot;;
+    public int age= 3;
+
+    public Cat() {
+    }
+
+    public Cat(String name) {
+        this.name = name;
+    }
+
+    public void say(){
+        System.out.println(&quot;miao~ i am &quot;+name);
+    }
+}
+</code></pre>
+<p>工程目录如下，本次代码写在org.example.quickStart_01下</p>
+<figure data-type="image" tabindex="1"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210503213409.png" alt="image-20210503213403742" loading="lazy"></figure>
+<h5 id="32实现">3.2实现</h5>
+<pre><code class="language-java">package org.example.quickStart_01;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Properties;
+
+/**问题的引入
+ * @author aRu
+ * @date 2021/5/3 10:04
+ */
+public class ReflectionQuickStart {
+    public static void main(String[] args) throws IOException, ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
+        //根据配置文件 创建Cat对象并调用 配置文件中指定的方法
+
+        //1.读取配置文件
+        Properties properties = new Properties();
+        properties.load(new FileInputStream(&quot;src\\org\\example\\re.properties&quot;));
+        String classfullpath = properties.get(&quot;classfullpath&quot;).toString();
+        String method = properties.get(&quot;method&quot;).toString();
+        System.out.println(&quot;类的全路径： &quot;+classfullpath);
+        System.out.println(&quot;方法名： &quot;+method);
+
+        //2.使用反射机制
+        Class cls = Class.forName(classfullpath);
+        //通过 cls 得到你加载的类 Cat的对象实例
+        Object o = cls.newInstance();
+        System.out.println(&quot;o的类型： &quot;+o.getClass());
+        //通过cls 得到你加载的类Cat的 method 方法
+        Method method1 = cls.getMethod(method);
+        //通过method1 调用方法： 即，通过方法对象 来实现调用方法
+        method1.invoke(o);
+
+    }
+}
+
+</code></pre>
+<hr>
+<p>运行结果</p>
+<pre><code>类的全路径： org.example.Cat
+方法名： say
+o的类型： class org.example.Cat
+miao~ i am 招财猫
+</code></pre>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[java注解浅谈]]></title>
         <id>https://aruul.github.io/post/3NqPQbqyz/</id>
@@ -3294,105 +3393,6 @@ public class Student {
     &lt;/resultMap&gt;
 &lt;/mapper&gt;
 </code></pre>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[7-注解开发]]></title>
-        <id>https://aruul.github.io/post/d8DRHzqIN/</id>
-        <link href="https://aruul.github.io/post/d8DRHzqIN/">
-        </link>
-        <updated>2021-03-15T14:01:56.000Z</updated>
-        <content type="html"><![CDATA[<h3 id="1面向接口编程">1.面向接口编程</h3>
-<ul>
-<li>
-<p>使用面向接口编程的根本原因：<strong>解耦</strong>，可拓展，提高复用。</p>
-</li>
-<li>
-<p>分层开发中，上层不用管具体的实现，大家都遵循共同的标准，使得开发变得更容易，规范性更好。</p>
-</li>
-</ul>
-<hr>
-<h3 id="2注解的基本步骤">2.注解的基本步骤</h3>
-<ol>
-<li>
-<p>编写基本的配置文件【mybatis-config.xml】</p>
-</li>
-<li>
-<p>编写pojo类</p>
-</li>
-<li>
-<p>编写Dao层接口</p>
-<pre><code class="language-java">//org.example.dao.UserMapper
-public interface UserMapper {
-    @Select(&quot;select * from user&quot;)
-    List&lt;User&gt; getUser();
-}
-</code></pre>
-</li>
-</ol>
-<p>4.在配置文件【mybatis-config.xml】中注册Mappers,绑定接口</p>
-<pre><code>    &lt;mappers&gt;
-        &lt;mapper class=&quot;org.example.dao.UserMapper&quot;/&gt;
-    &lt;/mappers&gt;
-</code></pre>
-<p>5.测试</p>
-<pre><code class="language-java">    @Test
-    public void test(){
-        SqlSession sqlSession = MybatisUtils.getSqlSession();
-        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
-
-        List&lt;User&gt; userList=mapper.getUser();
-        for (User user : userList) {
-            System.out.println(user);
-        }
-        sqlSession.close();
-    }
-</code></pre>
-<h3 id="3本质">3.本质</h3>
-<p>Java反射机制的实现</p>
-<h3 id="4基于注解的增删改查">4.基于注解的增删改查</h3>
-<h4 id="41自动提交">4.1自动提交</h4>
-<p>之前写的工具类</p>
-<pre><code class="language-java">public class MybatisUtils {
-    private static SqlSessionFactory sqlSessionFactory;
-    static {
-        try{
-            //获取 SqlSessionFactory 对象
-            String resource = &quot;mybatis-config.xml&quot;;
-            InputStream inputStream = Resources.getResourceAsStream(resource);
-            sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
-        }catch(IOException e){
-            e.printStackTrace();
-        }
-    }
-    //获取sqlSession实例
-    public static SqlSession getSqlSession(){
-         //true表示自动提交
-         return sqlSessionFactory.openSession(true);
-    }
-}
-</code></pre>
-<h4 id="42-当parametertype-有多个参数">4.2 当parameterType 有多个参数</h4>
-<p>使用注解的方法----------<mark>@Param</mark></p>
-<pre><code class="language-java">User getUserById(@Param(&quot;id&quot;) int id,@Param(&quot;name&quot;) String name);
-</code></pre>
-<p>无论是采用注解进行增删改查还是用xml, 其他的照常写</p>
-<p><mark><strong>注意</strong>! 在写sql语句提取参数的时候,要写@Param里的参数名字</mark></p>
-<h4 id="43-增删改查">4.3 增删改查</h4>
-<ul>
-<li>
-<p><strong>@Select(&quot;sql语句&quot;)              查</strong></p>
-</li>
-<li>
-<p><strong>@Insert(&quot;sql语句&quot;)              增</strong></p>
-</li>
-<li>
-<p><strong>@Delete(&quot;sql语句&quot;)             删</strong></p>
-</li>
-<li>
-<p><strong>@Update(&quot;sql语句&quot;)           改</strong></p>
-</li>
-</ul>
 ]]></content>
     </entry>
 </feed>
