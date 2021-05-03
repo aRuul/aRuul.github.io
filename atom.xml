@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://aruul.github.io</id>
     <title>aRuul的无名小站</title>
-    <updated>2021-04-30T01:25:50.757Z</updated>
+    <updated>2021-05-03T13:15:06.833Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://aruul.github.io"/>
     <link rel="self" href="https://aruul.github.io/atom.xml"/>
@@ -10,6 +10,91 @@
     <logo>https://aruul.github.io/images/avatar.png</logo>
     <icon>https://aruul.github.io/favicon.ico</icon>
     <rights>All rights reserved 2021, aRuul的无名小站</rights>
+    <entry>
+        <title type="html"><![CDATA[java注解浅谈]]></title>
+        <id>https://aruul.github.io/post/3NqPQbqyz/</id>
+        <link href="https://aruul.github.io/post/3NqPQbqyz/">
+        </link>
+        <updated>2021-05-03T13:13:49.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="注解">注解</h3>
+<hr>
+<h4 id="内置注解">内置注解</h4>
+<ul>
+<li>
+<p>@Override</p>
+<p>表示一个方法声名打算重写超类中的另一个方法声明。</p>
+</li>
+<li>
+<p>@Deprecated</p>
+<p>表示不鼓励程序员使用这样的元素</p>
+</li>
+<li>
+<p>@SuppressWarnings()</p>
+<p>抑制编译时的警告信息</p>
+<p>如@SuppressWarnings(&quot;all&quot;)等</p>
+<hr>
+<h4 id="元注解">元注解</h4>
+<p>除了直接使用JDK 定义好的注解，我们还可以自定义注解，在JDK 1.5中提供了4个标准的用来对注解类型进行注解的注解类，我们称之为 meta-annotation（元注解），他们分别是：</p>
+</li>
+<li>
+<p>@Target</p>
+<p>Target注解的作用是：描述注解的使用范围（即：被修饰的注解可以用在什么地方</p>
+</li>
+<li>
+<p>@Retention</p>
+<p>Reteniton注解的作用是：描述注解保留的时间范围（即：被描述的注解在它所修饰的类中可以被保留到何时）</p>
+<p>Reteniton注解用来限定那些被它所注解的注解类在注解到其他类上以后，可被保留到何时，一共有三种策略，定义在RetentionPolicy枚举中。</p>
+<p><mark>RUNTIME一般较常用</mark></p>
+<pre><code>SOURCE,    // 源文件保留
+CLASS,       // 编译期保留，默认值
+RUNTIME   // 运行期保留，可通过反射去获取注解信息
+</code></pre>
+</li>
+<li>
+<p>@Documented</p>
+<p>表示是否将注解生成在JavaDoc中</p>
+</li>
+<li>
+<p>@Inherited</p>
+<p>子类可以继承父类的注解</p>
+</li>
+</ul>
+<p>我们可以使用这4个元注解来对我们自定义的注解类型进行注解</p>
+<hr>
+<h4 id="自定义注解">自定义注解</h4>
+<p>使用@interface</p>
+<pre><code class="language-JAVA">//定义一个注解
+@Target(value = {ElementType.METHOD,ElementType.TYPE})  //表示注解可以用在方法、类上
+@Retention(value = RetentionPolicy.RUNTIME)             //表示注解在什么时候有效RUNTIME&gt;class&gt;sources
+@Documented                                             //表示是否将注解生成在JavaDoc中
+@Inherited                                              //子类可以继承父类的注解
+public @interface MyAnnotation{
+
+}
+</code></pre>
+<pre><code class="language-java">//定义一个注解
+@Target(value = {ElementType.METHOD,ElementType.TYPE})  //表示注解可以用在方法、类上
+@Retention(value = RetentionPolicy.RUNTIME)             //表示注解在什么时候有效RUNTIME&gt;class&gt;sources
+@Documented                                             //表示是否将注解生成在JavaDoc中
+@Inherited                                              //子类可以继承父类的注解
+public @interface MyAnnotation{
+    //注解的参数： 参数类型+参数名()
+    String name() default &quot;&quot;;  //default 表示默认值  这里是默认值为空
+    int age() default 0;
+    int id() default -1;    //默认值为-1，代表不存在
+
+    String [] schools();
+}
+
+
+@Target(value = {ElementType.METHOD,ElementType.TYPE})  //表示注解可以用在方法、类上
+@Retention(value = RetentionPolicy.RUNTIME)             //表示注解在什么时候有效RUNTIME&gt;class&gt;sources
+public @interface MyAnnotation2{
+    String value();  //如果注解中只有一个参数，则建议定义为value，这样在使用的时候直接写  @MyAnnotation2(&quot;赋值&quot;)
+}
+</code></pre>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[ubuntu ngnix的安装和配置]]></title>
         <id>https://aruul.github.io/post/xeGoYob77/</id>
@@ -3308,67 +3393,6 @@ public interface UserMapper {
 <p><strong>@Update(&quot;sql语句&quot;)           改</strong></p>
 </li>
 </ul>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[6-分页]]></title>
-        <id>https://aruul.github.io/post/INzAInTDR/</id>
-        <link href="https://aruul.github.io/post/INzAInTDR/">
-        </link>
-        <updated>2021-03-15T12:20:45.000Z</updated>
-        <content type="html"><![CDATA[<h3 id="一-使用limit实现分页">一 、使用limit实现分页</h3>
-<h4 id="1分页-sql语句">1.分页  sql语句</h4>
-<pre><code class="language-xml">select * from limit startIndex, pageSize
-</code></pre>
-<ul>
-<li>
-<blockquote>
-<p>startIndex   开始序号</p>
-</blockquote>
-</li>
-<li>
-<blockquote>
-<p>pageSize    一页的大小</p>
-</blockquote>
-</li>
-</ul>
-<p>例如</p>
-<pre><code class="language-xml">&lt;!--从第0个开始查询，每两个为一页--&gt;
-select * from 表名 limit 0, 2
-
-&lt;!--从第0个开始查询，每两个为一页--&gt;
-select * from limit 0, 2
-</code></pre>
-<h4 id="2代码部分">2.代码部分</h4>
-<p>Dao层代码</p>
-<pre><code class="language-java">    //分页查询
-    List&lt;User&gt; getUserByLimit(Map&lt;String,Object&gt;map);
-</code></pre>
-<pre><code class="language-xml">    &lt;select id=&quot;getUserByLimit&quot; resultType=&quot;user&quot; parameterType=&quot;map&quot;&gt;
-        select * from mybatis.user limit #{startIndex},#{pageSize}
-    &lt;/select&gt;
-</code></pre>
-<pre><code class="language-java"> @Test
-    public void getUserByLimit(){
-        SqlSession sqlSession=MybatisUtils.getSqlSession();
-        UserMapper userMapper=sqlSession.getMapper(UserMapper.class);
-
-        Map&lt;String,Object&gt; map=new HashMap&lt;String, Object&gt;();
-        map.put(&quot;startIndex&quot;,0);
-        map.put(&quot;pageSize&quot;,2);
-        List&lt;User&gt; userList=userMapper.getUserByLimit(map);
-        for (User user : userList) {
-            System.out.println(user);
-        }
-    }
-</code></pre>
-<hr>
-<h3 id="二-rowbounds分页不常用">二、RowBounds分页【不常用】</h3>
-<p>略，懒得写了</p>
-<hr>
-<h3 id="三-插件">三、插件</h3>
-<p><a href="https://pagehelper.github.io/">Mybatis PageHelper 插件</a></p>
-<figure data-type="image" tabindex="1"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210315202015.png" alt="image-20210314201120021" loading="lazy"></figure>
 ]]></content>
     </entry>
 </feed>
