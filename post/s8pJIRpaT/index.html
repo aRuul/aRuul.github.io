@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="https://aruul.github.io/favicon.ico?v=1620048938432">
+<link rel="shortcut icon" href="https://aruul.github.io/favicon.ico?v=1620117734174">
 <link rel="stylesheet" href="https://aruul.github.io/styles/main.css">
 
 
@@ -22,10 +22,11 @@
 <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
 </script>
 
-    <meta name="description" content="1.什么是反射？
+    <meta name="description" content="快速开始
+1.什么是反射？
 如果你研究过框架的底层原理或者咱们自己写过框架的话，一定对反射这个概念不陌生。
 反射之所以被称为框架的灵魂，主要是因为它赋予了我们在运行时分析类以及执行类中方法的能力。
-通过反射你可以获取任意一个类的所有属性和方法，你还可..." />
+通过反射你可以获取任意一个类的所有属性和方..." />
     <meta name="keywords" content="java" />
   </head>
   <body>
@@ -35,7 +36,7 @@
   <div class="top-container" data-aos="fade-right">
     <div class="top-header-container">
       <a class="site-title-container" href="https://aruul.github.io">
-        <img src="https://aruul.github.io/images/avatar.png?v=1620048938432" class="site-logo">
+        <img src="https://aruul.github.io/images/avatar.png?v=1620117734174" class="site-logo">
         <h1 class="site-title">aRuul的无名小站</h1>
       </a>
       <div class="menu-btn" @click="menuVisible = !menuVisible">
@@ -114,7 +115,8 @@
             <div class="post-date">2021-05-03</div>
             
             <div class="post-content" v-pre>
-              <h4 id="1什么是反射">1.什么是反射？</h4>
+              <h3 id="快速开始">快速开始</h3>
+<h4 id="1什么是反射">1.什么是反射？</h4>
 <p>如果你研究过框架的底层原理或者咱们自己写过框架的话，一定对反射这个概念不陌生。</p>
 <p>反射之所以被称为框架的灵魂，主要是因为它赋予了我们在运行时分析类以及执行类中方法的能力。</p>
 <p>通过反射你可以获取任意一个类的所有属性和方法，你还可以调用这些方法和属性。</p>
@@ -193,6 +195,7 @@ public class ReflectionQuickStart {
         Method method1 = cls.getMethod(method);
         //通过method1 调用方法： 即，通过方法对象 来实现调用方法
         method1.invoke(o);
+        
 
     }
 }
@@ -204,6 +207,19 @@ public class ReflectionQuickStart {
 方法名： say
 o的类型： class org.example.Cat
 miao~ i am 招财猫
+</code></pre>
+<p>补充</p>
+<pre><code class="language-java">        //得到类的成员变量
+        //注意： cls.getField(&quot;name&quot;)不能得到私有的属性
+        Field nameField = cls.getField(&quot;age&quot;);
+        System.out.println(nameField.get(o));
+
+        //得到对象的构造函数
+        Constructor constructor = cls.getConstructor();//()中可以指定构造参数类型，这里没写，则返回无参构造
+        System.out.println(&quot;无参构造：&quot;+constructor);
+
+        Constructor constructor2 = cls.getConstructor(String.class);
+        System.out.println(&quot;有参构造：&quot;+constructor2);
 </code></pre>
 
             </div>

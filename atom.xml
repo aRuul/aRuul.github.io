@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://aruul.github.io</id>
     <title>aRuul的无名小站</title>
-    <updated>2021-05-03T13:35:44.174Z</updated>
+    <updated>2021-05-04T08:42:17.032Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://aruul.github.io"/>
     <link rel="self" href="https://aruul.github.io/atom.xml"/>
@@ -16,7 +16,8 @@
         <link href="https://aruul.github.io/post/s8pJIRpaT/">
         </link>
         <updated>2021-05-03T13:18:47.000Z</updated>
-        <content type="html"><![CDATA[<h4 id="1什么是反射">1.什么是反射？</h4>
+        <content type="html"><![CDATA[<h3 id="快速开始">快速开始</h3>
+<h4 id="1什么是反射">1.什么是反射？</h4>
 <p>如果你研究过框架的底层原理或者咱们自己写过框架的话，一定对反射这个概念不陌生。</p>
 <p>反射之所以被称为框架的灵魂，主要是因为它赋予了我们在运行时分析类以及执行类中方法的能力。</p>
 <p>通过反射你可以获取任意一个类的所有属性和方法，你还可以调用这些方法和属性。</p>
@@ -95,6 +96,7 @@ public class ReflectionQuickStart {
         Method method1 = cls.getMethod(method);
         //通过method1 调用方法： 即，通过方法对象 来实现调用方法
         method1.invoke(o);
+        
 
     }
 }
@@ -106,6 +108,19 @@ public class ReflectionQuickStart {
 方法名： say
 o的类型： class org.example.Cat
 miao~ i am 招财猫
+</code></pre>
+<p>补充</p>
+<pre><code class="language-java">        //得到类的成员变量
+        //注意： cls.getField(&quot;name&quot;)不能得到私有的属性
+        Field nameField = cls.getField(&quot;age&quot;);
+        System.out.println(nameField.get(o));
+
+        //得到对象的构造函数
+        Constructor constructor = cls.getConstructor();//()中可以指定构造参数类型，这里没写，则返回无参构造
+        System.out.println(&quot;无参构造：&quot;+constructor);
+
+        Constructor constructor2 = cls.getConstructor(String.class);
+        System.out.println(&quot;有参构造：&quot;+constructor2);
 </code></pre>
 ]]></content>
     </entry>
