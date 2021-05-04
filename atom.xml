@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://aruul.github.io</id>
     <title>aRuul的无名小站</title>
-    <updated>2021-05-04T08:42:17.032Z</updated>
+    <updated>2021-05-04T08:52:20.761Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://aruul.github.io"/>
     <link rel="self" href="https://aruul.github.io/atom.xml"/>
@@ -10,6 +10,95 @@
     <logo>https://aruul.github.io/images/avatar.png</logo>
     <icon>https://aruul.github.io/favicon.ico</icon>
     <rights>All rights reserved 2021, aRuul的无名小站</rights>
+    <entry>
+        <title type="html"><![CDATA[java反射(2)  反射调用的性能和优化方案]]></title>
+        <id>https://aruul.github.io/post/L4U-TAPK3/</id>
+        <link href="https://aruul.github.io/post/L4U-TAPK3/">
+        </link>
+        <updated>2021-05-04T08:51:02.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="反射调用的性能和优化方案">反射调用的性能和优化方案</h2>
+<h3 id="对比">对比</h3>
+<p>普通方法</p>
+<pre><code class="language-java">    //普通方法
+    public static void m1(){
+        Cat cat = new Cat();
+
+        long start = System.currentTimeMillis();
+
+        for (int i = 0; i &lt; 90000000; i++) {
+            cat.say();
+        }
+
+        long end = System.currentTimeMillis();
+        System.out.println(&quot;普通方法执行时间：&quot;+(end-start));
+    }
+</code></pre>
+<p>通过反射</p>
+<pre><code class="language-java">//反射
+    public static void m2() throws ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
+
+        Class aClass = Class.forName(&quot;org.example.Cat&quot;);
+        Object o = aClass.newInstance();
+        Method say = aClass.getMethod(&quot;say&quot;);
+
+        long start = System.currentTimeMillis();
+
+        for (int i = 0; i &lt; 90000000; i++) {
+            say.invoke(o);
+        }
+
+        long end = System.currentTimeMillis();
+        System.out.println(&quot;反射机制执行时间：&quot;+(end-start));
+
+
+    }
+</code></pre>
+<p>两者运行时间对比</p>
+<pre><code>普通方法执行时间：3 ms
+反射机制执行时间：175 ms
+</code></pre>
+<h3 id="优化">优化</h3>
+<blockquote>
+<p>反射调用优化-关闭访问检查</p>
+<ol>
+<li>Method和 Field、 Constructor象都有 setAccessible()方法</li>
+<li>setAccessible()作用是启动和禁用访问安全检查的开关<br>
+3.参数值为true表示反射的对象在使用时取消访向检查，提高反射的效率。<br>
+参数值为 false则表示反射的对象执行访向检查</li>
+</ol>
+</blockquote>
+<p>所以可以通过setAccessible()来优化反射。</p>
+<p>其实呢，优化之后效率也没有高出很多。</p>
+<pre><code class="language-java">    //反射优化
+    public static void m3() throws ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
+
+        Class aClass = Class.forName(&quot;org.example.Cat&quot;);
+        Object o = aClass.newInstance();
+        Method say = aClass.getMethod(&quot;say&quot;);
+
+        //取消在反射调用方法时 取消访问检测
+        say.setAccessible(true);
+
+
+        long start = System.currentTimeMillis();
+
+        for (int i = 0; i &lt; 90000000; i++) {
+            say.invoke(o);
+        }
+
+        long end = System.currentTimeMillis();
+        System.out.println(&quot;反射优化机制执行时间：&quot;+(end-start));
+
+    }
+</code></pre>
+<hr>
+<p>执行结果对比</p>
+<pre><code>普通方法执行时间：3 ms
+反射机制执行时间：176 ms
+反射优化机制执行时间：129 ms
+</code></pre>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[java 反射(1)--快速开始]]></title>
         <id>https://aruul.github.io/post/s8pJIRpaT/</id>
@@ -3245,169 +3334,6 @@ public class MyTest7 {
 <figure data-type="image" tabindex="16"><img src="https://pic4.zhimg.com/80/v2-7f38c354c3ca8ba9205ecbcaae04d1d3_720w.jpg" alt="img" loading="lazy"></figure>
 </li>
 </ol>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[8-多对一]]></title>
-        <id>https://aruul.github.io/post/q2Mgvtj6L/</id>
-        <link href="https://aruul.github.io/post/q2Mgvtj6L/">
-        </link>
-        <updated>2021-03-17T02:23:00.000Z</updated>
-        <content type="html"><![CDATA[<p>student表</p>
-<figure data-type="image" tabindex="1"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210317213129.png" alt="image-20210317213128631" loading="lazy"></figure>
-<hr>
-<p>teacher表</p>
-<figure data-type="image" tabindex="2"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210317213220.png" alt="image-20210317213220202" loading="lazy"></figure>
-<hr>
-<p><mark>一个老师对应多个学生</mark></p>
-<hr>
-<p><strong>Teacher.java</strong></p>
-<pre><code class="language-java">package org.example.pojo;
-
-/**
- * @author aRu
- * @date 2021/3/17 20:21
- */
-public class Teacher {
-    private int id;
-    private String name;
-
-    public Teacher() {
-    }
-
-    public Teacher(int id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @Override
-    public String toString() {
-        return &quot;Teacher{&quot; +
-                &quot;id=&quot; + id +
-                &quot;, name='&quot; + name + '\'' +
-                '}';
-    }
-}
-</code></pre>
-<p><strong>Student.java</strong></p>
-<p><mark>一个老师对应多个学生，在学生类中写上<strong>Teacher teacher</strong></mark></p>
-<pre><code class="language-java">package org.example.pojo;
-
-/**
- * @author aRu
- * @date 2021/3/17 20:20
- */
-public class Student {
-    private int id;
-    private String name;
-    private Teacher teacher;
-
-    public Student() {
-    }
-
-    public Student(int id, String name, Teacher teacher) {
-        this.id = id;
-        this.name = name;
-        this.teacher = teacher;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Teacher getTeacher() {
-        return teacher;
-    }
-
-    public void setTeacher(Teacher teacher) {
-        this.teacher = teacher;
-    }
-
-    @Override
-    public String toString() {
-        return &quot;Student{&quot; +
-                &quot;id=&quot; + id +
-                &quot;, name='&quot; + name + '\'' +
-                &quot;, teacher=&quot; + teacher +
-                '}';
-    }
-}
-</code></pre>
-<hr>
-<p><strong>StudentMapper.java</strong></p>
-<pre><code class="language-java">public interface StudentMapper {
-    //查询所有的学生信息 以及对应的老师的信息
-    public List&lt;Student&gt; getStudent();
-}
-</code></pre>
-<ul>
-<li><mark>在查询学生时，学生中包含了Teacher这个类，查询的resultType比较复杂 ，所以采用resultMap的形式</mark></li>
-<li><mark>sql语句中将学生表、教师表中s.id  s.name  t.name字段起别名为sid  sname   tname</mark></li>
-</ul>
-<pre><code class="language-mysql">select s.id sid, s.name sname, t.name tname
-        from mybatis.student s,mybatis.teacher t
-        where s.tid=t.id;
-</code></pre>
-<ul>
-<li>
-<p><mark>resultMap的编写</mark></p>
-<p><mark>在上一步中三个关键的数据库字段名被起别名，与原来java中的属性名不一致，所以要一一对应一下；</mark></p>
-<p><mark>对于一般的属性 用<code>result</code>标签</mark></p>
-<p><mark>对于类来说  用 <strong>association</strong> 标签 在java实体类中属性名property为teacher ,  javaType=&quot;Teacher&quot;</mark></p>
-<p><mark>而原来java实体类中属性名name对于起别名后 的tname</mark></p>
-</li>
-</ul>
-<p><strong>StudentMapper.xml</strong></p>
-<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
-&lt;!DOCTYPE mapper
-        PUBLIC &quot;-//mybatis.org//DTD Mapper 3.0//EN&quot;
-        &quot;http://mybatis.org/dtd/mybatis-3-mapper.dtd&quot;&gt;
-&lt;!--namespace 是要绑定的类的路径--&gt;
-&lt;mapper namespace=&quot;org.example.dao.StudentMapper&quot;&gt;
-    &lt;!--按照结果嵌套处理--&gt;
-    &lt;select id=&quot;getStudent&quot; resultMap=&quot;StudentTeacher&quot;&gt;
-        select s.id sid, s.name sname, t.name tname
-        from mybatis.student s,mybatis.teacher t
-        where s.tid=t.id;
-    &lt;/select&gt;
-
-    &lt;resultMap id=&quot;StudentTeacher&quot; type=&quot;Student&quot;&gt;
-        &lt;result property=&quot;id&quot; column=&quot;sid&quot;/&gt;
-        &lt;result property=&quot;name&quot; column=&quot;sname&quot;/&gt;
-        &lt;association property=&quot;teacher&quot; javaType=&quot;Teacher&quot;&gt;
-            &lt;result property=&quot;name&quot; column=&quot;tname&quot;/&gt;
-        &lt;/association&gt;
-    &lt;/resultMap&gt;
-&lt;/mapper&gt;
-</code></pre>
 ]]></content>
     </entry>
 </feed>

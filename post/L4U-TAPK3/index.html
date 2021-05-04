@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>6-分页 | aRuul的无名小站</title>
+<title>java反射(2)  反射调用的性能和优化方案 | aRuul的无名小站</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -22,25 +22,15 @@
 <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
 </script>
 
-    <meta name="description" content="一 、使用limit实现分页
-1.分页  sql语句
-select * from limit startIndex, pageSize
+    <meta name="description" content="反射调用的性能和优化方案
+对比
+普通方法
+    //普通方法
+    public static void m1(){
+        Cat cat = new Cat();
 
-
-
-
-startIndex   开始序号
-
-
-
-
-pageSize    一页的大小
-
-
-
-例如
-&l..." />
-    <meta name="keywords" content="mybatis,java" />
+        long start = System.c..." />
+    <meta name="keywords" content="java" />
   </head>
   <body>
     <div id="app" class="main">
@@ -124,74 +114,95 @@ pageSize    一页的大小
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">6-分页</h2>
-            <div class="post-date">2021-03-15</div>
-            
-              <div class="feature-container" style="background-image: url('https://gitee.com/aruul/a-ru-img/raw/master/img/20210411122456.png')">
-              </div>
+            <h2 class="post-title">java反射(2)  反射调用的性能和优化方案</h2>
+            <div class="post-date">2021-05-04</div>
             
             <div class="post-content" v-pre>
-              <h3 id="一-使用limit实现分页">一 、使用limit实现分页</h3>
-<h4 id="1分页-sql语句">1.分页  sql语句</h4>
-<pre><code class="language-xml">select * from limit startIndex, pageSize
-</code></pre>
-<ul>
-<li>
-<blockquote>
-<p>startIndex   开始序号</p>
-</blockquote>
-</li>
-<li>
-<blockquote>
-<p>pageSize    一页的大小</p>
-</blockquote>
-</li>
-</ul>
-<p>例如</p>
-<pre><code class="language-xml">&lt;!--从第0个开始查询，每两个为一页--&gt;
-select * from 表名 limit 0, 2
+              <h2 id="反射调用的性能和优化方案">反射调用的性能和优化方案</h2>
+<h3 id="对比">对比</h3>
+<p>普通方法</p>
+<pre><code class="language-java">    //普通方法
+    public static void m1(){
+        Cat cat = new Cat();
 
-&lt;!--从第0个开始查询，每两个为一页--&gt;
-select * from limit 0, 2
-</code></pre>
-<h4 id="2代码部分">2.代码部分</h4>
-<p>Dao层代码</p>
-<pre><code class="language-java">    //分页查询
-    List&lt;User&gt; getUserByLimit(Map&lt;String,Object&gt;map);
-</code></pre>
-<pre><code class="language-xml">    &lt;select id=&quot;getUserByLimit&quot; resultType=&quot;user&quot; parameterType=&quot;map&quot;&gt;
-        select * from mybatis.user limit #{startIndex},#{pageSize}
-    &lt;/select&gt;
-</code></pre>
-<pre><code class="language-java"> @Test
-    public void getUserByLimit(){
-        SqlSession sqlSession=MybatisUtils.getSqlSession();
-        UserMapper userMapper=sqlSession.getMapper(UserMapper.class);
+        long start = System.currentTimeMillis();
 
-        Map&lt;String,Object&gt; map=new HashMap&lt;String, Object&gt;();
-        map.put(&quot;startIndex&quot;,0);
-        map.put(&quot;pageSize&quot;,2);
-        List&lt;User&gt; userList=userMapper.getUserByLimit(map);
-        for (User user : userList) {
-            System.out.println(user);
+        for (int i = 0; i &lt; 90000000; i++) {
+            cat.say();
         }
+
+        long end = System.currentTimeMillis();
+        System.out.println(&quot;普通方法执行时间：&quot;+(end-start));
+    }
+</code></pre>
+<p>通过反射</p>
+<pre><code class="language-java">//反射
+    public static void m2() throws ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
+
+        Class aClass = Class.forName(&quot;org.example.Cat&quot;);
+        Object o = aClass.newInstance();
+        Method say = aClass.getMethod(&quot;say&quot;);
+
+        long start = System.currentTimeMillis();
+
+        for (int i = 0; i &lt; 90000000; i++) {
+            say.invoke(o);
+        }
+
+        long end = System.currentTimeMillis();
+        System.out.println(&quot;反射机制执行时间：&quot;+(end-start));
+
+
+    }
+</code></pre>
+<p>两者运行时间对比</p>
+<pre><code>普通方法执行时间：3 ms
+反射机制执行时间：175 ms
+</code></pre>
+<h3 id="优化">优化</h3>
+<blockquote>
+<p>反射调用优化-关闭访问检查</p>
+<ol>
+<li>Method和 Field、 Constructor象都有 setAccessible()方法</li>
+<li>setAccessible()作用是启动和禁用访问安全检查的开关<br>
+3.参数值为true表示反射的对象在使用时取消访向检查，提高反射的效率。<br>
+参数值为 false则表示反射的对象执行访向检查</li>
+</ol>
+</blockquote>
+<p>所以可以通过setAccessible()来优化反射。</p>
+<p>其实呢，优化之后效率也没有高出很多。</p>
+<pre><code class="language-java">    //反射优化
+    public static void m3() throws ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
+
+        Class aClass = Class.forName(&quot;org.example.Cat&quot;);
+        Object o = aClass.newInstance();
+        Method say = aClass.getMethod(&quot;say&quot;);
+
+        //取消在反射调用方法时 取消访问检测
+        say.setAccessible(true);
+
+
+        long start = System.currentTimeMillis();
+
+        for (int i = 0; i &lt; 90000000; i++) {
+            say.invoke(o);
+        }
+
+        long end = System.currentTimeMillis();
+        System.out.println(&quot;反射优化机制执行时间：&quot;+(end-start));
+
     }
 </code></pre>
 <hr>
-<h3 id="二-rowbounds分页不常用">二、RowBounds分页【不常用】</h3>
-<p>略，懒得写了</p>
-<hr>
-<h3 id="三-插件">三、插件</h3>
-<p><a href="https://pagehelper.github.io/">Mybatis PageHelper 插件</a></p>
-<figure data-type="image" tabindex="1"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210315202015.png" alt="image-20210314201120021" loading="lazy"></figure>
+<p>执行结果对比</p>
+<pre><code>普通方法执行时间：3 ms
+反射机制执行时间：176 ms
+反射优化机制执行时间：129 ms
+</code></pre>
 
             </div>
             
               <div class="tag-container">
-                
-                  <a href="https://aruul.github.io/tag/vFNp_g0Hb/" class="tag">
-                    mybatis
-                  </a>
                 
                   <a href="https://aruul.github.io/tag/fABi2KP6qR/" class="tag">
                     java
@@ -202,9 +213,9 @@ select * from limit 0, 2
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://aruul.github.io/post/vKl9jV0iW/">
+                <a href="https://aruul.github.io/post/s8pJIRpaT/">
                   <h3 class="post-title">
-                    5-日志
+                    java 反射(1)--快速开始
                   </h3>
                 </a>
               </div>
