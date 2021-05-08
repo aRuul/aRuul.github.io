@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>LC206链表反转 | aRuul的无名小站</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://aruul.github.io/favicon.ico?v=1620470570531">
+<link rel="stylesheet" href="https://aruul.github.io/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+<script async src="//code.tidio.co/0llaydzaqpj2momyrcycfplv2h2my3av.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+    <meta name="description" content="题目描述
+
+给你单链表的头节点 head ，请你反转链表，并返回反转后的链表。
+示例 1：
+
+输入：head = [1,2,3,4,5]
+输出：[5,4,3,2,1]
+
+补充
+ListNode定义如下
+public class ListNo..." />
+    <meta name="keywords" content="算法" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://aruul.github.io">
+        <img src="https://aruul.github.io/images/avatar.png?v=1620470570531" class="site-logo">
+        <h1 class="site-title">aRuul的无名小站</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/essay" class="site-nav">
+            随笔
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+          <a class="social-link" href="https://github.com/aRuul" target="_blank">
+            <i class="fab fa-github"></i>
+          </a>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+<span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+</span> | <a class="rss" href="https://aruul.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">LC206链表反转</h2>
+            <div class="post-date">2021-05-08</div>
+            
+            <div class="post-content" v-pre>
+              <h3 id="题目描述">题目描述</h3>
+<blockquote>
+<p>给你单链表的头节点 head ，请你反转链表，并返回反转后的链表。</p>
+<p>示例 1：</p>
+<figure data-type="image" tabindex="1"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210508164053.png" alt="image-20210508164052248" loading="lazy"></figure>
+<p>输入：head = [1,2,3,4,5]<br>
+输出：[5,4,3,2,1]</p>
+</blockquote>
+<h3 id="补充">补充</h3>
+<p>ListNode定义如下</p>
+<pre><code class="language-java">public class ListNode {
+      int val;
+      ListNode next;
+      ListNode() {}
+      ListNode(int val) { this.val = val; }
+      ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ }
+</code></pre>
+<h3 id="解法">解法</h3>
+<p>我之前刚好看过这个题的解析教程，所以就用递归小小的装个逼</p>
+<pre><code class="language-java"> public ListNode reverseList(ListNode head) {
+        if(head==null||head.next==null){
+            return head;
+        }
+
+        ListNode last = reverseList(head.next);
+        head.next.next = head;
+        head.next = null;
+        return last;
+    }
+</code></pre>
+<p><strong>大概思路如下：</strong></p>
+<p>这个递归其实做的是：</p>
+<p>​	如果这和链表是个空的或者只有一个节点，则反转之后还是本身。</p>
+<pre><code class="language-java">if(head==null||head.next==null){
+            return head;
+ }
+</code></pre>
+<hr>
+<p>​	如果不是，则一直查找下一个节点，</p>
+<pre><code class="language-java">ListNode last = reverseList(head.next);
+</code></pre>
+<hr>
+<p>​	直到某个节点的next的next为null【其实就是找倒数第二个节点】</p>
+<pre><code class="language-java">if(head==null||head.next==null){
+     return head;
+ }
+</code></pre>
+<figure data-type="image" tabindex="2"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210508165935.png" alt="image-20210508165933723" loading="lazy"></figure>
+<hr>
+<p>并将last=最后一个节点</p>
+<pre><code class="language-java">ListNode last = reverseList(head.next);
+</code></pre>
+<figure data-type="image" tabindex="3"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210508170116.png" alt="image-20210508170111643" loading="lazy"></figure>
+<hr>
+<p>此时head=倒数第二个节点</p>
+<figure data-type="image" tabindex="4"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210508170608.png" alt="image-20210508170602536" loading="lazy"></figure>
+<hr>
+<p>在将此时head的next的next指向head，【其实就是把最后一个节点指向倒数第二个，做的就是反转链表】</p>
+<pre><code class="language-java">head.next.next = head;
+</code></pre>
+<figure data-type="image" tabindex="5"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210508170950.png" alt="image-20210508170948257" loading="lazy"></figure>
+<hr>
+<p>这时候 将head.next=null 【把head指向空】</p>
+<pre><code class="language-jav">head.next = null;
+</code></pre>
+<figure data-type="image" tabindex="6"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210508171248.png" alt="image-20210508171244794" loading="lazy"></figure>
+<hr>
+<p>这时候，其实已经反转了一部分了。</p>
+<p>然后再将last返回给上一级【也就是3】，此时last=最后一个节点【也就是5】。</p>
+<p><strong>其他的节点 以此类推，直到结束</strong></p>
+<p><strong>最后的时候，再返回一个last，也就是5</strong></p>
+<h2 id=""><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210508183828.png" alt="image-20210508183826788" loading="lazy"></h2>
+<p>结束</p>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://aruul.github.io/tag/CSsooy82n/" class="tag">
+                    算法
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://aruul.github.io/post/L4U-TAPK3/">
+                  <h3 class="post-title">
+                    java反射(2)  反射调用的性能和优化方案
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+  <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad()
+  </script>
+
+
+
+
+
+  </body>
+</html>
