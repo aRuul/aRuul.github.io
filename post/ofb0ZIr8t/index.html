@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>LC25. K个一组翻转链表. | aRuul的无名小站</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://aruul.github.io/favicon.ico?v=1620566155148">
+<link rel="stylesheet" href="https://aruul.github.io/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+<script async src="//code.tidio.co/0llaydzaqpj2momyrcycfplv2h2my3av.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+    <meta name="description" content="题目描述
+
+给你一个链表，每 k 个节点一组进行翻转，请你返回翻转后的链表。
+k 是一个正整数，它的值小于或等于链表的长度。
+如果节点总数不是 k 的整数倍，那么请将最后剩余的节点保持原有顺序。
+
+输入：head = [1,2,3,4,5]..." />
+    <meta name="keywords" content="算法" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://aruul.github.io">
+        <img src="https://aruul.github.io/images/avatar.png?v=1620566155148" class="site-logo">
+        <h1 class="site-title">aRuul的无名小站</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/essay" class="site-nav">
+            随笔
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+          <a class="social-link" href="https://github.com/aRuul" target="_blank">
+            <i class="fab fa-github"></i>
+          </a>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+<span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+</span> | <a class="rss" href="https://aruul.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">LC25. K个一组翻转链表.</h2>
+            <div class="post-date">2021-05-09</div>
+            
+            <div class="post-content" v-pre>
+              <h3 id="题目描述">题目描述</h3>
+<blockquote>
+<p>给你一个链表，每 k 个节点一组进行翻转，请你返回翻转后的链表。</p>
+<p>k 是一个正整数，它的值小于或等于链表的长度。</p>
+<p>如果节点总数不是 k 的整数倍，那么请将最后剩余的节点保持原有顺序。</p>
+<figure data-type="image" tabindex="1"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210509195221.png" alt="image-20210509195220283" loading="lazy"></figure>
+<pre><code class="language-java">输入：head = [1,2,3,4,5], k = 2
+输出：[2,1,4,3,5]
+</code></pre>
+</blockquote>
+<h3 id="补充">补充</h3>
+<p>ListNode定义如下</p>
+<pre><code class="language-java">public class ListNode {
+      int val;
+      ListNode next;
+      ListNode() {}
+      ListNode(int val) { this.val = val; }
+      ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ }
+</code></pre>
+<h3 id="解法">解法</h3>
+<pre><code class="language-java">    public static ListNode reverseKGroup(ListNode head, int k) {
+
+        if(head == null) return head;
+        ListNode a = head;
+        ListNode b = head;
+        for (int i = 0; i &lt; k; i++) {
+            if(b == null) return head;
+            b = b.next;
+        }
+        ListNode newNode = reverse(a, b);
+        a.next = reverseKGroup(b, k);
+        return newNode;
+    }
+
+    // 反转[a,b)个节点
+    public static ListNode reverse(ListNode a, ListNode b) {
+        ListNode pre,cur,next;
+        pre = null;
+        cur = a;
+        while(cur!=b){
+            next = cur.next;
+            cur.next = pre;
+            pre = cur;
+            cur = next;
+        }
+        return pre;
+    }
+</code></pre>
+<h3 id="思路">思路</h3>
+<p>首先，由一道和他类似的题<a href="https://leetcode-cn.com/problems/reverse-linked-list/">【<strong>LC206. 反转链表</strong>】</a>引出我的解法。</p>
+<p>在我之前的博客中这道题采用了递归解法。</p>
+<p>其实，还有还可以用while循环来解。</p>
+<pre><code class="language-java">    public static ListNode reverse(ListNode a) {
+        ListNode pre,cur,next;
+        pre = null;
+        cur = a;
+        while(cur!=null){
+            next = cur.next;
+            cur.next = pre;
+            pre = cur;
+            cur = next;
+        }
+        return pre;
+    }
+</code></pre>
+<p>上面的代码完成了 给定一个链表头a，将这个链表反转。</p>
+<p>具体步骤如下：</p>
+<p>这是链表的初始状态：</p>
+<figure data-type="image" tabindex="2"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210509200639.png" alt="image-20210509200638636" loading="lazy"></figure>
+<hr>
+<hr>
+<p>然后开始执行该函数, 将【前置节点pre】指为null，将【当前节点cur】指向a</p>
+<pre><code class="language-java"> ListNode pre,cur,next;
+ pre = null;
+ cur = a;
+</code></pre>
+<figure data-type="image" tabindex="3"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210509201429.png" alt="image-20210509201427829" loading="lazy"></figure>
+<hr>
+<hr>
+<p>当【当前节点cur】不为空的时候，将【next节点】指向【当前节点cur的下一个】</p>
+<pre><code class="language-java">while(cur!=null){
+            next = cur.next;
+</code></pre>
+<figure data-type="image" tabindex="4"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210509201824.png" alt="image-20210509201823579" loading="lazy"></figure>
+<hr>
+<hr>
+<p>之后将【当前节点cur】指向【前置节点pre】</p>
+<pre><code class="language-java">cur.next = pre;
+</code></pre>
+<figure data-type="image" tabindex="5"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210509204604.png" alt="image-20210509204603462" loading="lazy"></figure>
+<hr>
+<hr>
+<p>然后【pre、cur】开始向后移动一个节点，即：</p>
+<ul>
+<li>将【前置节点pre】移动到【当前节点cur】的位置</li>
+<li>将【当前节点cur】移动到【后置节点next】的位置</li>
+</ul>
+<p><mark>注意：这时候没有移动next是因为不确定移动后【cur】是否为null。</mark></p>
+<p><mark>当【cur】为null的时候再移动【后置节点next】会抛出空指针异常。这也是为什么循环的条件是【cur】不为null</mark></p>
+<pre><code class="language-java">pre = cur;
+cur = next;
+</code></pre>
+<figure data-type="image" tabindex="6"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210509204700.png" alt="image-20210509204659403" loading="lazy"></figure>
+<hr>
+<p>之后在while的循环条件中判断【cur】是否为空， 不为空则进入循环</p>
+<p>进入循环中，重复之前的操作。将【next节点】指向【当前节点cur的下一个】</p>
+<pre><code class="language-java">next = cur.next;
+</code></pre>
+<figure data-type="image" tabindex="7"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210509204748.png" alt="image-20210509204747387" loading="lazy"></figure>
+<hr>
+<hr>
+<p>之后将【当前节点cur】指向【前置节点pre】</p>
+<pre><code class="language-java">cur.next = pre;
+</code></pre>
+<figure data-type="image" tabindex="8"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210509204827.png" alt="image-20210509204825846" loading="lazy"></figure>
+<hr>
+<p>然后【pre、cur】开始向后移动一个节点，即：</p>
+<ul>
+<li>将【前置节点pre】移动到【当前节点cur】的位置</li>
+<li>将【当前节点cur】移动到【后置节点next】的位置</li>
+</ul>
+<pre><code class="language-java">pre = cur;
+cur = next;
+</code></pre>
+<figure data-type="image" tabindex="9"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210509204904.png" alt="image-20210509204902250" loading="lazy"></figure>
+<hr>
+<p>以此类推，直到【当前节点cur】为null，停止循环，返回【前置节点pre】</p>
+<figure data-type="image" tabindex="10"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210509205131.png" alt="image-20210509205128892" loading="lazy"></figure>
+<hr>
+<p>那反转链表的一部分呢，比如反转【a，b）之间的节点 （左闭右开）</p>
+<figure data-type="image" tabindex="11"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210509205450.png" alt="image-20210509205449221" loading="lazy"></figure>
+<figure data-type="image" tabindex="12"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210509205552.png" alt="image-20210509205551013" loading="lazy"></figure>
+<p>你会发现，它其实和我们反转整个链表差不多，反转整个链表的时候，</p>
+<p>是相当于反转【a，null）之间的节点，</p>
+<p>和反转【a，b）之间的节点有异曲同工之妙啊~</p>
+<p>所以说，反转【a，b）之间的节点的代码就应该在他的基础改一改，把</p>
+<pre><code class="language-java">while(cur!=null)
+</code></pre>
+<p>改为</p>
+<pre><code class="language-java">while(cur!=b)
+</code></pre>
+<p>代码如下：</p>
+<pre><code class="language-java">    // 反转[a,b)个节点
+    public static ListNode reverse(ListNode a, ListNode b) {
+        ListNode pre,cur,next;
+        pre = null;
+        cur = a;
+        while(cur!=b){
+            next = cur.next;
+            cur.next = pre;
+            pre = cur;
+            cur = next;
+        }
+        return pre;
+    }
+</code></pre>
+<hr>
+<p>这和 K个一组翻转链表反转 有啥子关系呢？</p>
+<p>每K个一组就是相当于区间【a，b）之间的节点有K个，然后一一反转。</p>
+<p>这就用到了递归</p>
+<pre><code class="language-java">    public static ListNode reverseKGroup(ListNode head, int k) {
+
+        if(head == null) return head;
+        // 区间 [a, b) 包含 k 个待反转元素
+        ListNode a = head;
+        ListNode b = head;
+        for (int i = 0; i &lt; k; i++) {
+             // 不足 k 个，不需要反转
+            if(b == null) return head;
+            b = b.next;
+        }
+        // 反转前 k 个元素,并获得反转后的头节点
+        ListNode newNode = reverse(a, b);
+        // 递归反转后续链表并连接起来，这里a反转后由子节点中由头变为尾，所以和a.next拼接
+        a.next = reverseKGroup(b, k);
+        return newNode;
+    }
+</code></pre>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://aruul.github.io/tag/CSsooy82n/" class="tag">
+                    算法
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://aruul.github.io/post/hM2JnmBVE/">
+                  <h3 class="post-title">
+                    LC206链表反转
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+  <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad()
+  </script>
+
+
+
+
+
+  </body>
+</html>
