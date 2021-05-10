@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>工厂模式 | aRuul的无名小站</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://aruul.github.io/favicon.ico?v=1620653116507">
+<link rel="stylesheet" href="https://aruul.github.io/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+<script async src="//code.tidio.co/0llaydzaqpj2momyrcycfplv2h2my3av.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+    <meta name="description" content="工厂模式
+1.前言
+设计模式大二的时候就学了，但是现在有些也忘得差不多了，现在决定重新学一遍。
+立个flag，一周至少学三种设计模式。
+
+工厂模式（Factory Pattern）是 Java 中最常用的设计模式之一。这种类型的设计模式属于..." />
+    <meta name="keywords" content="设计模式" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://aruul.github.io">
+        <img src="https://aruul.github.io/images/avatar.png?v=1620653116507" class="site-logo">
+        <h1 class="site-title">aRuul的无名小站</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/essay" class="site-nav">
+            随笔
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+          <a class="social-link" href="https://github.com/aRuul" target="_blank">
+            <i class="fab fa-github"></i>
+          </a>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+<span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+</span> | <a class="rss" href="https://aruul.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">工厂模式</h2>
+            <div class="post-date">2021-05-10</div>
+            
+            <div class="post-content" v-pre>
+              <h2 id="工厂模式">工厂模式</h2>
+<h3 id="1前言">1.前言</h3>
+<p>设计模式大二的时候就学了，但是现在有些也忘得差不多了，现在决定重新学一遍。</p>
+<p>立个flag，一周至少学三种设计模式。</p>
+<blockquote>
+<p>工厂模式（Factory Pattern）是 Java 中最常用的设计模式之一。这种类型的设计模式属于创建型模式，它提供了一种创建对象的最佳方式。</p>
+<p>在工厂模式中，我们在创建对象时不会对客户端暴露创建逻辑，并且是通过使用一个共同的接口来指向新创建的对象。</p>
+</blockquote>
+<h3 id="2简单工厂模式">2.简单工厂模式</h3>
+<p><strong>应用实例：</strong> 你需要一辆汽车，可以直接从工厂里面提货，而不用去管这辆汽车是怎么做出来的，以及这个汽车里面的具体实现。</p>
+<hr>
+<pre><code class="language-java">/** 简单(静态)工厂模式
+ * @author aRu
+ * @date 2021/5/8 15:31
+ */
+public class CarFactory {
+    public static Car getCar(String name){
+        if(name.equals(&quot;大众&quot;)){
+            return new DaZhong();
+        }else if (name.equals(&quot;五菱&quot;)){
+            return new WuLing();
+        }
+        return null;
+    }
+}
+</code></pre>
+<pre><code class="language-java">/**抽象汽车类
+ * @author aRu
+ * @date 2021/5/8 15:28
+ */
+public interface Car {
+    void Name();
+}
+</code></pre>
+<pre><code class="language-java">/** 大众
+ * @author aRu
+ * @date 2021/5/8 15:29
+ */
+public class DaZhong implements Car{
+    @Override
+    public void Name() {
+        System.out.println(&quot;大众&quot;);
+    }
+}
+
+----------------------------------------------------------------------------------------
+    
+/**五菱
+ * @author aRu
+ * @date 2021/5/8 15:30
+ */
+public class WuLing implements Car{
+    @Override
+    public void Name() {
+        System.out.println(&quot;五菱&quot;);
+    }
+}
+
+</code></pre>
+<p>测试</p>
+<pre><code class="language-java">/** 测试类
+ * @author aRu
+ * @date 2021/5/8 15:34
+ */
+
+//测试 简单(静态)工厂模式
+public class Test {
+    public static void main(String[] args) {
+        Car car1 = CarFactory.getCar(&quot;大众&quot;);
+        Car car2 = CarFactory.getCar(&quot;五菱&quot;);
+
+        car1.Name();
+        car2.Name();
+    }
+}
+</code></pre>
+<hr>
+<p><strong>缺点</strong>：试想当老板提出新需求要加一辆本田汽车的时候，你会发现，你此时不得不去修改<strong>CarFactory</strong>这个类，这就违反了开闭原则.</p>
+<h3 id="3方法工厂模式">3.方法工厂模式</h3>
+<p>针对上面简单工厂的缺点，我们引出方法工厂模式。</p>
+<p>在方法工厂模式中，我们将<strong>工厂抽象起来</strong>，使得每个品牌的汽车都有自己的工厂，而不是像简单工厂模式里，一个大工厂建造不同品牌的车。</p>
+<p>当我们需要新添加汽车时，只需要添加新的汽车类和对应的工厂就好。</p>
+<hr>
+<figure data-type="image" tabindex="1"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210508161257.png" alt="image-20210508161255712" loading="lazy"></figure>
+<pre><code class="language-java">//抽象汽车工厂
+public interface CarFactory {
+    Car getCar();
+}
+</code></pre>
+<pre><code class="language-java">//具体的汽车工厂  
+public class WuLingFactory implements CarFactory{
+    //五菱工厂
+    @Override
+    public Car getCar() {
+        return new WuLing();
+    }
+}
+
+----------------------------------------------
+ public class DaZhongFactory implements CarFactory{
+     //大众工厂
+    @Override
+    public Car getCar() {
+        return new DaZhong();
+    }
+}
+</code></pre>
+<pre><code class="language-java">//抽象汽车类
+public interface Car {
+    void Name();
+}
+</code></pre>
+<pre><code class="language-java">//具体汽车类
+public class WuLing implements Car {
+    @Override
+    public void Name() {
+        System.out.println(&quot;五菱&quot;);
+    }
+}
+----------------------------------------
+public class WuLing implements Car {
+    @Override
+    public void Name() {
+        System.out.println(&quot;五菱&quot;);
+    }
+}
+</code></pre>
+<pre><code class="language-java">//方法工厂模式测试public class Test {    public static void main(String[] args) {        Car car = new WuLingFactory().getCar();        Car car2 = new DaZhongFactory().getCar();        car.Name();        car2.Name();    }}
+</code></pre>
+<h4 id="4抽象工厂模式">4.抽象工厂模式</h4>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://aruul.github.io/tag/BJf4P3ilC/" class="tag">
+                    设计模式
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://aruul.github.io/post/ofb0ZIr8t/">
+                  <h3 class="post-title">
+                    LC25. K个一组翻转链表.
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+  <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad()
+  </script>
+
+
+
+
+
+  </body>
+</html>

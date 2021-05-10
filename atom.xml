@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://aruul.github.io</id>
     <title>aRuul的无名小站</title>
-    <updated>2021-05-09T13:16:01.408Z</updated>
+    <updated>2021-05-10T13:25:21.169Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://aruul.github.io"/>
     <link rel="self" href="https://aruul.github.io/atom.xml"/>
@@ -10,6 +10,144 @@
     <logo>https://aruul.github.io/images/avatar.png</logo>
     <icon>https://aruul.github.io/favicon.ico</icon>
     <rights>All rights reserved 2021, aRuul的无名小站</rights>
+    <entry>
+        <title type="html"><![CDATA[工厂模式]]></title>
+        <id>https://aruul.github.io/post/PdwpIn0xO/</id>
+        <link href="https://aruul.github.io/post/PdwpIn0xO/">
+        </link>
+        <updated>2021-05-10T13:24:22.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="工厂模式">工厂模式</h2>
+<h3 id="1前言">1.前言</h3>
+<p>设计模式大二的时候就学了，但是现在有些也忘得差不多了，现在决定重新学一遍。</p>
+<p>立个flag，一周至少学三种设计模式。</p>
+<blockquote>
+<p>工厂模式（Factory Pattern）是 Java 中最常用的设计模式之一。这种类型的设计模式属于创建型模式，它提供了一种创建对象的最佳方式。</p>
+<p>在工厂模式中，我们在创建对象时不会对客户端暴露创建逻辑，并且是通过使用一个共同的接口来指向新创建的对象。</p>
+</blockquote>
+<h3 id="2简单工厂模式">2.简单工厂模式</h3>
+<p><strong>应用实例：</strong> 你需要一辆汽车，可以直接从工厂里面提货，而不用去管这辆汽车是怎么做出来的，以及这个汽车里面的具体实现。</p>
+<hr>
+<pre><code class="language-java">/** 简单(静态)工厂模式
+ * @author aRu
+ * @date 2021/5/8 15:31
+ */
+public class CarFactory {
+    public static Car getCar(String name){
+        if(name.equals(&quot;大众&quot;)){
+            return new DaZhong();
+        }else if (name.equals(&quot;五菱&quot;)){
+            return new WuLing();
+        }
+        return null;
+    }
+}
+</code></pre>
+<pre><code class="language-java">/**抽象汽车类
+ * @author aRu
+ * @date 2021/5/8 15:28
+ */
+public interface Car {
+    void Name();
+}
+</code></pre>
+<pre><code class="language-java">/** 大众
+ * @author aRu
+ * @date 2021/5/8 15:29
+ */
+public class DaZhong implements Car{
+    @Override
+    public void Name() {
+        System.out.println(&quot;大众&quot;);
+    }
+}
+
+----------------------------------------------------------------------------------------
+    
+/**五菱
+ * @author aRu
+ * @date 2021/5/8 15:30
+ */
+public class WuLing implements Car{
+    @Override
+    public void Name() {
+        System.out.println(&quot;五菱&quot;);
+    }
+}
+
+</code></pre>
+<p>测试</p>
+<pre><code class="language-java">/** 测试类
+ * @author aRu
+ * @date 2021/5/8 15:34
+ */
+
+//测试 简单(静态)工厂模式
+public class Test {
+    public static void main(String[] args) {
+        Car car1 = CarFactory.getCar(&quot;大众&quot;);
+        Car car2 = CarFactory.getCar(&quot;五菱&quot;);
+
+        car1.Name();
+        car2.Name();
+    }
+}
+</code></pre>
+<hr>
+<p><strong>缺点</strong>：试想当老板提出新需求要加一辆本田汽车的时候，你会发现，你此时不得不去修改<strong>CarFactory</strong>这个类，这就违反了开闭原则.</p>
+<h3 id="3方法工厂模式">3.方法工厂模式</h3>
+<p>针对上面简单工厂的缺点，我们引出方法工厂模式。</p>
+<p>在方法工厂模式中，我们将<strong>工厂抽象起来</strong>，使得每个品牌的汽车都有自己的工厂，而不是像简单工厂模式里，一个大工厂建造不同品牌的车。</p>
+<p>当我们需要新添加汽车时，只需要添加新的汽车类和对应的工厂就好。</p>
+<hr>
+<figure data-type="image" tabindex="1"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210508161257.png" alt="image-20210508161255712" loading="lazy"></figure>
+<pre><code class="language-java">//抽象汽车工厂
+public interface CarFactory {
+    Car getCar();
+}
+</code></pre>
+<pre><code class="language-java">//具体的汽车工厂  
+public class WuLingFactory implements CarFactory{
+    //五菱工厂
+    @Override
+    public Car getCar() {
+        return new WuLing();
+    }
+}
+
+----------------------------------------------
+ public class DaZhongFactory implements CarFactory{
+     //大众工厂
+    @Override
+    public Car getCar() {
+        return new DaZhong();
+    }
+}
+</code></pre>
+<pre><code class="language-java">//抽象汽车类
+public interface Car {
+    void Name();
+}
+</code></pre>
+<pre><code class="language-java">//具体汽车类
+public class WuLing implements Car {
+    @Override
+    public void Name() {
+        System.out.println(&quot;五菱&quot;);
+    }
+}
+----------------------------------------
+public class WuLing implements Car {
+    @Override
+    public void Name() {
+        System.out.println(&quot;五菱&quot;);
+    }
+}
+</code></pre>
+<pre><code class="language-java">//方法工厂模式测试public class Test {    public static void main(String[] args) {        Car car = new WuLingFactory().getCar();        Car car2 = new DaZhongFactory().getCar();        car.Name();        car2.Name();    }}
+</code></pre>
+<h4 id="4抽象工厂模式">4.抽象工厂模式</h4>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[LC25. K个一组翻转链表.]]></title>
         <id>https://aruul.github.io/post/ofb0ZIr8t/</id>
@@ -824,527 +962,6 @@ server {
         <updated>2021-04-11T01:41:56.000Z</updated>
         <content type="html"><![CDATA[<p>今天开始使用Gridea写博客辣！<br>
 之前的博客会陆续补上来的。</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[SSM整合]]></title>
-        <id>https://aruul.github.io/post/0PVi5Fwu4/</id>
-        <link href="https://aruul.github.io/post/0PVi5Fwu4/">
-        </link>
-        <updated>2021-03-25T04:49:19.000Z</updated>
-        <content type="html"><![CDATA[<p><ul class="markdownIt-TOC">
-<li>
-<ul>
-<li>
-<ul>
-<li><a href="#0%E5%AF%BC%E5%85%A5%E4%BE%9D%E8%B5%96">0.导入依赖</a></li>
-<li><a href="#1%E6%95%B4%E5%90%88mybatis">1.整合mybatis</a>
-<ul>
-<li><a href="#11%E5%BB%BA%E6%95%B0%E6%8D%AE%E5%BA%93">1.1建数据库</a></li>
-<li><a href="#12%E7%BC%96%E5%86%99%E5%AF%B9%E5%BA%94%E7%9A%84pojo%E5%B1%82">1.2编写对应的pojo层</a></li>
-<li><a href="#13%E7%BC%96%E5%86%99%E5%AF%B9%E5%BA%94%E7%9A%84dao%E5%B1%82">1.3编写对应的dao层</a></li>
-<li><a href="#14%E7%BC%96%E5%86%99mybatis-configxml">1.4编写mybatis-config.xml</a></li>
-<li><a href="#15%E7%BC%96%E5%86%99mybatis-configxml">1.5编写mybatis-config.xml</a></li>
-</ul>
-</li>
-<li><a href="#2%E6%95%B4%E5%90%88service%E5%B1%82">2.整合service层</a>
-<ul>
-<li><a href="#21%E7%BC%96%E5%86%99service%E5%B1%82java%E4%BB%A3%E7%A0%81">2.1编写service层java代码</a></li>
-<li><a href="#22%E7%BC%96%E5%86%99service%E5%B1%82%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6spring-servicexml">2.2编写service层配置文件spring-service.xml</a></li>
-</ul>
-</li>
-<li><a href="#3%E6%95%B4%E5%90%88springmvc%E5%B1%82">3.整合SpringMVC层</a>
-<ul>
-<li><a href="#31%E7%BC%96%E5%86%99spring-mvcxml">3.1编写spring-mvc.xml</a></li>
-<li><a href="#32%E7%BC%96%E5%86%99applicationcontextxml">3.2编写applicationContext.xml</a></li>
-<li><a href="#33%E7%BC%96%E5%86%99webxml%E6%96%87%E4%BB%B6">3.3编写web.xml文件</a></li>
-<li><a href="#34%E7%BC%96%E5%86%99controller%E5%B1%82">3.4编写controller层</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</p>
-<h3 id="0导入依赖">0.导入依赖</h3>
-<pre><code class="language-xml"> &lt;!--依赖  junit 数据库驱动 连接池  servlet jsp mybatis mybatis-spring spring --&gt;
-    &lt;dependencies&gt;
-        &lt;!--Junit--&gt;
-        &lt;dependency&gt;
-            &lt;groupId&gt;junit&lt;/groupId&gt;
-            &lt;artifactId&gt;junit&lt;/artifactId&gt;
-            &lt;version&gt;4.12&lt;/version&gt;
-        &lt;/dependency&gt;
-        &lt;!--数据库驱动--&gt;
-        &lt;dependency&gt;
-            &lt;groupId&gt;mysql&lt;/groupId&gt;
-            &lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt;
-            &lt;version&gt;8.0.22&lt;/version&gt;
-        &lt;/dependency&gt;
-        &lt;!-- 数据库连接池 --&gt;
-        &lt;dependency&gt;
-            &lt;groupId&gt;com.mchange&lt;/groupId&gt;
-            &lt;artifactId&gt;c3p0&lt;/artifactId&gt;
-            &lt;version&gt;0.9.5.2&lt;/version&gt;
-        &lt;/dependency&gt;
-
-        &lt;!--Servlet - JSP --&gt;
-        &lt;dependency&gt;
-            &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
-            &lt;artifactId&gt;servlet-api&lt;/artifactId&gt;
-            &lt;version&gt;2.5&lt;/version&gt;
-        &lt;/dependency&gt;
-        &lt;dependency&gt;
-            &lt;groupId&gt;javax.servlet.jsp&lt;/groupId&gt;
-            &lt;artifactId&gt;jsp-api&lt;/artifactId&gt;
-            &lt;version&gt;2.2&lt;/version&gt;
-        &lt;/dependency&gt;
-        &lt;dependency&gt;
-            &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
-            &lt;artifactId&gt;jstl&lt;/artifactId&gt;
-            &lt;version&gt;1.2&lt;/version&gt;
-        &lt;/dependency&gt;
-
-        &lt;!--Mybatis--&gt;
-        &lt;dependency&gt;
-            &lt;groupId&gt;org.mybatis&lt;/groupId&gt;
-            &lt;artifactId&gt;mybatis&lt;/artifactId&gt;
-            &lt;version&gt;3.5.2&lt;/version&gt;
-        &lt;/dependency&gt;
-        &lt;dependency&gt;
-            &lt;groupId&gt;org.mybatis&lt;/groupId&gt;
-            &lt;artifactId&gt;mybatis-spring&lt;/artifactId&gt;
-            &lt;version&gt;2.0.4&lt;/version&gt;
-        &lt;/dependency&gt;
-
-        &lt;!--Spring--&gt;
-        &lt;dependency&gt;
-            &lt;groupId&gt;org.springframework&lt;/groupId&gt;
-            &lt;artifactId&gt;spring-webmvc&lt;/artifactId&gt;
-            &lt;version&gt;5.1.9.RELEASE&lt;/version&gt;
-        &lt;/dependency&gt;
-        &lt;dependency&gt;
-            &lt;groupId&gt;org.springframework&lt;/groupId&gt;
-            &lt;artifactId&gt;spring-jdbc&lt;/artifactId&gt;
-            &lt;version&gt;5.2.7.RELEASE&lt;/version&gt;
-        &lt;/dependency&gt;
-    &lt;/dependencies&gt;
-
-    &lt;!--静态资源导出问题--&gt;
-    &lt;build&gt;
-        &lt;resources&gt;
-            &lt;resource&gt;
-                &lt;directory&gt;src/main/java&lt;/directory&gt;
-                &lt;includes&gt;
-                    &lt;include&gt;**/*.properties&lt;/include&gt;
-                    &lt;include&gt;**/*.xml&lt;/include&gt;
-                &lt;/includes&gt;
-                &lt;filtering&gt;false&lt;/filtering&gt;
-            &lt;/resource&gt;
-            &lt;resource&gt;
-                &lt;directory&gt;src/main/resources&lt;/directory&gt;
-                &lt;includes&gt;
-                    &lt;include&gt;**/*.properties&lt;/include&gt;
-                    &lt;include&gt;**/*.xml&lt;/include&gt;
-                &lt;/includes&gt;
-                &lt;filtering&gt;false&lt;/filtering&gt;
-            &lt;/resource&gt;
-        &lt;/resources&gt;
-    &lt;/build&gt;
-</code></pre>
-<h3 id="1整合mybatis">1.整合mybatis</h3>
-<h4 id="11建数据库">1.1建数据库</h4>
-<figure data-type="image" tabindex="1"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210325091806.png" alt="image-20210325091806560" loading="lazy"></figure>
-<h4 id="12编写对应的pojo层">1.2编写对应的pojo层</h4>
-<pre><code class="language-java">public class Books {
-    private int bookID;
-    private String bookName;
-    private int bookCounts;
-    private String detail;
-
-    public Books() {
-    }
-
-    public Books(int bookID, String bookName, int bookCounts, String detail) {
-        this.bookID = bookID;
-        this.bookName = bookName;
-        this.bookCounts = bookCounts;
-        this.detail = detail;
-    }
-
-    public int getBookID() {
-        return bookID;
-    }
-
-    public void setBookID(int bookID) {
-        this.bookID = bookID;
-    }
-
-    public String getBookName() {
-        return bookName;
-    }
-
-    public void setBookName(String bookName) {
-        this.bookName = bookName;
-    }
-
-    public int getBookCounts() {
-        return bookCounts;
-    }
-
-    public void setBookCounts(int bookCounts) {
-        this.bookCounts = bookCounts;
-    }
-
-    public String getDetail() {
-        return detail;
-    }
-
-    public void setDetail(String detail) {
-        this.detail = detail;
-    }
-
-    @Override
-    public String toString() {
-        return &quot;Books{&quot; +
-                &quot;bookID=&quot; + bookID +
-                &quot;, bookName='&quot; + bookName + '\'' +
-                &quot;, bookCounts=&quot; + bookCounts +
-                &quot;, detail='&quot; + detail + '\'' +
-                '}';
-    }
-}
-</code></pre>
-<h4 id="13编写对应的dao层">1.3编写对应的dao层</h4>
-<ul>
-<li>UserMapper.java</li>
-</ul>
-<pre><code class="language-java">public interface BookMapper {
-
-    //增
-    int addBook(Books books);
-    // 删
-    int deleteBookById(@Param(&quot;bookID&quot;) int id);
-    // 改
-    int updateBook(Books books);
-    // 查
-    Books queryBookBuId(@Param(&quot;bookID&quot;) int id);
-    //查全部的书
-    List&lt;Books&gt; queryAllBook();
-
-}
-</code></pre>
-<ul>
-<li>UserMapper.xml</li>
-</ul>
-<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
-&lt;!DOCTYPE mapper
-        PUBLIC &quot;-//mybatis.org//DTD Mapper 3.0//EN&quot;
-        &quot;http://mybatis.org/dtd/mybatis-3-mapper.dtd&quot;&gt;
-
-&lt;!--namespace 是要绑定的类的路径--&gt;
-&lt;mapper namespace=&quot;org.example.dao.BookMapper&quot;&gt;
-
-    &lt;insert id=&quot;addBook&quot; parameterType=&quot;books&quot;&gt;
-        insert into ssmbuild.books (bookID, bookName, bookCounts, detail)
-        values (#{bookID},#{bookName},#{bookCounts},#{detail})
-    &lt;/insert&gt;
-
-    &lt;delete id=&quot;deleteBookById&quot; parameterType=&quot;int&quot;&gt;
-        delete from ssmbuild.books where bookID = #{bookID}
-    &lt;/delete&gt;
-
-    &lt;update id=&quot;updateBook&quot; parameterType=&quot;books&quot;&gt;
-        update ssmbuild.books set bookName=#{bookName},bookCounts=#{bookCounts}，detail=#{detail}
-        where bookID=#{bookID}
-    &lt;/update&gt;
-
-    &lt;select id=&quot;queryBookBuId&quot; parameterType=&quot;int&quot; resultType=&quot;books&quot;&gt;
-        select * from ssmbuild.books where bookID=#{bookID}
-    &lt;/select&gt;
-
-    &lt;select id=&quot;queryAllBook&quot; resultType=&quot;books&quot;&gt;
-        select * from ssmbuild.books
-    &lt;/select&gt;
-
-&lt;/mapper&gt;
-</code></pre>
-<h4 id="14编写mybatis-configxml">1.4编写mybatis-config.xml</h4>
-<p><mark>这里的话mybatis-config.xml中不用写数据库连接池，而是统一交由spring来处理</mark></p>
-<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
-&lt;!DOCTYPE configuration
-        PUBLIC &quot;-//mybatis.org//DTD Config 3.0//EN&quot;
-        &quot;http://mybatis.org/dtd/mybatis-3-config.dtd&quot;&gt;
-&lt;configuration&gt;
-
-    &lt;!--设置日志--&gt;
-    &lt;settings&gt;
-        &lt;setting name=&quot;logImpl&quot; value=&quot;STDOUT_LOGGING&quot;/&gt;
-    &lt;/settings&gt;
-    &lt;!--别名--&gt;
-    &lt;typeAliases&gt;
-        &lt;package name=&quot;org.example.pojo&quot;/&gt;
-    &lt;/typeAliases&gt;
-
-    &lt;!--mapper映射  扫描dao包--&gt;
-    &lt;mappers&gt;
-        &lt;package name=&quot;org.example.dao&quot;/&gt;
-    &lt;/mappers&gt;
-&lt;/configuration&gt;
-</code></pre>
-<h4 id="15编写mybatis-configxml">1.5编写mybatis-config.xml</h4>
-<p><mark>也就是将dao层整合到spring中</mark></p>
-<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
-       xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
-       xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
-        https://www.springframework.org/schema/beans/spring-beans.xsd&quot;&gt;
-
-    &lt;!--关联数据库 c3p0连接池 --&gt;
-    &lt;bean id=&quot;dataSource&quot; class=&quot;com.mchange.v2.c3p0.ComboPooledDataSource&quot;&gt;
-        &lt;property name=&quot;driverClass&quot; value=&quot;com.mysql.cj.jdbc.Driver&quot;/&gt;
-        &lt;property name=&quot;jdbcUrl&quot;
-                  value=&quot;jdbc:mysql://localhost:3306/ssmbuild?serverTimezone=Asia/Shanghai&amp;amp;useSSL=true&amp;amp;useUnicode=true&amp;amp;characterEncoding=UTF-8&quot;/&gt;
-        &lt;property name=&quot;user&quot; value=&quot;root&quot;/&gt;
-        &lt;property name=&quot;password&quot; value=&quot;password&quot;/&gt;
-
-        &lt;!-- c3p0连接池的私有属性 --&gt;
-        &lt;property name=&quot;maxPoolSize&quot; value=&quot;30&quot;/&gt;
-        &lt;property name=&quot;minPoolSize&quot; value=&quot;10&quot;/&gt;
-        &lt;!-- 关闭连接后不自动commit --&gt;
-        &lt;property name=&quot;autoCommitOnClose&quot; value=&quot;false&quot;/&gt;
-        &lt;!-- 获取连接超时时间 --&gt;
-        &lt;property name=&quot;checkoutTimeout&quot; value=&quot;10000&quot;/&gt;
-        &lt;!-- 当获取连接失败重试次数 --&gt;
-        &lt;property name=&quot;acquireRetryAttempts&quot; value=&quot;2&quot;/&gt;
-    &lt;/bean&gt;
-
-    &lt;!--SqlSessionFactory--&gt;
-    &lt;bean id=&quot;sqlSessionFactory&quot; class=&quot;org.mybatis.spring.SqlSessionFactoryBean&quot;&gt;
-        &lt;property name=&quot;dataSource&quot; ref=&quot;dataSource&quot;/&gt;
-        &lt;!-- 绑定mybatis全局配置文件:mybatis-config.xml --&gt;
-        &lt;property name=&quot;configLocation&quot; value=&quot;classpath:mybatis-config.xml&quot;/&gt;
-    &lt;/bean&gt;
-
-    &lt;!--配置dao接口扫描包，动态的实现了Dao接口可以注册到Spring容器--&gt;
-    &lt;bean class=&quot;org.mybatis.spring.mapper.MapperScannerConfigurer&quot;&gt;
-        &lt;!--注入sqlSessionFactory--&gt;
-        &lt;property name=&quot;sqlSessionFactoryBeanName&quot; value=&quot;sqlSessionFactory&quot;/&gt;
-        &lt;!--扫描要扫描的包--&gt;
-        &lt;property name=&quot;basePackage&quot; value=&quot;org.example.dao&quot;/&gt;
-    &lt;/bean&gt;
-
-&lt;/beans&gt;
-</code></pre>
-<hr>
-<h3 id="2整合service层">2.整合service层</h3>
-<h4 id="21编写service层java代码">2.1编写service层java代码</h4>
-<pre><code class="language-java">package org.example.service;
-
-import org.apache.ibatis.annotations.Param;
-import org.example.pojo.Books;
-
-import java.util.List;
-
-/**
- * @author aRu
- * @date 2021/3/24 21:29
- */
-public interface BookService {
-    //增
-    int addBook(Books books);
-    // 删
-    int deleteBookById(@Param(&quot;bookID&quot;) int id);
-    // 改
-    int updateBook(Books books);
-    // 查
-    Books queryBookBuId(@Param(&quot;bookID&quot;) int id);
-    //查全部的书
-    List&lt;Books&gt; queryAllBook();
-}
-</code></pre>
-<pre><code class="language-java">package org.example.service;
-
-import org.example.dao.BookMapper;
-import org.example.pojo.Books;
-
-import java.util.List;
-
-/**
- * @author aRu
- * @date 2021/3/24 21:30
- */
-public class BookServiceImp implements BookService{
-    //service调用dao层   组合dao
-    private BookMapper bookMapper;
-
-    public void setBookMapper(BookMapper bookMapper) {
-        this.bookMapper = bookMapper;
-    }
-
-    @Override
-    public int addBook(Books books) {
-        return bookMapper.addBook(books);
-    }
-
-    @Override
-    public int deleteBookById(int id) {
-        return bookMapper.deleteBookById(id);
-    }
-
-    @Override
-    public int updateBook(Books books) {
-        return bookMapper.updateBook(books);
-    }
-
-    @Override
-    public Books queryBookBuId(int id) {
-        return bookMapper.queryBookBuId(id);
-    }
-
-    @Override
-    public List&lt;Books&gt; queryAllBook() {
-        return bookMapper.queryAllBook();
-    }
-}
-</code></pre>
-<h4 id="22编写service层配置文件spring-servicexml">2.2编写service层配置文件spring-service.xml</h4>
-<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
-       xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
-       xmlns:context=&quot;http://www.springframework.org/schema/context&quot;
-       xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
-   http://www.springframework.org/schema/beans/spring-beans.xsd
-   http://www.springframework.org/schema/context
-   http://www.springframework.org/schema/context/spring-context.xsd&quot;&gt;
-
-    &lt;!--扫描service下的包--&gt;
-    &lt;context:component-scan base-package=&quot;org.example.service&quot; /&gt;
-
-    &lt;!--ServiceImpl注入到IOC容器中--&gt;
-    &lt;bean id=&quot;BookServiceImp&quot; class=&quot;org.example.service.BookServiceImp&quot;&gt;
-        &lt;property name=&quot;bookMapper&quot; ref=&quot;bookMapper&quot;/&gt;
-    &lt;/bean&gt;
-
-    &lt;!-- 配置事务管理器 --&gt;
-    &lt;bean id=&quot;transactionManager&quot; class=&quot;org.springframework.jdbc.datasource.DataSourceTransactionManager&quot;&gt;
-        &lt;!-- 注入数据库连接池 --&gt;
-        &lt;property name=&quot;dataSource&quot; ref=&quot;dataSource&quot; /&gt;
-    &lt;/bean&gt;
-
-&lt;/beans&gt;
-</code></pre>
-<hr>
-<h3 id="3整合springmvc层">3.整合SpringMVC层</h3>
-<figure data-type="image" tabindex="2"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210325093214.png" alt="image-20210325093214157" loading="lazy"></figure>
-<p>添加 Framework Support</p>
-<h4 id="31编写spring-mvcxml">3.1编写spring-mvc.xml</h4>
-<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
-       xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
-       xmlns:context=&quot;http://www.springframework.org/schema/context&quot;
-       xmlns:mvc=&quot;http://www.springframework.org/schema/mvc&quot;
-       xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd&quot;&gt;
-
-    &lt;!-- 1.开启SpringMVC注解驱动 --&gt;
-    &lt;mvc:annotation-driven/&gt;
-    &lt;!-- 2.静态资源默认servlet配置--&gt;
-    &lt;mvc:default-servlet-handler/&gt;
-
-    &lt;!-- 3.配置jsp 显示ViewResolver视图解析器 --&gt;
-    &lt;bean class=&quot;org.springframework.web.servlet.view.InternalResourceViewResolver&quot;&gt;
-        &lt;property name=&quot;viewClass&quot; value=&quot;org.springframework.web.servlet.view.JstlView&quot; /&gt;
-        &lt;property name=&quot;prefix&quot; value=&quot;/WEB-INF/jsp/&quot; /&gt;
-        &lt;property name=&quot;suffix&quot; value=&quot;.jsp&quot; /&gt;
-    &lt;/bean&gt;
-
-    &lt;!-- 4.扫描web相关的bean --&gt;
-    &lt;context:component-scan base-package=&quot;org.example.controller&quot; /&gt;
-
-&lt;/beans&gt;
-</code></pre>
-<p><mark>记得在WEB-INF在新建jsp的文件</mark></p>
-<h4 id="32编写applicationcontextxml">3.2编写applicationContext.xml</h4>
-<p>将之前的<strong>spring-dao.xml  spring-service.xml spring-mvc.xml</strong>引入<strong>applicationContext.xml</strong>中</p>
-<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
-       xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
-       xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
-       http://www.springframework.org/schema/beans/spring-beans.xsd&quot;&gt;
-
-    &lt;import resource=&quot;classpath:spring-dao.xml&quot;/&gt;
-    &lt;import resource=&quot;classpath:spring-service.xml&quot;/&gt;
-    &lt;import resource=&quot;classpath:spring-mvc.xml&quot;/&gt;
-
-&lt;/beans&gt;
-</code></pre>
-<h4 id="33编写webxml文件">3.3编写web.xml文件</h4>
-<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;web-app xmlns=&quot;http://xmlns.jcp.org/xml/ns/javaee&quot;
-         xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
-         xsi:schemaLocation=&quot;http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd&quot;
-         version=&quot;4.0&quot;&gt;
-
-    &lt;!--DispatcherServlet--&gt;
-    &lt;servlet&gt;
-        &lt;servlet-name&gt;DispatcherServlet&lt;/servlet-name&gt;
-        &lt;servlet-class&gt;org.springframework.web.servlet.DispatcherServlet&lt;/servlet-class&gt;
-        &lt;init-param&gt;
-            &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;
-            &lt;!--一定要注意:这里加载的是总的配置文件，之前被这里坑了！--&gt;
-            &lt;param-value&gt;classpath:applicationContext.xml&lt;/param-value&gt;
-        &lt;/init-param&gt;
-        &lt;load-on-startup&gt;1&lt;/load-on-startup&gt;
-    &lt;/servlet&gt;
-    &lt;servlet-mapping&gt;
-        &lt;servlet-name&gt;DispatcherServlet&lt;/servlet-name&gt;
-        &lt;url-pattern&gt;/&lt;/url-pattern&gt;
-    &lt;/servlet-mapping&gt;
-
-    &lt;!--encodingFilter--&gt;
-    &lt;filter&gt;
-        &lt;filter-name&gt;encodingFilter&lt;/filter-name&gt;
-        &lt;filter-class&gt;
-            org.springframework.web.filter.CharacterEncodingFilter
-        &lt;/filter-class&gt;
-        &lt;init-param&gt;
-            &lt;param-name&gt;encoding&lt;/param-name&gt;
-            &lt;param-value&gt;utf-8&lt;/param-value&gt;
-        &lt;/init-param&gt;
-    &lt;/filter&gt;
-    &lt;filter-mapping&gt;
-        &lt;filter-name&gt;encodingFilter&lt;/filter-name&gt;
-        &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
-    &lt;/filter-mapping&gt;
-
-    &lt;!--Session过期时间--&gt;
-    &lt;session-config&gt;
-        &lt;session-timeout&gt;15&lt;/session-timeout&gt;
-    &lt;/session-config&gt;
-
-&lt;/web-app&gt;
-</code></pre>
-<h4 id="34编写controller层">3.4编写controller层</h4>
-<pre><code class="language-java">@Controller
-@RequestMapping(&quot;/book&quot;)
-public class BookController {
-    //controller层 调用service层
-    @Autowired
-    @Qualifier(&quot;BookServiceImp&quot;)
-    private BookService bookService;
-
-    //查询全部书籍，并返回给展示页
-    @RequestMapping(&quot;/allBook&quot;)
-    public String list(Model model){
-        List&lt;Books&gt; books=bookService.queryAllBook();
-        model.addAttribute(&quot;list&quot;,books);
-
-        return &quot;allBook&quot;;
-    }
-    
-}
-</code></pre>
 ]]></content>
     </entry>
 </feed>
