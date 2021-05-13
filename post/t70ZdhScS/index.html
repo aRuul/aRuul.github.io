@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>二叉树 | aRuul的无名小站</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://aruul.github.io/favicon.ico?v=1620906995200">
+<link rel="stylesheet" href="https://aruul.github.io/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+<script async src="//code.tidio.co/0llaydzaqpj2momyrcycfplv2h2my3av.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+    <meta name="description" content="前言
+最近一直在刷算法题，感觉还是需要把基础打牢一点，就暂停了刷题，从基本的算法书开始看。
+《小灰的算法之旅》一个很基础的书
+二叉树
+
+什么是二叉树？官方是这样定义的：在计算机科学中，二叉树是每个结点最多有两个子树的树结构。通常子树被称作“..." />
+    <meta name="keywords" content="算法" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://aruul.github.io">
+        <img src="https://aruul.github.io/images/avatar.png?v=1620906995200" class="site-logo">
+        <h1 class="site-title">aRuul的无名小站</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/essay" class="site-nav">
+            随笔
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+          <a class="social-link" href="https://github.com/aRuul" target="_blank">
+            <i class="fab fa-github"></i>
+          </a>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+<span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+</span> | <a class="rss" href="https://aruul.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">二叉树</h2>
+            <div class="post-date">2021-05-13</div>
+            
+            <div class="post-content" v-pre>
+              <h2 id="前言">前言</h2>
+<p>最近一直在刷算法题，感觉还是需要把基础打牢一点，就暂停了刷题，从基本的算法书开始看。</p>
+<p>《小灰的算法之旅》一个很基础的书</p>
+<h2 id="二叉树">二叉树</h2>
+<blockquote>
+<p>什么是二叉树？官方是这样定义的：<strong>在计算机科学中，二叉树是每个结点最多有两个子树的树结构</strong>。通常子树被称作“左子树”（left subtree）和“右子树”（right subtree）。</p>
+</blockquote>
+<p>其实这些都是很基础的东西，之前数据结构也都学过了。所以一些东西就省去不表。。。</p>
+<p>二叉树的数据结构</p>
+<pre><code class="language-java">public class TreeNode {
+    public int data;
+    public TreeNode leftChild;
+    public TreeNode rightChild;
+
+    public TreeNode(int data){
+        this.data = data;
+    }
+}
+</code></pre>
+<h2 id="前序遍历生成二叉树">前序遍历生成二叉树</h2>
+<p>我采用的是递归的方式，这样最容易明白</p>
+<pre><code class="language-java">    //创建二叉树
+	//inputList  存放前序遍历的二叉树的list
+    public static TreeNode createBinaryTree(LinkedList&lt;Integer&gt; inputList){
+        TreeNode treeNode = null;
+        if(inputList==null||inputList.isEmpty()){
+            return null;
+        }
+        Integer data = inputList.removeFirst();
+        if(data!=null){
+            treeNode = new TreeNode(data);
+            treeNode.leftChild = createBinaryTree(inputList);
+            treeNode.rightChild = createBinaryTree(inputList);
+        }
+        return treeNode;
+
+    }
+</code></pre>
+<p>测试代码：</p>
+<pre><code class="language-java"> public static void main(String[] args) {
+        LinkedList&lt;Integer&gt; inputList = new LinkedList&lt;Integer&gt;();
+        inputList.add(3); 
+        inputList.add(2);
+        inputList.add(9);
+        inputList.add(null);
+        inputList.add(null);
+        inputList.add(10);
+        inputList.add(null);
+        inputList.add(null);
+        inputList.add(8);
+        inputList.add(null);
+        inputList.add(4);
+        TreeNode head = createBinaryTree(inputList);
+
+    }
+</code></pre>
+<h2 id="前序遍历二叉树">前序遍历二叉树</h2>
+<h3 id="递归的写法">递归的写法</h3>
+<pre><code class="language-java">    //前序遍历--递归的方式
+    public static void qian(TreeNode head){
+        if(head==null){
+            return;
+        }
+        System.out.println(head.data);
+        qian(head.leftChild);
+        qian(head.rightChild);
+    }
+</code></pre>
+<h3 id="非递归的写法">非递归的写法</h3>
+<pre><code class="language-java">	//前序遍历--非递归的方式
+    public static void qian2(TreeNode head){
+        // 用栈来存放
+        Stack&lt;TreeNode&gt; stack = new Stack&lt;TreeNode&gt;();
+ 
+        while(head!=null||!stack.isEmpty()){
+            //迭代访问节点的左节点，并入栈
+            while(head!=null){
+                System.out.println(head.data);
+                stack.push(head);
+                head = head.leftChild;
+            }
+
+            //若节点没有左孩子，栈中弹出栈顶结点，访问节点右节点
+            if(!stack.isEmpty()){
+                head = stack.pop();
+                head = head.rightChild;
+            }
+        }
+    }
+</code></pre>
+<h2 id="层次遍历">层次遍历</h2>
+<p>大致思路：</p>
+<p><img src="https://aruul.github.io/post-images/1620906969722.jpg" alt="" loading="lazy"><br>
+<img src="https://aruul.github.io/post-images/1620906979070.jpg" alt="" loading="lazy"></p>
+<pre><code class="language-java">//广度优先遍历--层次遍历
+    public static void level(TreeNode head){
+        Queue&lt;TreeNode&gt; queue = new LinkedList&lt;&gt;();
+        queue.offer(head);
+        while (!queue.isEmpty()){
+            TreeNode treeNode =queue.poll();
+            System.out.println(treeNode.data);
+            if(treeNode.leftChild!=null){
+                queue.offer(treeNode.leftChild);
+            }
+            if(treeNode.rightChild!=null){
+                queue.offer(treeNode.rightChild);
+            }
+
+        }
+
+    }
+</code></pre>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://aruul.github.io/tag/CSsooy82n/" class="tag">
+                    算法
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://aruul.github.io/post/PdwpIn0xO/">
+                  <h3 class="post-title">
+                    工厂模式
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+  <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad()
+  </script>
+
+
+
+
+
+  </body>
+</html>

@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://aruul.github.io</id>
     <title>aRuul的无名小站</title>
-    <updated>2021-05-10T13:26:21.640Z</updated>
+    <updated>2021-05-13T11:56:41.158Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://aruul.github.io"/>
     <link rel="self" href="https://aruul.github.io/atom.xml"/>
@@ -10,6 +10,126 @@
     <logo>https://aruul.github.io/images/avatar.png</logo>
     <icon>https://aruul.github.io/favicon.ico</icon>
     <rights>All rights reserved 2021, aRuul的无名小站</rights>
+    <entry>
+        <title type="html"><![CDATA[二叉树]]></title>
+        <id>https://aruul.github.io/post/t70ZdhScS/</id>
+        <link href="https://aruul.github.io/post/t70ZdhScS/">
+        </link>
+        <updated>2021-05-13T11:52:22.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="前言">前言</h2>
+<p>最近一直在刷算法题，感觉还是需要把基础打牢一点，就暂停了刷题，从基本的算法书开始看。</p>
+<p>《小灰的算法之旅》一个很基础的书</p>
+<h2 id="二叉树">二叉树</h2>
+<blockquote>
+<p>什么是二叉树？官方是这样定义的：<strong>在计算机科学中，二叉树是每个结点最多有两个子树的树结构</strong>。通常子树被称作“左子树”（left subtree）和“右子树”（right subtree）。</p>
+</blockquote>
+<p>其实这些都是很基础的东西，之前数据结构也都学过了。所以一些东西就省去不表。。。</p>
+<p>二叉树的数据结构</p>
+<pre><code class="language-java">public class TreeNode {
+    public int data;
+    public TreeNode leftChild;
+    public TreeNode rightChild;
+
+    public TreeNode(int data){
+        this.data = data;
+    }
+}
+</code></pre>
+<h2 id="前序遍历生成二叉树">前序遍历生成二叉树</h2>
+<p>我采用的是递归的方式，这样最容易明白</p>
+<pre><code class="language-java">    //创建二叉树
+	//inputList  存放前序遍历的二叉树的list
+    public static TreeNode createBinaryTree(LinkedList&lt;Integer&gt; inputList){
+        TreeNode treeNode = null;
+        if(inputList==null||inputList.isEmpty()){
+            return null;
+        }
+        Integer data = inputList.removeFirst();
+        if(data!=null){
+            treeNode = new TreeNode(data);
+            treeNode.leftChild = createBinaryTree(inputList);
+            treeNode.rightChild = createBinaryTree(inputList);
+        }
+        return treeNode;
+
+    }
+</code></pre>
+<p>测试代码：</p>
+<pre><code class="language-java"> public static void main(String[] args) {
+        LinkedList&lt;Integer&gt; inputList = new LinkedList&lt;Integer&gt;();
+        inputList.add(3); 
+        inputList.add(2);
+        inputList.add(9);
+        inputList.add(null);
+        inputList.add(null);
+        inputList.add(10);
+        inputList.add(null);
+        inputList.add(null);
+        inputList.add(8);
+        inputList.add(null);
+        inputList.add(4);
+        TreeNode head = createBinaryTree(inputList);
+
+    }
+</code></pre>
+<h2 id="前序遍历二叉树">前序遍历二叉树</h2>
+<h3 id="递归的写法">递归的写法</h3>
+<pre><code class="language-java">    //前序遍历--递归的方式
+    public static void qian(TreeNode head){
+        if(head==null){
+            return;
+        }
+        System.out.println(head.data);
+        qian(head.leftChild);
+        qian(head.rightChild);
+    }
+</code></pre>
+<h3 id="非递归的写法">非递归的写法</h3>
+<pre><code class="language-java">	//前序遍历--非递归的方式
+    public static void qian2(TreeNode head){
+        // 用栈来存放
+        Stack&lt;TreeNode&gt; stack = new Stack&lt;TreeNode&gt;();
+ 
+        while(head!=null||!stack.isEmpty()){
+            //迭代访问节点的左节点，并入栈
+            while(head!=null){
+                System.out.println(head.data);
+                stack.push(head);
+                head = head.leftChild;
+            }
+
+            //若节点没有左孩子，栈中弹出栈顶结点，访问节点右节点
+            if(!stack.isEmpty()){
+                head = stack.pop();
+                head = head.rightChild;
+            }
+        }
+    }
+</code></pre>
+<h2 id="层次遍历">层次遍历</h2>
+<p>大致思路：</p>
+<p><img src="https://aruul.github.io/post-images/1620906969722.jpg" alt="" loading="lazy"><br>
+<img src="https://aruul.github.io/post-images/1620906979070.jpg" alt="" loading="lazy"></p>
+<pre><code class="language-java">//广度优先遍历--层次遍历
+    public static void level(TreeNode head){
+        Queue&lt;TreeNode&gt; queue = new LinkedList&lt;&gt;();
+        queue.offer(head);
+        while (!queue.isEmpty()){
+            TreeNode treeNode =queue.poll();
+            System.out.println(treeNode.data);
+            if(treeNode.leftChild!=null){
+                queue.offer(treeNode.leftChild);
+            }
+            if(treeNode.rightChild!=null){
+                queue.offer(treeNode.rightChild);
+            }
+
+        }
+
+    }
+</code></pre>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[工厂模式]]></title>
         <id>https://aruul.github.io/post/PdwpIn0xO/</id>
@@ -952,16 +1072,6 @@ server {
 <code>configure arguments: --prefix=/usr/local/nginx --with-http_stub_status_module --with-http_ssl_module</code></p>
 <hr>
 <p>之后照常开启nginx即可</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[新的开始]]></title>
-        <id>https://aruul.github.io/post/newbegain/</id>
-        <link href="https://aruul.github.io/post/newbegain/">
-        </link>
-        <updated>2021-04-11T01:41:56.000Z</updated>
-        <content type="html"><![CDATA[<p>今天开始使用Gridea写博客辣！<br>
-之前的博客会陆续补上来的。</p>
 ]]></content>
     </entry>
 </feed>
