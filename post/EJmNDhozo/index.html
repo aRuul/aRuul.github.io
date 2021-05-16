@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>iPad变成真正的生产力----编程 | aRuul的无名小站</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://aruul.github.io/favicon.ico?v=1621169389829">
+<link rel="stylesheet" href="https://aruul.github.io/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+<script async src="//code.tidio.co/0llaydzaqpj2momyrcycfplv2h2my3av.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+    <meta name="description" content="前言
+iPad被知乎、b站很多人标榜为生产力，其实很早之前我一直觉得surface go才算生产力，毕竟可以编程。自己很偏激的把iPad看作电子垃圾。
+但是，由于预算有限，我还是买了ipad2020 128G🤡，毕竟同等价位买surfac..." />
+    <meta name="keywords" content="" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://aruul.github.io">
+        <img src="https://aruul.github.io/images/avatar.png?v=1621169389829" class="site-logo">
+        <h1 class="site-title">aRuul的无名小站</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/essay" class="site-nav">
+            随笔
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+          <a class="social-link" href="https://github.com/aRuul" target="_blank">
+            <i class="fab fa-github"></i>
+          </a>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+<span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+</span> | <a class="rss" href="https://aruul.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">iPad变成真正的生产力----编程</h2>
+            <div class="post-date">2021-05-16</div>
+            
+            <div class="post-content" v-pre>
+              <h2 id="前言">前言</h2>
+<p>iPad被知乎、b站很多人标榜为生产力，其实很早之前我一直觉得surface go才算生产力，毕竟可以编程。自己很偏激的把iPad看作电子垃圾。</p>
+<p>但是，由于预算有限，我还是买了ipad2020 128G🤡，毕竟同等价位买surface go2的话，只能买个乞丐版的，而且还是裸机。</p>
+<p>ipad买了之后我就有点小后悔，因为我发现我平时用ipad干的最多的就是读pdf，看视频。这完全可以被一个更便宜的安卓平板代替。</p>
+<p>后来在想ipad上可不可以像surface go2那样配个键盘编程，于是就花买了一个罗技的蓝牙键盘，手感还不错，ipad、笔记本都可以用。一开始，我发现可以在leetcode网页上在线编程，但是这种在线编程有些难受；我便开始寻找新的解决方案。在ipad搜到了几个编程软件，但是都要付费，还挺贵，我就犹豫了。</p>
+<p>就在今天，我刷知乎的时候，看到了github上的一个开源项目【<a href="https://github.com/cdr/code-server">code-server</a>】</p>
+<h2 id="code-server">code-server</h2>
+<blockquote>
+<p><code>code-server</code> 实际上就是专门为浏览器设计优化的 VS Code，可以直接通过浏览器访问。</p>
+<p>在远程 Linux 服务器上面部署 <code>code-server</code> 之后，<code>code-server</code> 实际上就相当于一个「中转站」，为我们提供一个直接在 Linux 服务器上面修改文件、访问数据库、执行指令等等操作的「窗口」，而由于这一「窗口」同样在 Linux 服务器上面运行，使用任何一个浏览器都可以打开，所以 iPad 也不例外。</p>
+<p>这样，我们就能够借助在远程服务器上运行的 <code>code-server</code>，直接使用远程服务器上面的各种资源（包括服务器上强大的原生 Linux 环境、CPU / GPU 等计算资源、「无尽」的电量等等）进行开发工作。（当然，这也要求我们 iPad 端全程拥有网络连接。）</p>
+</blockquote>
+<p>所以说需要你有个服务器，非常巧的是我服务器基本上算是吃灰的状态，上面就跑了两个网址的服务。</p>
+<h3 id="准备">准备</h3>
+<p>我的服务器系统是ubuntu，在github【<a href="https://github.com/cdr/code-server/releases">code-server release</a>】中下载最新版的压缩包，并上传到服务器。</p>
+<p>我选的是<a href="https://github.com/cdr/code-server/releases/download/v3.10.0/code-server-3.10.0-linux-amd64.tar.gz">code-server-3.10.0-linux-amd64.tar.gz</a></p>
+<p>然后，你要在服务器上下载好screen，如果没下的话，执行一下快速安装命令就好</p>
+<pre><code class="language-java">sudo apt-get install screen
+</code></pre>
+<h3 id="安装">安装</h3>
+<p>进入code-server压缩包的目录，然后执行解压命令</p>
+<pre><code class="language-java">tar -xvzf code-server-3.10.0-linux-amd64.tar.gz
+</code></pre>
+<p>再进入解压后的目录</p>
+<pre><code class="language-java">cd code-server-3.10.0-linux-amd64
+</code></pre>
+<p>然后使用screen后台运行</p>
+<pre><code>screen -S vscode
+</code></pre>
+<p>然后运行code-server</p>
+<pre><code class="language-java">export PASSWORD=&quot;yourpassword&quot; &amp;&amp; ./code-server --port 888 --host 0.0.0.0 
+</code></pre>
+<ul>
+<li>
+<p><code>export PASSWORD=&quot;yourpassword&quot;</code>可以指定密码，将yourpassword替换为你的密码，<mark>引号不要去掉</mark></p>
+<p>不加的话会默认生成一个，可以在运行后看到<code>yourpassword</code>为你的密码</p>
+</li>
+<li>
+<p>--port 888为 指定端口运行，我这里是运行在888端口</p>
+</li>
+<li>
+<p>--host 0.0.0.0 默认是127.0.0.1，只能本地访问，无法外网访问，所以得改成0.0.0.0，才能各个浏览器都能访问</p>
+</li>
+</ul>
+<hr>
+<p>之后访问你的服务器<code>公网ip:端口号</code>就可以访问了，当然也可以用nginx 代理到自己的域名上。</p>
+<p>其他的操作和vscode没什么区别。</p>
+<p>我自己配置了编写java用到的插件和配置。</p>
+<p>下面是用到的插件</p>
+<figure data-type="image" tabindex="1"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210516203633.png" alt="image-20210516203631497" loading="lazy"></figure>
+<hr>
+<p>下面是配置文件,主要是<code>&quot;java.home&quot;:</code>  <code>&quot;java.requirements.JDK11Warning&quot;</code>    <code>&quot;java.semanticHighlighting.enabled&quot;</code>这几个。</p>
+<pre><code class="language-java">{
+    &quot;java.home&quot;: &quot;/usr/java/jdk1.8.0_121&quot;,
+    &quot;java.requirements.JDK11Warning&quot;: false,
+    &quot;java.semanticHighlighting.enabled&quot;: true,
+    &quot;files.exclude&quot;: {
+        &quot;**/.classpath&quot;: true,
+        &quot;**/.project&quot;: true,
+        &quot;**/.settings&quot;: true,
+        &quot;**/.factorypath&quot;: true
+    },
+    &quot;java.completion.importOrder&quot;: [
+        &quot;java&quot;,
+        &quot;javax&quot;,
+        &quot;com&quot;,
+        &quot;org&quot;
+    ],
+    &quot;java.completion.favoriteStaticMembers&quot;: [
+        &quot;org.junit.Assert.*&quot;,
+        &quot;org.junit.Assume.*&quot;,
+        &quot;org.junit.jupiter.api.Assertions.*&quot;,
+        &quot;org.junit.jupiter.api.Assumptions.*&quot;,
+        &quot;org.junit.jupiter.api.DynamicContainer.*&quot;,
+        &quot;org.junit.jupiter.api.DynamicTest.*&quot;,
+        &quot;org.mockito.Mockito.*&quot;,
+        &quot;org.mockito.ArgumentMatchers.*&quot;,
+        &quot;org.mockito.Answers.*&quot;
+    ]
+}
+</code></pre>
+<h2 id="在ipad上编程">在ipad上编程</h2>
+<p>那么，怎么在ipad上运行呢。有两种方法：</p>
+<ol>
+<li>直接在浏览器访问你服务器code-server的网址。</li>
+<li>在ipad App Store上搜索 Servediter</li>
+</ol>
+<p>我推荐第二种，Servediter是一款专门为 iPad 优化的用来连接 <code>code-server</code> 的 iOS 原生应用。我们使用 VSApp 可以直接连接我们自己的 <code>code-server</code> 实例，自动登录，打造畅快的在线 VS Code 体验。</p>
+<p>Servediter原本是仅支持连接至它的开发者所部署的 <code>code-server</code> 上面的，因此也包含了 App 内购，最近才更新支持自部署服务器的连接。既然我们都已经自己部署了自己的 <code>code-server</code>，那么我们直接在菜单中选择「Self Hosted Server」，并依次填写：</p>
+<ul>
+<li>
+<p>我们刚刚部署 <code>code-server</code> 的：</p>
+</li>
+<li>
+<ul>
+<li><code>code-server URL</code> 刚刚在 Safari 中打开的 URL：<code>{服务器 IP 地址}:{code-server 端口}</code></li>
+<li><code>Instance password</code> 刚刚开启 <code>code-server</code> 时设置的密码</li>
+</ul>
+</li>
+<li>
+<p>以及，我们服务器自己的：</p>
+</li>
+<li>
+<ul>
+<li><code>Host</code>：服务器 IP 地址</li>
+<li><code>Username</code>：默认登录用户名</li>
+<li><code>Port</code>：登录 SSH 端口（默认 22 端口）</li>
+<li><code>Authentication</code>：登录服务器时使用的密码或公钥私钥对</li>
+</ul>
+</li>
+</ul>
+<figure data-type="image" tabindex="2"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210516204422.png" alt="image-20210516204421041" loading="lazy"></figure>
+<p>这样，就可以愉快的在ipad上写代码了。</p>
+<figure data-type="image" tabindex="3"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210516204906.jpg" alt="QQ图片20210516204848" loading="lazy"></figure>
+
+            </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://aruul.github.io/post/t70ZdhScS/">
+                  <h3 class="post-title">
+                    二叉树
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+  <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad()
+  </script>
+
+
+
+
+
+  </body>
+</html>
