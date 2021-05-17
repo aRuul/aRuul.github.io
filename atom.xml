@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://aruul.github.io</id>
     <title>aRuul的无名小站</title>
-    <updated>2021-05-17T12:04:48.838Z</updated>
+    <updated>2021-05-17T12:10:18.296Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://aruul.github.io"/>
     <link rel="self" href="https://aruul.github.io/atom.xml"/>
@@ -65,7 +65,7 @@
 <p>其他的操作和vscode没什么区别。</p>
 <p>我自己配置了编写java用到的插件和配置。</p>
 <p>下面是用到的插件</p>
-<figure data-type="image" tabindex="1"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210517195936.png" alt="image-20210517195935184" loading="lazy"></figure>
+<figure data-type="image" tabindex="1"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210517200929.png" alt="image-20210517200928040" loading="lazy"></figure>
 <hr>
 <p>下面是配置文件,主要是<code>&quot;java.home&quot;:</code>  <code>&quot;java.requirements.JDK11Warning&quot;</code>    <code>&quot;java.semanticHighlighting.enabled&quot;</code>这几个。</p>
 <pre><code class="language-java">{
