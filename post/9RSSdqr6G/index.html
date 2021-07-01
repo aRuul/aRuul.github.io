@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>反射（3） | aRuul的无名小站</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://aruul.github.io/favicon.ico?v=1625124818960">
+<link rel="stylesheet" href="https://aruul.github.io/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+<script async src="//code.tidio.co/0llaydzaqpj2momyrcycfplv2h2my3av.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+    <meta name="description" content="反射-得到对象的六种方式
+  
+        /*  1.Clss.forName
+            已经知道一个类的全类名，
+            应用场景：多用于配置文件，读取类全路径，加载类
+        */
+     ..." />
+    <meta name="keywords" content="反射,java" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://aruul.github.io">
+        <img src="https://aruul.github.io/images/avatar.png?v=1625124818960" class="site-logo">
+        <h1 class="site-title">aRuul的无名小站</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/essay" class="site-nav">
+            随笔
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+          <a class="social-link" href="https://github.com/aRuul" target="_blank">
+            <i class="fab fa-github"></i>
+          </a>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+<span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+</span> | <a class="rss" href="https://aruul.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">反射（3）</h2>
+            <div class="post-date">2021-07-01</div>
+            
+            <div class="post-content" v-pre>
+              <h3 id="反射-得到对象的六种方式">反射-得到对象的六种方式</h3>
+<pre><code class="language-java">  
+        /*  1.Clss.forName
+            已经知道一个类的全类名，
+            应用场景：多用于配置文件，读取类全路径，加载类
+        */
+        final String classAllPath = &quot;org.example.Car&quot;;
+        Class&lt;?&gt; cls1 = Class.forName(classAllPath);
+        System.out.println(&quot;cls1 &quot;+cls1);
+
+        /*  2.类名.class
+            已经知道一个具体的类，
+            应用场景：多用于参数传递，如通过反射得到对应的构造器对象
+        */
+        Class cls2 = Car.class;
+        System.out.println(&quot;cls2 &quot;+cls2);
+
+        /*  3.getClass()
+            已经知道一个类的实例，调用该实例的getClass()方法获取Class对象，
+            应用场景：通过创建好的对象，获取Class对象
+        */
+        Car car = new Car();
+        Class cls3 = car.getClass();
+        System.out.println(&quot;cls3 &quot;+cls3);
+
+        /*  4.ClassLoader
+            通过类加载器
+            应用场景：
+        */
+        //(1)得到car类的加载器 
+        ClassLoader classLoader = car.getClass().getClassLoader();
+        //(2)通过类加载器，得到Class对象
+        Class&lt;?&gt; cls4 = classLoader.loadClass(&quot;org.example.Car&quot;);
+        System.out.println(&quot;cls4 &quot;+cls4);
+
+
+        //cls1 cls2 cls3 cls4其实是同一个对象
+        System.out.println(cls1.hashCode());
+        System.out.println(cls2.hashCode());
+        System.out.println(cls3.hashCode());
+        System.out.println(cls4.hashCode());
+
+        //5.基本数据类型获取Class对象
+        Class&lt;?&gt; integerClass = int.class;
+        System.out.println(integerClass);
+
+        //6.基本数据类型对应的包装类，通过Type获取Class对象
+        Class&lt;?&gt; type = Integer.TYPE;
+        System.out.println(type);
+</code></pre>
+<hr>
+<h3 id="反射-获取类相关的信息">反射-获取类相关的信息</h3>
+<pre><code class="language-java">		Class&lt;?&gt; personClass = Class.forName(&quot;org.example.Person&quot;); //父类
+        Class&lt;?&gt; studentClass = Class.forName(&quot;org.example.Student&quot;); //子类
+
+        //获取全类名
+        System.out.println(&quot;获取全类名&quot;+personClass.getName());
+
+        //获取简单类名
+        System.out.println(&quot;获取简单类名&quot;+personClass.getSimpleName());
+
+        //获取所有public修饰的属性， 包括本类及父类
+        Field[] fields = studentClass.getFields();
+        System.out.println(&quot;获取所有public修饰的属性， 包括本类及父类&quot;);
+        for (int i = 0; i &lt; fields.length; i++) {
+            System.out.println(fields[i].getName());
+        }
+
+        //获取本类的所有属性
+        Field[] fields2 = personClass.getDeclaredFields();
+        System.out.println(&quot;获取本类的所有属性&quot;);
+        for (int i = 0; i &lt; fields2.length; i++) {
+            System.out.println(fields2[i].getName());
+        }
+
+        //获取本类和父类和超类所有public修饰的方法
+        Method[] methods = studentClass.getMethods();
+        System.out.println(&quot;获取本类和父类和超类所有public修饰的方法&quot;);
+        for (int i = 0; i &lt; methods.length; i++) {
+            System.out.println(methods[i].getName());
+        }
+
+        //获取本类中所有的方法
+        Method[] methods2 = studentClass.getDeclaredMethods();
+        System.out.println(&quot;获取本类中所有的方法&quot;);
+        for (int i = 0; i &lt; methods2.length; i++) {
+            System.out.println(methods2[i].getName());
+        } 
+
+        //获取本类所有public修饰的构造器，`
+        Constructor[] constructors = studentClass.getConstructors();
+        System.out.println(&quot;获取本类所有public修饰的构造器&quot;);
+        for (int i = 0; i &lt; constructors.length; i++) {
+            System.out.println(constructors[i].getName());
+        }
+
+        //获取本类所有构造器
+        Constructor[] constructors2 = studentClass.getDeclaredConstructors();
+        System.out.println(&quot;获取本类所有构造器&quot;);
+        for (int i = 0; i &lt; constructors2.length; i++) {
+            System.out.println(constructors2[i]);
+        }
+
+        //获取包名
+        System.out.println(&quot;获取包名&quot;);
+        System.out.println(studentClass.getPackage());
+
+        //以Class的形式返回父类信息
+        Class&lt;?&gt; superclass = studentClass.getSuperclass();
+        System.out.println(&quot;以Class的形式返回父类信息&quot;);
+        System.out.println(superclass);
+
+        //以Class[]的形式返回接口信息
+        Class[] interfaces = studentClass.getInterfaces();
+        System.out.println(&quot;以Class[]的形式返回接口信息&quot;);
+        for (int i = 0; i &lt; interfaces.length; i++) {
+            System.out.println(interfaces[i]);
+        }
+
+        //以Annotation[]的形式得到注解信息
+        Annotation[] annotations = studentClass.getAnnotations();
+        System.out.println(&quot;以Annotation[]的形式得到注解信息&quot;);
+        for (int i = 0; i &lt; annotations.length; i++) {
+            System.out.println(annotations[i]);
+        }
+</code></pre>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://aruul.github.io/tag/Hv3keDRVW/" class="tag">
+                    反射
+                  </a>
+                
+                  <a href="https://aruul.github.io/tag/fABi2KP6qR/" class="tag">
+                    java
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://aruul.github.io/post/Z708mjxH2/">
+                  <h3 class="post-title">
+                    java中final变量的初始化
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+  <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad()
+  </script>
+
+
+
+
+
+  </body>
+</html>
