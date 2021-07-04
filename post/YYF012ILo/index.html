@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>代理模式 | aRuul的无名小站</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://aruul.github.io/favicon.ico?v=1625385134207">
+<link rel="stylesheet" href="https://aruul.github.io/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+<script async src="//code.tidio.co/0llaydzaqpj2momyrcycfplv2h2my3av.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+    <meta name="description" content="代理模式简单来说就是 我们使用代理对象来代替对真实对象(real object)的访问，这样就可以在不修改原目标对象的前提下，提供额外的功能操作，扩展目标对象的功能。
+代理模式的主要作用是扩展目标对象的功能，比如说在目标对象的某个方法执行前..." />
+    <meta name="keywords" content="设计模式,java" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://aruul.github.io">
+        <img src="https://aruul.github.io/images/avatar.png?v=1625385134207" class="site-logo">
+        <h1 class="site-title">aRuul的无名小站</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/essay" class="site-nav">
+            随笔
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+          <a class="social-link" href="https://github.com/aRuul" target="_blank">
+            <i class="fab fa-github"></i>
+          </a>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+<span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+</span> | <a class="rss" href="https://aruul.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">代理模式</h2>
+            <div class="post-date">2021-07-04</div>
+            
+            <div class="post-content" v-pre>
+              <p>代理模式简单来说就是 <strong>我们使用代理对象来代替对真实对象(real object)的访问，这样就可以在不修改原目标对象的前提下，提供额外的功能操作，扩展目标对象的功能。</strong></p>
+<p><strong>代理模式的主要作用是扩展目标对象的功能，比如说在目标对象的某个方法执行前后你可以增加一些自定义的操作。</strong></p>
+<p>代理模式有静态代理和动态代理两种实现方式。</p>
+<h2 id="静态代理">静态代理</h2>
+<p>静态代理实现步骤:</p>
+<ol>
+<li>定义一个接口及其实现类；</li>
+<li>创建一个代理类同样实现这个接口</li>
+<li>将目标对象注入进代理类，然后在代理类的对应方法调用目标类中的对应方法。这样的话，我们就可以通过代理类屏蔽对目标对象的访问，并且可以在目标方法执行前后做一些自己想做的事情。</li>
+</ol>
+<p>例如：小明想要打官司，则他需要找到代理律师来帮他</p>
+<p>​			代理律师负责将小明想说的话说出去，并在小明说话前面引用法律条文，在小明说话后发动道德谴责。</p>
+<p>代码：</p>
+<pre><code class="language-java">//说话的行为接口
+interface Say{
+    void sayMessage(String m);
+}
+//小明
+class XiaoMing implements Say{
+    @Override
+    public void sayMessage(String m) {
+        System.out.println(&quot;小明说出案情--by&quot;+m);
+    }
+}
+
+//静态代理 王律师
+class LawyerWang implements Say{
+    private final Say say;
+
+    public LawyerWang(Say say) {
+        this.say = say;
+    }
+
+    @Override
+    public void sayMessage(String m) {
+        System.out.println(&quot;引用法律条文&quot;);
+        say.sayMessage(m);
+        System.out.println(&quot;使用道德谴责&quot;);
+    }
+}
+</code></pre>
+<p>但是当又有一人来找王律师的时候，就需要重写代理的代码，非常不实用。</p>
+<hr>
+<h2 id="动态代理">动态代理</h2>
+<p>相比于静态代理来说，动态代理更加灵活。我们不需要针对每个目标类都单独创建一个代理类，并且也不需要我们必须实现接口，我们可以直接代理实现类( <em>CGLIB 动态代理机制</em>)。</p>
+<p><strong>从 JVM 角度来说，动态代理是在运行时动态生成类字节码，并加载到 JVM 中的。</strong></p>
+<p>说到动态代理，Spring AOP、RPC 框架应该是两个不得不的提的，它们的实现都依赖了动态代理。</p>
+<p><strong>动态代理在我们日常开发中使用的相对较小，但是在框架中的几乎是必用的一门技术。学会了动态代理之后，对于我们理解和学习各种框架的原理也非常有帮助。</strong></p>
+<p>就 Java 来说，动态代理的实现方式有很多种，比如 <strong>JDK 动态代理</strong>、<strong>CGLIB 动态代理</strong>等等。</p>
+<h3 id="jdk动态代理">JDK动态代理</h3>
+<h3 id="介绍">介绍</h3>
+<p><strong>在 Java 动态代理机制中 <code>InvocationHandler</code> 接口和 <code>Proxy</code> 类是核心。</strong></p>
+<ol>
+<li><strong>InvocationHandler接口</strong></li>
+</ol>
+<blockquote>
+<p>在使用动态代理时，我们需要定义一个位于代理类与委托类之间的中介类，这个中介类被要求实现InvocationHandler接口，这个接口的定义如下：</p>
+<pre><code>/**
+ * 调用处理程序
+ */
+public interface InvocationHandler { 
+    Object invoke(Object proxy, Method method, Object[] args); 
+} 
+复制代码
+</code></pre>
+<p>从InvocationHandler这个名称我们就可以知道，实现了这个接口的中介类用做“调用处理器”。</p>
+<p>当我们调用代理类对象的方法时，这个“调用”会转送到invoke方法中。</p>
+<p>代理类对象作为proxy参数传入，</p>
+<p>参数method标识了我们具体调用的是代理类的哪个方法，</p>
+<p>args为这个方法的参数。</p>
+<p>这样一来，我们对代理类中的所有方法的调用都会变为对invoke的调用，这样我们可以在invoke方法中添加统一的处理逻辑(也可以根据method参数对不同的代理类方法做不同的处理)。因此我们只需在中介类的invoke方法实现中输出“before”，然后调用委托类的invoke方法，再输出“after”。<br>
+作者：Chaexsy<br>
+链接：https://juejin.cn/post/6844903591501627405<br>
+来源：掘金<br>
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</p>
+</blockquote>
+<ol start="2">
+<li><strong><code>Proxy</code> 类</strong></li>
+</ol>
+<p><code>Proxy</code> 类中使用频率最高的方法是：<code>newProxyInstance()</code> ，这个方法主要用来生成一个代理对象。</p>
+<pre><code class="language-java">    public static Object newProxyInstance(ClassLoader loader,
+                                          Class&lt;?&gt;[] interfaces,
+                                          InvocationHandler h)
+        throws IllegalArgumentException
+    {
+        ......
+    }Copy to clipboardErrorCopied
+</code></pre>
+<p>这个方法一共有 3 个参数：</p>
+<ol>
+<li><strong>loader</strong> :类加载器，用于加载代理对象。</li>
+<li><strong>interfaces</strong> : 被代理类实现的一些接口；</li>
+<li><strong>h</strong> : 实现了 <code>InvocationHandler</code> 接口的对象；</li>
+</ol>
+<hr>
+<h3 id="接口和被代理委托方">接口和被代理(委托方)</h3>
+<pre><code class="language-java">//说话的行为接口
+interface Say{
+    void sayMessage(String m);
+}
+//小明
+class XiaoMing implements Say{
+    @Override
+    public void sayMessage(String m) {
+        System.out.println(&quot;小明说出案情--by&quot;+m);
+    }
+}
+</code></pre>
+<h3 id="中介类">中介类</h3>
+<p>对于<strong>XiaoMing</strong>这个类来说<strong>LawyerProxy</strong>类是他的代理，构成了静态代理</p>
+<pre><code class="language-java">class LawyerProxy implements InvocationHandler{
+    final private Object object;
+
+    public LawyerProxy(Object object) {
+        this.object = object;
+    }
+
+    @Override
+    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        System.out.println(&quot;引用法律条文&quot;);
+        method.invoke(object,args);
+        System.out.println(&quot;使用道德谴责&quot;);
+        return null;
+    }
+}
+</code></pre>
+<h3 id="实际调用">实际调用</h3>
+<p>而对于<strong>LawyerProxy</strong>类来说，<strong>Proxy 类</strong>是它的代理，构成了静态代理</p>
+<pre><code class="language-java">	//动态代理
+  System.out.println(&quot;===动态代理===&quot;);
+  LawyerProxy lawyerProxy = new LawyerProxy(new XiaoMing());
+  Say s = (Say)Proxy.newProxyInstance(Say.class.getClassLoader(), new Class[]{Say.class}, lawyerProxy);
+  s.sayMessage(&quot;动态代理类&quot;);
+</code></pre>
+<p>也就是说，<strong>动态代理关系由两组静态代理关系组成，这就是动态代理的原理</strong>。</p>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://aruul.github.io/tag/BJf4P3ilC/" class="tag">
+                    设计模式
+                  </a>
+                
+                  <a href="https://aruul.github.io/tag/fABi2KP6qR/" class="tag">
+                    java
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://aruul.github.io/post/9RSSdqr6G/">
+                  <h3 class="post-title">
+                    反射（3）
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+  <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad()
+  </script>
+
+
+
+
+
+  </body>
+</html>

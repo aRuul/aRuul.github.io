@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://aruul.github.io</id>
     <title>aRuul的无名小站</title>
-    <updated>2021-07-01T07:33:42.203Z</updated>
+    <updated>2021-07-04T07:52:18.715Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://aruul.github.io"/>
     <link rel="self" href="https://aruul.github.io/atom.xml"/>
@@ -10,6 +10,149 @@
     <logo>https://aruul.github.io/images/avatar.png</logo>
     <icon>https://aruul.github.io/favicon.ico</icon>
     <rights>All rights reserved 2021, aRuul的无名小站</rights>
+    <entry>
+        <title type="html"><![CDATA[代理模式]]></title>
+        <id>https://aruul.github.io/post/YYF012ILo/</id>
+        <link href="https://aruul.github.io/post/YYF012ILo/">
+        </link>
+        <updated>2021-07-04T07:51:46.000Z</updated>
+        <content type="html"><![CDATA[<p>代理模式简单来说就是 <strong>我们使用代理对象来代替对真实对象(real object)的访问，这样就可以在不修改原目标对象的前提下，提供额外的功能操作，扩展目标对象的功能。</strong></p>
+<p><strong>代理模式的主要作用是扩展目标对象的功能，比如说在目标对象的某个方法执行前后你可以增加一些自定义的操作。</strong></p>
+<p>代理模式有静态代理和动态代理两种实现方式。</p>
+<h2 id="静态代理">静态代理</h2>
+<p>静态代理实现步骤:</p>
+<ol>
+<li>定义一个接口及其实现类；</li>
+<li>创建一个代理类同样实现这个接口</li>
+<li>将目标对象注入进代理类，然后在代理类的对应方法调用目标类中的对应方法。这样的话，我们就可以通过代理类屏蔽对目标对象的访问，并且可以在目标方法执行前后做一些自己想做的事情。</li>
+</ol>
+<p>例如：小明想要打官司，则他需要找到代理律师来帮他</p>
+<p>​			代理律师负责将小明想说的话说出去，并在小明说话前面引用法律条文，在小明说话后发动道德谴责。</p>
+<p>代码：</p>
+<pre><code class="language-java">//说话的行为接口
+interface Say{
+    void sayMessage(String m);
+}
+//小明
+class XiaoMing implements Say{
+    @Override
+    public void sayMessage(String m) {
+        System.out.println(&quot;小明说出案情--by&quot;+m);
+    }
+}
+
+//静态代理 王律师
+class LawyerWang implements Say{
+    private final Say say;
+
+    public LawyerWang(Say say) {
+        this.say = say;
+    }
+
+    @Override
+    public void sayMessage(String m) {
+        System.out.println(&quot;引用法律条文&quot;);
+        say.sayMessage(m);
+        System.out.println(&quot;使用道德谴责&quot;);
+    }
+}
+</code></pre>
+<p>但是当又有一人来找王律师的时候，就需要重写代理的代码，非常不实用。</p>
+<hr>
+<h2 id="动态代理">动态代理</h2>
+<p>相比于静态代理来说，动态代理更加灵活。我们不需要针对每个目标类都单独创建一个代理类，并且也不需要我们必须实现接口，我们可以直接代理实现类( <em>CGLIB 动态代理机制</em>)。</p>
+<p><strong>从 JVM 角度来说，动态代理是在运行时动态生成类字节码，并加载到 JVM 中的。</strong></p>
+<p>说到动态代理，Spring AOP、RPC 框架应该是两个不得不的提的，它们的实现都依赖了动态代理。</p>
+<p><strong>动态代理在我们日常开发中使用的相对较小，但是在框架中的几乎是必用的一门技术。学会了动态代理之后，对于我们理解和学习各种框架的原理也非常有帮助。</strong></p>
+<p>就 Java 来说，动态代理的实现方式有很多种，比如 <strong>JDK 动态代理</strong>、<strong>CGLIB 动态代理</strong>等等。</p>
+<h3 id="jdk动态代理">JDK动态代理</h3>
+<h3 id="介绍">介绍</h3>
+<p><strong>在 Java 动态代理机制中 <code>InvocationHandler</code> 接口和 <code>Proxy</code> 类是核心。</strong></p>
+<ol>
+<li><strong>InvocationHandler接口</strong></li>
+</ol>
+<blockquote>
+<p>在使用动态代理时，我们需要定义一个位于代理类与委托类之间的中介类，这个中介类被要求实现InvocationHandler接口，这个接口的定义如下：</p>
+<pre><code>/**
+ * 调用处理程序
+ */
+public interface InvocationHandler { 
+    Object invoke(Object proxy, Method method, Object[] args); 
+} 
+复制代码
+</code></pre>
+<p>从InvocationHandler这个名称我们就可以知道，实现了这个接口的中介类用做“调用处理器”。</p>
+<p>当我们调用代理类对象的方法时，这个“调用”会转送到invoke方法中。</p>
+<p>代理类对象作为proxy参数传入，</p>
+<p>参数method标识了我们具体调用的是代理类的哪个方法，</p>
+<p>args为这个方法的参数。</p>
+<p>这样一来，我们对代理类中的所有方法的调用都会变为对invoke的调用，这样我们可以在invoke方法中添加统一的处理逻辑(也可以根据method参数对不同的代理类方法做不同的处理)。因此我们只需在中介类的invoke方法实现中输出“before”，然后调用委托类的invoke方法，再输出“after”。<br>
+作者：Chaexsy<br>
+链接：https://juejin.cn/post/6844903591501627405<br>
+来源：掘金<br>
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</p>
+</blockquote>
+<ol start="2">
+<li><strong><code>Proxy</code> 类</strong></li>
+</ol>
+<p><code>Proxy</code> 类中使用频率最高的方法是：<code>newProxyInstance()</code> ，这个方法主要用来生成一个代理对象。</p>
+<pre><code class="language-java">    public static Object newProxyInstance(ClassLoader loader,
+                                          Class&lt;?&gt;[] interfaces,
+                                          InvocationHandler h)
+        throws IllegalArgumentException
+    {
+        ......
+    }Copy to clipboardErrorCopied
+</code></pre>
+<p>这个方法一共有 3 个参数：</p>
+<ol>
+<li><strong>loader</strong> :类加载器，用于加载代理对象。</li>
+<li><strong>interfaces</strong> : 被代理类实现的一些接口；</li>
+<li><strong>h</strong> : 实现了 <code>InvocationHandler</code> 接口的对象；</li>
+</ol>
+<hr>
+<h3 id="接口和被代理委托方">接口和被代理(委托方)</h3>
+<pre><code class="language-java">//说话的行为接口
+interface Say{
+    void sayMessage(String m);
+}
+//小明
+class XiaoMing implements Say{
+    @Override
+    public void sayMessage(String m) {
+        System.out.println(&quot;小明说出案情--by&quot;+m);
+    }
+}
+</code></pre>
+<h3 id="中介类">中介类</h3>
+<p>对于<strong>XiaoMing</strong>这个类来说<strong>LawyerProxy</strong>类是他的代理，构成了静态代理</p>
+<pre><code class="language-java">class LawyerProxy implements InvocationHandler{
+    final private Object object;
+
+    public LawyerProxy(Object object) {
+        this.object = object;
+    }
+
+    @Override
+    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        System.out.println(&quot;引用法律条文&quot;);
+        method.invoke(object,args);
+        System.out.println(&quot;使用道德谴责&quot;);
+        return null;
+    }
+}
+</code></pre>
+<h3 id="实际调用">实际调用</h3>
+<p>而对于<strong>LawyerProxy</strong>类来说，<strong>Proxy 类</strong>是它的代理，构成了静态代理</p>
+<pre><code class="language-java">	//动态代理
+  System.out.println(&quot;===动态代理===&quot;);
+  LawyerProxy lawyerProxy = new LawyerProxy(new XiaoMing());
+  Say s = (Say)Proxy.newProxyInstance(Say.class.getClassLoader(), new Class[]{Say.class}, lawyerProxy);
+  s.sayMessage(&quot;动态代理类&quot;);
+</code></pre>
+<p>也就是说，<strong>动态代理关系由两组静态代理关系组成，这就是动态代理的原理</strong>。</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[反射（3）]]></title>
         <id>https://aruul.github.io/post/9RSSdqr6G/</id>
@@ -1021,91 +1164,6 @@ miao~ i am 招财猫
 
         Constructor constructor2 = cls.getConstructor(String.class);
         System.out.println(&quot;有参构造：&quot;+constructor2);
-</code></pre>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[java注解浅谈]]></title>
-        <id>https://aruul.github.io/post/3NqPQbqyz/</id>
-        <link href="https://aruul.github.io/post/3NqPQbqyz/">
-        </link>
-        <updated>2021-05-03T13:13:49.000Z</updated>
-        <content type="html"><![CDATA[<h3 id="注解">注解</h3>
-<hr>
-<h4 id="内置注解">内置注解</h4>
-<ul>
-<li>
-<p>@Override</p>
-<p>表示一个方法声名打算重写超类中的另一个方法声明。</p>
-</li>
-<li>
-<p>@Deprecated</p>
-<p>表示不鼓励程序员使用这样的元素</p>
-</li>
-<li>
-<p>@SuppressWarnings()</p>
-<p>抑制编译时的警告信息</p>
-<p>如@SuppressWarnings(&quot;all&quot;)等</p>
-<hr>
-<h4 id="元注解">元注解</h4>
-<p>除了直接使用JDK 定义好的注解，我们还可以自定义注解，在JDK 1.5中提供了4个标准的用来对注解类型进行注解的注解类，我们称之为 meta-annotation（元注解），他们分别是：</p>
-</li>
-<li>
-<p>@Target</p>
-<p>Target注解的作用是：描述注解的使用范围（即：被修饰的注解可以用在什么地方</p>
-</li>
-<li>
-<p>@Retention</p>
-<p>Reteniton注解的作用是：描述注解保留的时间范围（即：被描述的注解在它所修饰的类中可以被保留到何时）</p>
-<p>Reteniton注解用来限定那些被它所注解的注解类在注解到其他类上以后，可被保留到何时，一共有三种策略，定义在RetentionPolicy枚举中。</p>
-<p><mark>RUNTIME一般较常用</mark></p>
-<pre><code>SOURCE,    // 源文件保留
-CLASS,       // 编译期保留，默认值
-RUNTIME   // 运行期保留，可通过反射去获取注解信息
-</code></pre>
-</li>
-<li>
-<p>@Documented</p>
-<p>表示是否将注解生成在JavaDoc中</p>
-</li>
-<li>
-<p>@Inherited</p>
-<p>子类可以继承父类的注解</p>
-</li>
-</ul>
-<p>我们可以使用这4个元注解来对我们自定义的注解类型进行注解</p>
-<hr>
-<h4 id="自定义注解">自定义注解</h4>
-<p>使用@interface</p>
-<pre><code class="language-JAVA">//定义一个注解
-@Target(value = {ElementType.METHOD,ElementType.TYPE})  //表示注解可以用在方法、类上
-@Retention(value = RetentionPolicy.RUNTIME)             //表示注解在什么时候有效RUNTIME&gt;class&gt;sources
-@Documented                                             //表示是否将注解生成在JavaDoc中
-@Inherited                                              //子类可以继承父类的注解
-public @interface MyAnnotation{
-
-}
-</code></pre>
-<pre><code class="language-java">//定义一个注解
-@Target(value = {ElementType.METHOD,ElementType.TYPE})  //表示注解可以用在方法、类上
-@Retention(value = RetentionPolicy.RUNTIME)             //表示注解在什么时候有效RUNTIME&gt;class&gt;sources
-@Documented                                             //表示是否将注解生成在JavaDoc中
-@Inherited                                              //子类可以继承父类的注解
-public @interface MyAnnotation{
-    //注解的参数： 参数类型+参数名()
-    String name() default &quot;&quot;;  //default 表示默认值  这里是默认值为空
-    int age() default 0;
-    int id() default -1;    //默认值为-1，代表不存在
-
-    String [] schools();
-}
-
-
-@Target(value = {ElementType.METHOD,ElementType.TYPE})  //表示注解可以用在方法、类上
-@Retention(value = RetentionPolicy.RUNTIME)             //表示注解在什么时候有效RUNTIME&gt;class&gt;sources
-public @interface MyAnnotation2{
-    String value();  //如果注解中只有一个参数，则建议定义为value，这样在使用的时候直接写  @MyAnnotation2(&quot;赋值&quot;)
-}
 </code></pre>
 ]]></content>
     </entry>
