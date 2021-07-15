@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://aruul.github.io</id>
     <title>aRuul的无名小站</title>
-    <updated>2021-07-04T07:52:18.715Z</updated>
+    <updated>2021-07-15T08:26:39.320Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://aruul.github.io"/>
     <link rel="self" href="https://aruul.github.io/atom.xml"/>
@@ -10,6 +10,226 @@
     <logo>https://aruul.github.io/images/avatar.png</logo>
     <icon>https://aruul.github.io/favicon.ico</icon>
     <rights>All rights reserved 2021, aRuul的无名小站</rights>
+    <entry>
+        <title type="html"><![CDATA[java多线程]]></title>
+        <id>https://aruul.github.io/post/h25epdEh9/</id>
+        <link href="https://aruul.github.io/post/h25epdEh9/">
+        </link>
+        <updated>2021-07-15T08:25:56.000Z</updated>
+        <content type="html"><![CDATA[<p><strong>最近准备秋招，就开始之前java内容的复习，把复习过程中一些基本知识记录了下来，预祝自己秋招顺利吧。</strong></p>
+<h2 id="基础篇">基础篇</h2>
+<h3 id="1进程和线程">1.进程和线程</h3>
+<blockquote>
+<p>进程就是<strong>应用程序在内存中分配的空间，也就是正在运行的程序</strong>，各个进程之间互不干扰。同时进程保存着程序每一个时刻运行的状态。</p>
+<p><strong>一个进程就包含了多个线程，每个线程负责一个单独的子任务。</strong></p>
+</blockquote>
+<p>进程和线程的提出极大的提高了操作系统的性能。<strong>进程让操作系统的并发性成为了可能，而线程让进程的内部并发成为了可能。</strong></p>
+<h4 id="11进程和线程的区别">1.1进程和线程的区别</h4>
+<p>进程是一个独立的运行环境，而线程是在进程中执行的一个任务。他们两个本质的区别是<strong>是否单独占有内存地址空间及其它系统资源（比如I/O）</strong>：</p>
+<ul>
+<li>进程单独占有一定的内存地址空间，所以进程间存在内存隔离，数据是分开的，数据共享复杂但是同步简单，各个进程之间互不干扰；而线程共享所属进程占有的内存地址空间和资源，数据共享简单，但是同步复杂。</li>
+<li>进程单独占有一定的内存地址空间，一个进程出现问题不会影响其他进程，不影响主程序的稳定性，可靠性高；一个线程崩溃可能影响整个程序的稳定性，可靠性较低。</li>
+<li>进程单独占有一定的内存地址空间，进程的创建和销毁不仅需要保存寄存器和栈信息，还需要资源的分配回收以及页调度，开销较大；线程只需要保存寄存器和栈信息，开销较小。</li>
+</ul>
+<p>另外一个重要区别是，<strong>进程是操作系统进行资源分配的基本单位，而线程是操作系统进行调度的基本单位</strong>，即CPU分配时间的单位 。</p>
+<hr>
+<h3 id="2java多线程入门类和接口">2.Java多线程入门类和接口</h3>
+<p>JDK提供了<code>Thread</code>类和<code>Runnable</code>接口来让我们实现自己的“线程”类。</p>
+<ul>
+<li>继承<code>Thread</code>类，并重写<code>run</code>方法；</li>
+<li>实现<code>Runnable</code>接口的<code>run</code>方法；</li>
+</ul>
+<h4 id="21-继承thread类">2..1 继承<code>Thread</code>类</h4>
+<pre><code class="language-java">public class MyThread_01 extends Thread{
+    @Override
+    public void run() {
+        System.out.println(&quot;MyThread_01 run&quot;);
+    }
+
+    public static void main(String[] args) {
+        MyThread_01 myThread_01 = new MyThread_01();
+        myThread_01.start();
+    }
+}
+</code></pre>
+<p>注意要调用<code>start()</code>方法后，该线程才算启动！</p>
+<blockquote>
+<p>我们在程序里面调用了start()方法后，虚拟机会先为我们创建一个线程，然后等到这个线程第一次得到时间片时再调用run()方法。</p>
+<p>注意不可多次调用start()方法。在第一次调用start()方法后，再次调用start()方法会抛出illegalThreadStateException异常。</p>
+</blockquote>
+<h3 id="212实现runnable接口">2.12实现Runnable接口</h3>
+<p>略</p>
+<hr>
+<h2 id="小细节">小细节</h2>
+<p>当main线程启动一个线程的时候，main线程并不会阻塞，会和新开的线程交替执行</p>
+<pre><code class="language-java">public class Demo1 extends Thread{
+    @Override
+    public void run() {
+        for (int i=0; i&lt;5;i++){
+            try {
+                Thread.sleep(500);
+                System.out.println(&quot;线程启动了...【&quot;+ Thread.currentThread().getName()+&quot;】&quot;);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+        Demo1 demo1 = new Demo1();
+        demo1.start();
+
+        for (int i = 0; i &lt; 5; i++) {
+            System.out.println(&quot;main 线程启动&quot;);
+            Thread.sleep(1000);
+        }
+    }
+
+}
+</code></pre>
+<p>运行结果：</p>
+<blockquote>
+<p>main 线程启动<br>
+线程启动了...【Thread-0】<br>
+main 线程启动<br>
+线程启动了...【Thread-0】<br>
+线程启动了...【Thread-0】<br>
+main 线程启动<br>
+线程启动了...【Thread-0】<br>
+线程启动了...【Thread-0】<br>
+main 线程启动<br>
+main 线程启动</p>
+<p>Process finished with exit code 0</p>
+</blockquote>
+<p>实现Runnable接口的方式更加适合多个线程共享一个资源的情况</p>
+<hr>
+<h2 id="jdk18新特性lamda表达式">jdk1.8新特性Lamda表达式</h2>
+<p>属于函数式编程</p>
+<p>lambda 表达式的语法格式如下：</p>
+<pre><code class="language-java">(parameters) -&gt; expression 
+</code></pre>
+<p>或</p>
+<pre><code class="language-java"> (parameters) -&gt;{ statements; }
+</code></pre>
+<pre><code class="language-java">public class MyLamda {
+    public static void main(String[] args) {
+        Like like = ()-&gt;{
+            System.out.println(&quot;i like java lamda&quot;);
+        };
+        like.say();
+    }
+}
+
+interface Like{
+    void say();
+}
+</code></pre>
+<h2 id="线程的状态">线程的状态</h2>
+<figure data-type="image" tabindex="1"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210714161606.png" alt="image-20210714161604425" loading="lazy"></figure>
+<figure data-type="image" tabindex="2"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210714190304.png" alt="image-20210714190303037" loading="lazy"></figure>
+<hr>
+<p><mark>优先级范围为1-10，一般是越大越高，越先执行，默认为5</mark></p>
+<p>线程分为用户线程和守护线程</p>
+<h2 id="守护线程">守护线程</h2>
+<p>在Java中有两类线程：User Thread(用户线程)、Daemon Thread(守护线程)</p>
+<p>如果 User Thread已经全部退出运行了，只剩下Daemon Thread存在了，虚拟机也就退出了。 因为没有了被守护者，Daemon也就没有工作可做了，也就没有继续运行程序的必要了。</p>
+<p><mark>当主线程结束之后，守护线程也就结束</mark></p>
+<pre><code class="language-java">public class ShouHu {
+    public static void main(String[] args) {
+
+        Runnable runnable=()-&gt;{
+            for( ; ; ){
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                System.out.println(&quot;我是守护线程&quot;);
+            }
+        };
+
+        Thread thread = new Thread(runnable);
+        thread.setDaemon(true);
+        thread.start();
+
+        for (int i = 0; i &lt; 5; i++) {
+            System.out.println(&quot;main线程&quot;);
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}
+</code></pre>
+<h2 id="线程同步">线程同步</h2>
+<blockquote>
+<p>在多线程编程，一些敏感数据不允许被多个线程同时访向，此时就使用同步访问技术，保证数据在任何同一时刻，最多有一个线程访向，以保证数据的完整性</p>
+</blockquote>
+<h3 id="synchronized">synchronized</h3>
+<p><strong>synchronized是Java中的关键字，是一种同步锁。它修饰的对象有以下几种：</strong></p>
+<ol>
+<li>修饰一个代码块，被修饰的代码块称为同步语句块，其作用的范围是大括号{}括起来的代码，作用的对象是调用这个代码块的对象；</li>
+<li>修饰一个方法，被修饰的方法称为同步方法，其作用的范围是整个方法，作用的对象是调用这个方法的对象；</li>
+<li>修改一个静态的方法，其作用的范围是整个静态方法，作用的对象是这个类的所有对象；</li>
+<li>修改一个类，其作用的范围是synchronized后面括号括起来的部分，作用主的对象是这个类的所有对象。</li>
+</ol>
+<h2 id="死锁">死锁</h2>
+<p><strong>产生死锁的四个必要条件：</strong><br>
+1.互斥条件：一个资源每次只能被一个进程使用。<br>
+2.请求与保持条件：一个进程因请求资源而阻塞时，对已获得的资源保持不放<br>
+3.不剥夺条件：进程已获得的资源，在末使用完之前，不能强行剥夺。<br>
+4.循环等待条件：若干进程之间形成一种头尾相接的循环等待资源关系。</p>
+<figure data-type="image" tabindex="3"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210715145533.png" alt="image-20210715145531281" loading="lazy"></figure>
+<h2 id="释放锁">释放锁</h2>
+<figure data-type="image" tabindex="4"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210715145649.png" alt="image-20210715145648921" loading="lazy"></figure>
+<figure data-type="image" tabindex="5"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210715150000.png" alt="image-20210715145957974" loading="lazy"></figure>
+<h2 id="lock锁">Lock锁</h2>
+<blockquote>
+<p>1、从Java5开始，Java提供了一种功能更强大的线程同步机制——通过显式定义同步锁对象来实现同步，在这种机制下，同步锁由Lock对象充当。</p>
+<p>2、Lock 提供了比synchronized方法和synchronized代码块更广泛的锁定操作，Lock允许实现更灵活的结构，可以具有差别很大的属性，并且支持多个相关的Condition对象。</p>
+<p>3、Lock是控制多个线程对共享资源进行访问的工具。通常，锁提供了对共享资源的独占访问，每次只能有一个线程对Lock对象加锁，线程开始访问共享资源之前应先获得Lock对象。</p>
+<p>4、某些锁可能允许对共享资源并发访问，如ReadWriteLock（读写锁），Lock、ReadWriteLock是Java5提供的两个根接口，并为Lock 提供了ReentrantLock（可重入锁）实现类，为ReadWriteLock提供了ReentrantReadWriteLock 实现类。</p>
+<p>5、Java8新增了新型的StampedLock类，在大多数场景中它可以替代传统的ReentrantReadWriteLock。ReentrantReadWriteLock 为读写操作提供了三种锁模式：Writing、ReadingOptimistic、Reading。</p>
+</blockquote>
+<pre><code class="language-java">public class MyLock {
+    public static void main(String[] args) {
+        TestLock testLock = new TestLock();
+        new Thread(testLock).start();
+        new Thread(testLock).start();
+        new Thread(testLock).start();
+    }
+}
+
+class TestLock implements Runnable{
+    private int tickets = 100;
+    //定义锁
+    private final ReentrantLock reentrantLock = new ReentrantLock();
+
+    @Override
+    public void run() {
+        while (true){
+            //加锁
+            reentrantLock.lock();
+            if(tickets&lt;=0){
+                break;
+            }
+            System.out.println(Thread.currentThread().getName()+&quot;, &quot;+(tickets--));
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }finally {
+                //解锁
+                reentrantLock.unlock();
+            }
+        }
+    }
+}
+</code></pre>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[代理模式]]></title>
         <id>https://aruul.github.io/post/YYF012ILo/</id>
@@ -1050,120 +1270,6 @@ cur = next;
 <pre><code>普通方法执行时间：3 ms
 反射机制执行时间：176 ms
 反射优化机制执行时间：129 ms
-</code></pre>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[java 反射(1)--快速开始]]></title>
-        <id>https://aruul.github.io/post/s8pJIRpaT/</id>
-        <link href="https://aruul.github.io/post/s8pJIRpaT/">
-        </link>
-        <updated>2021-05-03T13:18:47.000Z</updated>
-        <content type="html"><![CDATA[<h3 id="快速开始">快速开始</h3>
-<h4 id="1什么是反射">1.什么是反射？</h4>
-<p>如果你研究过框架的底层原理或者咱们自己写过框架的话，一定对反射这个概念不陌生。</p>
-<p>反射之所以被称为框架的灵魂，主要是因为它赋予了我们在运行时分析类以及执行类中方法的能力。</p>
-<p>通过反射你可以获取任意一个类的所有属性和方法，你还可以调用这些方法和属性。</p>
-<p><strong>反射 (Reflection) 是 Java 的特征之一，它允许运行中的 Java 程序获取自身的信息，并且可以操作类或对象的内部属性。</strong></p>
-<h4 id="2反射机制优缺点">2.反射机制优缺点</h4>
-<ul>
-<li><strong>优点</strong> ： 可以让咱们的代码更加灵活、为各种框架提供开箱即用的功能提供了便利</li>
-<li><strong>缺点</strong> ：让我们在运行时有了分析操作类的能力，这同样也增加了安全问题。比如可以无视泛型参数的安全检查（泛型参数的安全检查发生在编译时）。另外，反射的性能也要稍差点，不过，对于框架来说实际是影响不大的</li>
-</ul>
-<h4 id="3由一个例子引出反射">3.由一个例子引出反射</h4>
-<h5 id="31需求">3.1需求</h5>
-<blockquote>
-<p>根据配置文件re. properties指定信息，创建Cat过象并调用方法say</p>
-</blockquote>
-<p>re. properties文件</p>
-<pre><code class="language-properties">classfullpath=org.example.Cat
-method=say
-</code></pre>
-<p>Cat</p>
-<pre><code class="language-java">package org.example;
-
-/**
- * @author aRu
- * @date 2021/5/3 10:01
- */
-public class Cat {
-    private String name = &quot;招财猫&quot;;
-    public int age= 3;
-
-    public Cat() {
-    }
-
-    public Cat(String name) {
-        this.name = name;
-    }
-
-    public void say(){
-        System.out.println(&quot;miao~ i am &quot;+name);
-    }
-}
-</code></pre>
-<p>工程目录如下，本次代码写在org.example.quickStart_01下</p>
-<figure data-type="image" tabindex="1"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210503213409.png" alt="image-20210503213403742" loading="lazy"></figure>
-<h5 id="32实现">3.2实现</h5>
-<pre><code class="language-java">package org.example.quickStart_01;
-
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.Properties;
-
-/**问题的引入
- * @author aRu
- * @date 2021/5/3 10:04
- */
-public class ReflectionQuickStart {
-    public static void main(String[] args) throws IOException, ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
-        //根据配置文件 创建Cat对象并调用 配置文件中指定的方法
-
-        //1.读取配置文件
-        Properties properties = new Properties();
-        properties.load(new FileInputStream(&quot;src\\org\\example\\re.properties&quot;));
-        String classfullpath = properties.get(&quot;classfullpath&quot;).toString();
-        String method = properties.get(&quot;method&quot;).toString();
-        System.out.println(&quot;类的全路径： &quot;+classfullpath);
-        System.out.println(&quot;方法名： &quot;+method);
-
-        //2.使用反射机制
-        Class cls = Class.forName(classfullpath);
-        //通过 cls 得到你加载的类 Cat的对象实例
-        Object o = cls.newInstance();
-        System.out.println(&quot;o的类型： &quot;+o.getClass());
-        //通过cls 得到你加载的类Cat的 method 方法
-        Method method1 = cls.getMethod(method);
-        //通过method1 调用方法： 即，通过方法对象 来实现调用方法
-        method1.invoke(o);
-        
-
-    }
-}
-
-</code></pre>
-<hr>
-<p>运行结果</p>
-<pre><code>类的全路径： org.example.Cat
-方法名： say
-o的类型： class org.example.Cat
-miao~ i am 招财猫
-</code></pre>
-<p>补充</p>
-<pre><code class="language-java">        //得到类的成员变量
-        //注意： cls.getField(&quot;name&quot;)不能得到私有的属性
-        Field nameField = cls.getField(&quot;age&quot;);
-        System.out.println(nameField.get(o));
-
-        //得到对象的构造函数
-        Constructor constructor = cls.getConstructor();//()中可以指定构造参数类型，这里没写，则返回无参构造
-        System.out.println(&quot;无参构造：&quot;+constructor);
-
-        Constructor constructor2 = cls.getConstructor(String.class);
-        System.out.println(&quot;有参构造：&quot;+constructor2);
 </code></pre>
 ]]></content>
     </entry>
