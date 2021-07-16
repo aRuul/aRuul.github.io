@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://aruul.github.io</id>
     <title>aRuul的无名小站</title>
-    <updated>2021-07-15T08:29:17.232Z</updated>
+    <updated>2021-07-16T11:15:44.541Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://aruul.github.io"/>
     <link rel="self" href="https://aruul.github.io/atom.xml"/>
@@ -32,6 +32,12 @@
 <li>进程单独占有一定的内存地址空间，进程的创建和销毁不仅需要保存寄存器和栈信息，还需要资源的分配回收以及页调度，开销较大；线程只需要保存寄存器和栈信息，开销较小。</li>
 </ul>
 <p>另外一个重要区别是，<strong>进程是操作系统进行资源分配的基本单位，而线程是操作系统进行调度的基本单位</strong>，即CPU分配时间的单位 。</p>
+<h4 id="12上下文切换">1.2上下文切换</h4>
+<p>上下文切换有时也叫做线程切换或者任务切换，是指cpu从一个进程（或线程）切换到另一个进程或（者线程）。上下文是指某一个时间点cpu寄存器和程序计数器的内容。</p>
+<p>举例说明 线程A ---&gt; B</p>
+<p>1.先挂起线程A，将其在cpu中的状态保存在内存中。</p>
+<p>2.在内存中检索下一个线程B的上下文并将其在 CPU 的寄存器中恢复,执行B线程。</p>
+<p>3.当B执行完，根据程序计数器中指向的位置恢复线程A。</p>
 <hr>
 <h3 id="2java多线程入门类和接口">2.Java多线程入门类和接口</h3>
 <p>JDK提供了<code>Thread</code>类和<code>Runnable</code>接口来让我们实现自己的“线程”类。</p>
@@ -57,7 +63,7 @@
 <p>我们在程序里面调用了start()方法后，虚拟机会先为我们创建一个线程，然后等到这个线程第一次得到时间片时再调用run()方法。</p>
 <p>注意不可多次调用start()方法。在第一次调用start()方法后，再次调用start()方法会抛出illegalThreadStateException异常。</p>
 </blockquote>
-<h3 id="212实现runnable接口">2.12实现Runnable接口</h3>
+<h4 id="22实现runnable接口">2.2实现Runnable接口</h4>
 <p>略</p>
 <hr>
 <h2 id="小细节">小细节</h2>
@@ -128,8 +134,10 @@ interface Like{
 <figure data-type="image" tabindex="1"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210714161606.png" alt="image-20210714161604425" loading="lazy"></figure>
 <figure data-type="image" tabindex="2"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210714190304.png" alt="image-20210714190303037" loading="lazy"></figure>
 <hr>
-<p><mark>优先级范围为1-10，一般是越大越高，越先执行，默认为5</mark></p>
-<p>线程分为用户线程和守护线程</p>
+<h2 id="线程的优先级">线程的优先级</h2>
+<p>java中优先级可以指定，范围是1——10（从低到高），<strong>默认优先级为5</strong></p>
+<p><strong>但是，并不一定是优先级越高越先执行</strong>，要取决于操作系统，java只是给操作系统一个优先级的参考值，线程最终在操作系统的优先级还是由操作系统决定的。</p>
+<p>我们使用方法<code>Thread</code>类的<code>setPriority()</code>实例方法来设定线程的优先级。</p>
 <h2 id="守护线程">守护线程</h2>
 <p>在Java中有两类线程：User Thread(用户线程)、Daemon Thread(守护线程)</p>
 <p>如果 User Thread已经全部退出运行了，只剩下Daemon Thread存在了，虚拟机也就退出了。 因为没有了被守护者，Daemon也就没有工作可做了，也就没有继续运行程序的必要了。</p>
