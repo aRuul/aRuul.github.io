@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>JVM-02 类加载子系统 | aRuul的无名小站</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://aruul.github.io/favicon.ico?v=1626687665927">
+<link rel="stylesheet" href="https://aruul.github.io/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+<script async src="//code.tidio.co/0llaydzaqpj2momyrcycfplv2h2my3av.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+    <meta name="description" content="
+加载--&gt; 链接--&gt; 初始化
+如果自己手写一个java虚拟机的话，主要考虑哪些结构？  类加载器和执行引擎
+类的加载过程
+
+
+类加载子系统负责从文件系统或者网络系统中加载Class文件，class文件在文件开头有特定的文件标..." />
+    <meta name="keywords" content="jvm,java" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://aruul.github.io">
+        <img src="https://aruul.github.io/images/avatar.png?v=1626687665927" class="site-logo">
+        <h1 class="site-title">aRuul的无名小站</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/essay" class="site-nav">
+            随笔
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+          <a class="social-link" href="https://github.com/aRuul" target="_blank">
+            <i class="fab fa-github"></i>
+          </a>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+<span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+</span> | <a class="rss" href="https://aruul.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">JVM-02 类加载子系统</h2>
+            <div class="post-date">2021-07-18</div>
+            
+            <div class="post-content" v-pre>
+              <p><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210717153813.png" alt="image-20210717153811503" loading="lazy"><br>
+<strong>加载--&gt; 链接--&gt; 初始化</strong></p>
+<p><strong>如果自己手写一个java虚拟机的话，主要考虑哪些结构？  类加载器和执行引擎</strong></p>
+<h2 id="类的加载过程">类的加载过程</h2>
+<figure data-type="image" tabindex="1"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210717154605.png" alt="image-20210717154600485" loading="lazy"></figure>
+<ul>
+<li>类加载子系统负责从文件系统或者网络系统中加载Class文件，class文件在文件开头有特定的文件标识</li>
+<li>ClassLoader只负责class文件的加载，至于它是否可以运行，则是由Execution Engine来jued</li>
+<li>加载的<strong>类信息存放在一块成为方法区</strong>的内存空间。</li>
+<li>除了类的信息之外，<strong>方法区还会存放运行时的常量池信息</strong>，可能还包括<strong>字符串常量和数字常量</strong>（这部分常量信息是Class文件中常量池部分的内存映射）</li>
+</ul>
+<hr>
+<p>具体的类加载过程图</p>
+<figure data-type="image" tabindex="2"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210717160036.png" alt="image-20210717160035120" loading="lazy"></figure>
+<h3 id="第一步-加载-生成-javalangclass对象">第一步 加载 --生成 java.lang.Class对象</h3>
+<ol>
+<li>通过一个类的全限定名获取此类的二进制字节流</li>
+<li>将这个字节流所代表的静态数据结构转化为方法区的运行时数据结构</li>
+<li>在内存中<strong>生成</strong>一个代码这个类的  <strong>java.lang.Class对象</strong>，作为方法区这个类的各种数据的访问入口</li>
+</ol>
+<h3 id="第二步-链接">第二步 链接</h3>
+<h4 id="1验证-verify">1.<strong>验证( Verify):</strong></h4>
+<ul>
+<li>目的在于确保class文件的字节流中包含信息符合当前虚拟机要求，保证被加载类的正确性，不会危害虚拟机自身安全。</li>
+<li>主要包括四种验证，文件格式验证，元数据验证，字节码验证，符号引用验证</li>
+</ul>
+<blockquote>
+<p>java .class文件开头是COFFBABE</p>
+</blockquote>
+<h4 id="2准备-prepare">2.<strong>准备( Prepare):</strong></h4>
+<ul>
+<li>
+<p>为<strong>类变量</strong>分配内存并且设置该类变量的<strong>默认初始值</strong>，即零值。</p>
+<pre><code class="language-java">class Demo{
+    //这时a会被赋值为0，在初始化时才会被初始化为1
+    private static int a = 1;
+}
+</code></pre>
+</li>
+<li>
+<p>这里<strong>不包含用final修饰的 static</strong>,因为<strong>final在编译的时候就会分配了</strong>，准备阶段会显式初始化</p>
+</li>
+<li>
+<p>这里不会为实例变量分配初始化，类变量会分配在方法区中，而<strong>实例变量</strong>是会随着对象一起分<br>
+配到<strong>java堆</strong>中。</p>
+</li>
+</ul>
+<h4 id="3解析-resolve">3.<strong>解析( Resolve)</strong></h4>
+<ul>
+<li>将常量池内的符号引用转换为直接引用的过程</li>
+<li>事实上，解析操作住住会伴随着JVM在执行完初始化之后再执行。</li>
+<li>符号引用就是一组符号来描述所引用的目标。符号引用的字面量形式明确定义在《java虚拟机规范》的Class文件格式中。直接引用就是直接指向目标的指针、相对偏移量或一个间接定位到目标的句柄。</li>
+<li>解析动作主要针对类或接口、字段、类方法、接口方法、方法类型等。对应常量池中的<br>
+CONSTANT Class info CONSTANT Fieldref info, CONSTANT Methodref info</li>
+</ul>
+<h3 id="第三步-初始化">第三步 初始化</h3>
+<ul>
+<li>
+<p>初始化阶段就是执行<strong>类的构造器方法 <clinit>()</strong> 的过程（cl可以理解为 class  ，init为 inital）</p>
+</li>
+<li>
+<p>此方法不需要定义，是javac编译器自动收集类中的所有变量的赋值动作和静态代码块中的语句合并而来的。</p>
+</li>
+<li>
+<p>构造器方法按语句顺序执行所有<strong>类变量</strong>（static修饰的成员变量）显式初始化和<strong>静态代码块中语句</strong></p>
+<pre><code class="language-java">/*这里的话，a最终的值为1
+* 首先在第二步链接的准备阶段，会将a初始化为0
+* 在第三步初始化时，类的构造器方法按照顺序执行，先将a赋值为10，再将a赋值为1，所以最后a=1
+*/
+class Demo{
+    static{
+        a = 10;
+    }
+    private static int a = 1;
+}
+</code></pre>
+</li>
+<li>
+<p><strong>类的构造器方法 <clinit>()</strong> 不同于类的构造函数，<mark>当一个类中不存在类变量的时候，则.class文件中没有<clinit>()</mark></p>
+</li>
+<li>
+<p>若该类有父类，JVM会保证父类的 <clinit>()执行完毕之后再执行子类的<clinit>()</p>
+<pre><code class="language-java">class Father{
+    public static int a = 1;
+    static{
+        a = 2;
+    }
+}
+
+class Son extends Father{
+    public static int b = a;
+    
+    public static void main(String []args){
+        //最终的结果为2
+        Sysytem.out.println(Son.b);
+    }
+}
+</code></pre>
+</li>
+<li>
+<p>虚拟机必须保证一个类的<clinit>()方法在多线程下被同步加锁，即<mark>一个类只会被加载一次</mark>、</p>
+</li>
+</ul>
+<h2 id="类的加载器">类的加载器</h2>
+<h3 id="类加载器分类">类加载器分类</h3>
+<p>JVM支持<strong>两种</strong>类型的<strong>类加载器</strong>，分别为</p>
+<ol>
+<li><strong>引导加载器</strong>(Bootstrap ClassLoader)</li>
+<li>**自定义加载器(**User-Defined ClassLoader)，<strong>是指继承自ClassLoader的加载器</strong></li>
+</ol>
+<hr>
+<h3 id="虚拟机自带的加载器">虚拟机自带的加载器</h3>
+<figure data-type="image" tabindex="3"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210718143804.png" alt="image-20210718143802701" loading="lazy"></figure>
+<h4 id="启动类加载器引导类加载器-bootstrap-classloader">启动类加载器(引导类加载器 Bootstrap ClassLoader)</h4>
+<ul>
+<li>
+<p>我们不能直接获取到</p>
+</li>
+<li>
+<p>java的<strong>核心类库</strong>都是使用<strong>引导类加载器</strong>来进行加载的。</p>
+</li>
+<li>
+<p>这个类加载使用C++/C来实现的，嵌套在JVM内部</p>
+</li>
+<li>
+<p>并不继承于java.lang.ClassLoader</p>
+</li>
+<li>
+<p><strong>加载扩展类和程序类加载器，并指定为它们的父加载器</strong></p>
+</li>
+<li>
+<p>出于安全考虑，Bootstrap启动类加载器只加载包名为java、javax、sun等开头的类</p>
+</li>
+</ul>
+<h4 id="拓展类加载器extension-classloader">拓展类加载器(Extension ClassLoader)</h4>
+<ul>
+<li>java语言编写</li>
+<li>派生于ClassLoader类</li>
+<li>父加载器为启动类加载器</li>
+<li>从java。ext.dirs系统属性所指定的目录中加载类库，或者从JDK安装目录的jre/lib/ext子目录下加载类库。<strong>如果用户创建的jar在此目录下，也会自动由扩展类加载器加载</strong></li>
+</ul>
+<h4 id="应用程序类加载器系统类加载器appclassloader">应用程序类加载器(系统类加载器AppClassLoader)</h4>
+<ul>
+<li>java语言编写</li>
+<li>派生于ClassLoader类</li>
+<li><strong>父加载器为拓展类加载器</strong></li>
+<li>负责加载<strong>环境变量classpath</strong>或<strong>系统属性java.class.path</strong>指定路径下的类库</li>
+<li><strong>我们自己写的类中默认加载器就是应用程序类加载器</strong></li>
+</ul>
+<h3 id="用户自定义加载类">用户自定义加载类</h3>
+<figure data-type="image" tabindex="4"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210718151628.png" alt="image-20210718151625921" loading="lazy"></figure>
+<h2 id="classloader">ClassLoader</h2>
+<p><strong>ClassLoader类是一个抽象类，其后所有的类加载器都继承自ClassLoader(不包括启动加载类)</strong></p>
+<p>这里暂且了解就够了（嗯，大概</p>
+<h2 id="双亲委派机制">双亲委派机制</h2>
+<blockquote>
+<p>Java虚拟机对class文件采用的是<strong>按需加载</strong>的方式，也就是需要的时候才会将它的class文件加载到内存，生成class对象。</p>
+<p>而在加载某个类的class文件时，JVM采用<strong>双亲委派模式</strong>，即把请求交给父类处理，是一种任务委派模式。</p>
+</blockquote>
+<p><strong>双亲委派机制</strong>：</p>
+<ol>
+<li>
+<p>当一个类加载器收到了加载请求时，它是不会先自己去尝试加载的，而是委派给父类去完成，</p>
+</li>
+<li>
+<p>如果父类还有父类加载器，则进一步向上委托，以此类推，直到顶层的启动类加载器</p>
+</li>
+<li>
+<p>如果父类加载器可以完成加载任务，则成功返回；否则，子类加载器尝试去加载</p>
+</li>
+</ol>
+<p><mark>可以理解为 类加载器这个家族很重亲情，能爸爸做的就爸爸做，爸爸实在做不了就儿子做</mark></p>
+<figure data-type="image" tabindex="5"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210718154732.png" alt="image-20210718154731162" loading="lazy"></figure>
+<p>优势：</p>
+<ul>
+<li>
+<p>避免类的重复加载</p>
+</li>
+<li>
+<p>保护程序的安全，防止核心api被随意的篡改</p>
+<p>比如你自定义一个包 java.lang,包下面有一个类Demo</p>
+<pre><code class="language-java">package java.lang
+class Demo{
+    public static void main(String[] args){
+        System.out.println(&quot;test&quot;);
+    }
+}
+</code></pre>
+<p>当你运行的时候，由于双亲委派机制，这和Demo类是java开头的，所以最终的加载器是引导类加载器。(引导类加载器只加载包名为java、javax、sun等开头的类)，而java核心类包中并没有Demo这个类，所以就会报错。</p>
+</li>
+</ul>
+<h2 id="其他小的点">其他小的点</h2>
+<h3 id="在jvm中表示两个class对象相同的两个必要条件">在JVM中表示两个class对象相同的两个必要条件：</h3>
+<ol>
+<li>类的完整类名要一致，包括包名</li>
+<li>加载 这个类的ClassLoader(指ClassLoader实例对象)必须相同。</li>
+</ol>
+<h3 id="对类加载器的引用">对类加载器的引用</h3>
+<ol>
+<li>JVM必须知道一个类型是由启动加载器加载的还是由用户类加载器加载的。</li>
+<li>如果一个类型是由用户类加载器加载的，那么JVM会将这个类加载器的一个引用作为类型信息的一部分保存在方法区中。</li>
+<li>当解析一个类型到另一个类型的引用的时候，JVM需要保证这两个类型的类加载器是相同的</li>
+</ol>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://aruul.github.io/tag/0YGAvJojq/" class="tag">
+                    jvm
+                  </a>
+                
+                  <a href="https://aruul.github.io/tag/fABi2KP6qR/" class="tag">
+                    java
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://aruul.github.io/post/0D3cevlgX/">
+                  <h3 class="post-title">
+                    JVM-01 概述
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+  <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad()
+  </script>
+
+
+
+
+
+  </body>
+</html>

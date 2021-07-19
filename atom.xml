@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://aruul.github.io</id>
     <title>aRuul的无名小站</title>
-    <updated>2021-07-16T11:15:44.541Z</updated>
+    <updated>2021-07-19T09:41:16.555Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://aruul.github.io"/>
     <link rel="self" href="https://aruul.github.io/atom.xml"/>
@@ -10,6 +10,269 @@
     <logo>https://aruul.github.io/images/avatar.png</logo>
     <icon>https://aruul.github.io/favicon.ico</icon>
     <rights>All rights reserved 2021, aRuul的无名小站</rights>
+    <entry>
+        <title type="html"><![CDATA[JVM-02 类加载子系统]]></title>
+        <id>https://aruul.github.io/post/HnC917QY2/</id>
+        <link href="https://aruul.github.io/post/HnC917QY2/">
+        </link>
+        <updated>2021-07-18T09:32:19.000Z</updated>
+        <content type="html"><![CDATA[<p><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210717153813.png" alt="image-20210717153811503" loading="lazy"><br>
+<strong>加载--&gt; 链接--&gt; 初始化</strong></p>
+<p><strong>如果自己手写一个java虚拟机的话，主要考虑哪些结构？  类加载器和执行引擎</strong></p>
+<h2 id="类的加载过程">类的加载过程</h2>
+<figure data-type="image" tabindex="1"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210717154605.png" alt="image-20210717154600485" loading="lazy"></figure>
+<ul>
+<li>类加载子系统负责从文件系统或者网络系统中加载Class文件，class文件在文件开头有特定的文件标识</li>
+<li>ClassLoader只负责class文件的加载，至于它是否可以运行，则是由Execution Engine来jued</li>
+<li>加载的<strong>类信息存放在一块成为方法区</strong>的内存空间。</li>
+<li>除了类的信息之外，<strong>方法区还会存放运行时的常量池信息</strong>，可能还包括<strong>字符串常量和数字常量</strong>（这部分常量信息是Class文件中常量池部分的内存映射）</li>
+</ul>
+<hr>
+<p>具体的类加载过程图</p>
+<figure data-type="image" tabindex="2"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210717160036.png" alt="image-20210717160035120" loading="lazy"></figure>
+<h3 id="第一步-加载-生成-javalangclass对象">第一步 加载 --生成 java.lang.Class对象</h3>
+<ol>
+<li>通过一个类的全限定名获取此类的二进制字节流</li>
+<li>将这个字节流所代表的静态数据结构转化为方法区的运行时数据结构</li>
+<li>在内存中<strong>生成</strong>一个代码这个类的  <strong>java.lang.Class对象</strong>，作为方法区这个类的各种数据的访问入口</li>
+</ol>
+<h3 id="第二步-链接">第二步 链接</h3>
+<h4 id="1验证-verify">1.<strong>验证( Verify):</strong></h4>
+<ul>
+<li>目的在于确保class文件的字节流中包含信息符合当前虚拟机要求，保证被加载类的正确性，不会危害虚拟机自身安全。</li>
+<li>主要包括四种验证，文件格式验证，元数据验证，字节码验证，符号引用验证</li>
+</ul>
+<blockquote>
+<p>java .class文件开头是COFFBABE</p>
+</blockquote>
+<h4 id="2准备-prepare">2.<strong>准备( Prepare):</strong></h4>
+<ul>
+<li>
+<p>为<strong>类变量</strong>分配内存并且设置该类变量的<strong>默认初始值</strong>，即零值。</p>
+<pre><code class="language-java">class Demo{
+    //这时a会被赋值为0，在初始化时才会被初始化为1
+    private static int a = 1;
+}
+</code></pre>
+</li>
+<li>
+<p>这里<strong>不包含用final修饰的 static</strong>,因为<strong>final在编译的时候就会分配了</strong>，准备阶段会显式初始化</p>
+</li>
+<li>
+<p>这里不会为实例变量分配初始化，类变量会分配在方法区中，而<strong>实例变量</strong>是会随着对象一起分<br>
+配到<strong>java堆</strong>中。</p>
+</li>
+</ul>
+<h4 id="3解析-resolve">3.<strong>解析( Resolve)</strong></h4>
+<ul>
+<li>将常量池内的符号引用转换为直接引用的过程</li>
+<li>事实上，解析操作住住会伴随着JVM在执行完初始化之后再执行。</li>
+<li>符号引用就是一组符号来描述所引用的目标。符号引用的字面量形式明确定义在《java虚拟机规范》的Class文件格式中。直接引用就是直接指向目标的指针、相对偏移量或一个间接定位到目标的句柄。</li>
+<li>解析动作主要针对类或接口、字段、类方法、接口方法、方法类型等。对应常量池中的<br>
+CONSTANT Class info CONSTANT Fieldref info, CONSTANT Methodref info</li>
+</ul>
+<h3 id="第三步-初始化">第三步 初始化</h3>
+<ul>
+<li>
+<p>初始化阶段就是执行<strong>类的构造器方法 <clinit>()</strong> 的过程（cl可以理解为 class  ，init为 inital）</p>
+</li>
+<li>
+<p>此方法不需要定义，是javac编译器自动收集类中的所有变量的赋值动作和静态代码块中的语句合并而来的。</p>
+</li>
+<li>
+<p>构造器方法按语句顺序执行所有<strong>类变量</strong>（static修饰的成员变量）显式初始化和<strong>静态代码块中语句</strong></p>
+<pre><code class="language-java">/*这里的话，a最终的值为1
+* 首先在第二步链接的准备阶段，会将a初始化为0
+* 在第三步初始化时，类的构造器方法按照顺序执行，先将a赋值为10，再将a赋值为1，所以最后a=1
+*/
+class Demo{
+    static{
+        a = 10;
+    }
+    private static int a = 1;
+}
+</code></pre>
+</li>
+<li>
+<p><strong>类的构造器方法 <clinit>()</strong> 不同于类的构造函数，<mark>当一个类中不存在类变量的时候，则.class文件中没有<clinit>()</mark></p>
+</li>
+<li>
+<p>若该类有父类，JVM会保证父类的 <clinit>()执行完毕之后再执行子类的<clinit>()</p>
+<pre><code class="language-java">class Father{
+    public static int a = 1;
+    static{
+        a = 2;
+    }
+}
+
+class Son extends Father{
+    public static int b = a;
+    
+    public static void main(String []args){
+        //最终的结果为2
+        Sysytem.out.println(Son.b);
+    }
+}
+</code></pre>
+</li>
+<li>
+<p>虚拟机必须保证一个类的<clinit>()方法在多线程下被同步加锁，即<mark>一个类只会被加载一次</mark>、</p>
+</li>
+</ul>
+<h2 id="类的加载器">类的加载器</h2>
+<h3 id="类加载器分类">类加载器分类</h3>
+<p>JVM支持<strong>两种</strong>类型的<strong>类加载器</strong>，分别为</p>
+<ol>
+<li><strong>引导加载器</strong>(Bootstrap ClassLoader)</li>
+<li>**自定义加载器(**User-Defined ClassLoader)，<strong>是指继承自ClassLoader的加载器</strong></li>
+</ol>
+<hr>
+<h3 id="虚拟机自带的加载器">虚拟机自带的加载器</h3>
+<figure data-type="image" tabindex="3"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210718143804.png" alt="image-20210718143802701" loading="lazy"></figure>
+<h4 id="启动类加载器引导类加载器-bootstrap-classloader">启动类加载器(引导类加载器 Bootstrap ClassLoader)</h4>
+<ul>
+<li>
+<p>我们不能直接获取到</p>
+</li>
+<li>
+<p>java的<strong>核心类库</strong>都是使用<strong>引导类加载器</strong>来进行加载的。</p>
+</li>
+<li>
+<p>这个类加载使用C++/C来实现的，嵌套在JVM内部</p>
+</li>
+<li>
+<p>并不继承于java.lang.ClassLoader</p>
+</li>
+<li>
+<p><strong>加载扩展类和程序类加载器，并指定为它们的父加载器</strong></p>
+</li>
+<li>
+<p>出于安全考虑，Bootstrap启动类加载器只加载包名为java、javax、sun等开头的类</p>
+</li>
+</ul>
+<h4 id="拓展类加载器extension-classloader">拓展类加载器(Extension ClassLoader)</h4>
+<ul>
+<li>java语言编写</li>
+<li>派生于ClassLoader类</li>
+<li>父加载器为启动类加载器</li>
+<li>从java。ext.dirs系统属性所指定的目录中加载类库，或者从JDK安装目录的jre/lib/ext子目录下加载类库。<strong>如果用户创建的jar在此目录下，也会自动由扩展类加载器加载</strong></li>
+</ul>
+<h4 id="应用程序类加载器系统类加载器appclassloader">应用程序类加载器(系统类加载器AppClassLoader)</h4>
+<ul>
+<li>java语言编写</li>
+<li>派生于ClassLoader类</li>
+<li><strong>父加载器为拓展类加载器</strong></li>
+<li>负责加载<strong>环境变量classpath</strong>或<strong>系统属性java.class.path</strong>指定路径下的类库</li>
+<li><strong>我们自己写的类中默认加载器就是应用程序类加载器</strong></li>
+</ul>
+<h3 id="用户自定义加载类">用户自定义加载类</h3>
+<figure data-type="image" tabindex="4"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210718151628.png" alt="image-20210718151625921" loading="lazy"></figure>
+<h2 id="classloader">ClassLoader</h2>
+<p><strong>ClassLoader类是一个抽象类，其后所有的类加载器都继承自ClassLoader(不包括启动加载类)</strong></p>
+<p>这里暂且了解就够了（嗯，大概</p>
+<h2 id="双亲委派机制">双亲委派机制</h2>
+<blockquote>
+<p>Java虚拟机对class文件采用的是<strong>按需加载</strong>的方式，也就是需要的时候才会将它的class文件加载到内存，生成class对象。</p>
+<p>而在加载某个类的class文件时，JVM采用<strong>双亲委派模式</strong>，即把请求交给父类处理，是一种任务委派模式。</p>
+</blockquote>
+<p><strong>双亲委派机制</strong>：</p>
+<ol>
+<li>
+<p>当一个类加载器收到了加载请求时，它是不会先自己去尝试加载的，而是委派给父类去完成，</p>
+</li>
+<li>
+<p>如果父类还有父类加载器，则进一步向上委托，以此类推，直到顶层的启动类加载器</p>
+</li>
+<li>
+<p>如果父类加载器可以完成加载任务，则成功返回；否则，子类加载器尝试去加载</p>
+</li>
+</ol>
+<p><mark>可以理解为 类加载器这个家族很重亲情，能爸爸做的就爸爸做，爸爸实在做不了就儿子做</mark></p>
+<figure data-type="image" tabindex="5"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210718154732.png" alt="image-20210718154731162" loading="lazy"></figure>
+<p>优势：</p>
+<ul>
+<li>
+<p>避免类的重复加载</p>
+</li>
+<li>
+<p>保护程序的安全，防止核心api被随意的篡改</p>
+<p>比如你自定义一个包 java.lang,包下面有一个类Demo</p>
+<pre><code class="language-java">package java.lang
+class Demo{
+    public static void main(String[] args){
+        System.out.println(&quot;test&quot;);
+    }
+}
+</code></pre>
+<p>当你运行的时候，由于双亲委派机制，这和Demo类是java开头的，所以最终的加载器是引导类加载器。(引导类加载器只加载包名为java、javax、sun等开头的类)，而java核心类包中并没有Demo这个类，所以就会报错。</p>
+</li>
+</ul>
+<h2 id="其他小的点">其他小的点</h2>
+<h3 id="在jvm中表示两个class对象相同的两个必要条件">在JVM中表示两个class对象相同的两个必要条件：</h3>
+<ol>
+<li>类的完整类名要一致，包括包名</li>
+<li>加载 这个类的ClassLoader(指ClassLoader实例对象)必须相同。</li>
+</ol>
+<h3 id="对类加载器的引用">对类加载器的引用</h3>
+<ol>
+<li>JVM必须知道一个类型是由启动加载器加载的还是由用户类加载器加载的。</li>
+<li>如果一个类型是由用户类加载器加载的，那么JVM会将这个类加载器的一个引用作为类型信息的一部分保存在方法区中。</li>
+<li>当解析一个类型到另一个类型的引用的时候，JVM需要保证这两个类型的类加载器是相同的</li>
+</ol>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[JVM-01 概述]]></title>
+        <id>https://aruul.github.io/post/0D3cevlgX/</id>
+        <link href="https://aruul.github.io/post/0D3cevlgX/">
+        </link>
+        <updated>2021-07-16T08:47:13.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="java虚拟机jvm">java虚拟机JVM</h2>
+<p>java虚拟机是一台执行java字节码的虚拟计算机，它拥有独立的运行机制，其运行的java字节码也未必由java语言编译而成。</p>
+<p>JVM平台的各种语言可以共享java虚拟机带来的跨平台性、优秀的垃圾回收机制以及可靠的即时编译器。java技术的核心就是java虚拟机（jvm，java virtual machine）</p>
+<h2 id="jvm的位置">JVM的位置</h2>
+<figure data-type="image" tabindex="1"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210716200358.png" alt="image-20210716200357558" loading="lazy"></figure>
+<p>jvm是运行在操作系统之上的，没有和硬件直接交互</p>
+<h2 id="jvm的整体结构">JVM的整体结构</h2>
+<figure data-type="image" tabindex="2"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210716200827.png" alt="image-20210716200826280" loading="lazy"></figure>
+<p>​															<mark>要求会自己画出这张图</mark></p>
+<ul>
+<li>HotSport VM是目前市面上最高性能的虚拟机的代表作之一。</li>
+<li>它采用解释器与即时编译器并存的架构</li>
+</ul>
+<h2 id="java代码执行流程">java代码执行流程</h2>
+<p>比如我们现在写了一个 HelloWorld.java 好了，那这个 HelloWorld.java 抛开所有东西不谈，那是不是就类似于一个文本文件，只是这个文本文件它写的都是英文，而且有一定的缩进而已。</p>
+<p>那我们的 <strong>JVM</strong> 是不认识文本文件的，所以它需要一个 <strong>编译</strong> ，让其成为一个它会读二进制文件的 <strong>HelloWorld.class</strong></p>
+<p>如果 <strong>JVM</strong> 想要执行这个 <strong>.class</strong> 文件，我们需要将其装进一个 <strong>类加载器</strong> 中，它就像一个搬运工一样，会把所有的 <strong>.class</strong> 文件全部搬进JVM里面来。</p>
+<figure data-type="image" tabindex="3"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210716200206.png" alt="image-20210716200204379" loading="lazy"></figure>
+<p>==由于跨平台的设计，java的指令都是根据栈来设计的。==跨平台性，指令集小，指令多。</p>
+<p>相对于基于寄存器的架构，基于栈的架构的执行性能相比寄存器来说要差一些</p>
+<h2 id="jvm的生命周期">JVM的生命周期</h2>
+<p><strong>java虚拟机的启动</strong>是通过引导类类(bootstrap class loader)创建一个初始化类(initial class)来完成，这个类是有虚拟机的具体实现指定的。</p>
+<p><strong>虚拟机的执行:</strong> 一个运行中的Java虚拟机有着一个清晰的任务：执行Java程序<br>
+程序开始执行时他才运行，程序结束时他就停止<br>
+执行一个所谓的Java程序的时候，真真正正在执行的是一个叫做Java虚拟机的进程</p>
+<p><strong>虚拟机的退出</strong><br>
+有如下的几种情况：</p>
+<ul>
+<li>程序正常执行结束</li>
+<li>程序在执行过程中遇到了异常或错误而异常终止</li>
+<li>由于操作系统出现错误而异致Java虚拟机进程终止</li>
+<li>某线程调用 Runtime类或 system类的exit方法，或 Runtime类的halt<br>
+方法，并且Java安全管理器也允许这次exit或halt操作</li>
+<li>除此之外，JNI( Java Native Interface)规范描述了用JNI Invocation APｴ来加载或卸载Java虚拟机时，Java虚拟机的退出情况</li>
+</ul>
+<h2 id="hotspot虚拟机">HotSpot虚拟机</h2>
+<p>不管是JDK6还是最常用的JDK8，默认虚拟机都是HotSpot</p>
+<blockquote>
+<p>名称中的 Hotspot指的就是它的热点代码探测技术。<br>
+通过计数器找到最具编译价值代码，触发即时编译或上替拧<br>
+通过编译器与解释器协同工作，在最优化的程序响应时间与最佳执行性能中取得平衡</p>
+</blockquote>
+<hr>
+<p>Graal VM  ---&quot;Run Programs Faster Anywhere&quot;  最有可能替代HotSpot。</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[java多线程]]></title>
         <id>https://aruul.github.io/post/h25epdEh9/</id>
@@ -1107,177 +1370,6 @@ cur = next;
         a.next = reverseKGroup(b, k);
         return newNode;
     }
-</code></pre>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[LC206链表反转]]></title>
-        <id>https://aruul.github.io/post/hM2JnmBVE/</id>
-        <link href="https://aruul.github.io/post/hM2JnmBVE/">
-        </link>
-        <updated>2021-05-08T10:41:04.000Z</updated>
-        <content type="html"><![CDATA[<h3 id="题目描述">题目描述</h3>
-<blockquote>
-<p>给你单链表的头节点 head ，请你反转链表，并返回反转后的链表。</p>
-<p>示例 1：</p>
-<figure data-type="image" tabindex="1"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210508164053.png" alt="image-20210508164052248" loading="lazy"></figure>
-<p>输入：head = [1,2,3,4,5]<br>
-输出：[5,4,3,2,1]</p>
-</blockquote>
-<h3 id="补充">补充</h3>
-<p>ListNode定义如下</p>
-<pre><code class="language-java">public class ListNode {
-      int val;
-      ListNode next;
-      ListNode() {}
-      ListNode(int val) { this.val = val; }
-      ListNode(int val, ListNode next) { this.val = val; this.next = next; }
- }
-</code></pre>
-<h3 id="解法">解法</h3>
-<p>我之前刚好看过这个题的解析教程，所以就用递归小小的装个逼</p>
-<pre><code class="language-java"> public ListNode reverseList(ListNode head) {
-        if(head==null||head.next==null){
-            return head;
-        }
-
-        ListNode last = reverseList(head.next);
-        head.next.next = head;
-        head.next = null;
-        return last;
-    }
-</code></pre>
-<p><strong>大概思路如下：</strong></p>
-<p>这个递归其实做的是：</p>
-<p>​	如果这和链表是个空的或者只有一个节点，则反转之后还是本身。</p>
-<pre><code class="language-java">if(head==null||head.next==null){
-            return head;
- }
-</code></pre>
-<hr>
-<p>​	如果不是，则一直查找下一个节点，</p>
-<pre><code class="language-java">ListNode last = reverseList(head.next);
-</code></pre>
-<hr>
-<p>​	直到某个节点的next的next为null【其实就是找倒数第二个节点】</p>
-<pre><code class="language-java">if(head==null||head.next==null){
-     return head;
- }
-</code></pre>
-<figure data-type="image" tabindex="2"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210508165935.png" alt="image-20210508165933723" loading="lazy"></figure>
-<hr>
-<p>并将last=最后一个节点</p>
-<pre><code class="language-java">ListNode last = reverseList(head.next);
-</code></pre>
-<figure data-type="image" tabindex="3"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210508170116.png" alt="image-20210508170111643" loading="lazy"></figure>
-<hr>
-<p>此时head=倒数第二个节点</p>
-<figure data-type="image" tabindex="4"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210508170608.png" alt="image-20210508170602536" loading="lazy"></figure>
-<hr>
-<p>在将此时head的next的next指向head，【其实就是把最后一个节点指向倒数第二个，做的就是反转链表】</p>
-<pre><code class="language-java">head.next.next = head;
-</code></pre>
-<figure data-type="image" tabindex="5"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210508170950.png" alt="image-20210508170948257" loading="lazy"></figure>
-<hr>
-<p>这时候 将head.next=null 【把head指向空】</p>
-<pre><code class="language-jav">head.next = null;
-</code></pre>
-<figure data-type="image" tabindex="6"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210508171248.png" alt="image-20210508171244794" loading="lazy"></figure>
-<hr>
-<p>这时候，其实已经反转了一部分了。</p>
-<p>然后再将last返回给上一级【也就是3】，此时last=最后一个节点【也就是5】。</p>
-<p><strong>其他的节点 以此类推，直到结束</strong></p>
-<p><strong>最后的时候，再返回一个last，也就是5</strong></p>
-<h2 id=""><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210508183828.png" alt="image-20210508183826788" loading="lazy"></h2>
-<p>结束</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[java反射(2)  反射调用的性能和优化方案]]></title>
-        <id>https://aruul.github.io/post/L4U-TAPK3/</id>
-        <link href="https://aruul.github.io/post/L4U-TAPK3/">
-        </link>
-        <updated>2021-05-04T08:51:02.000Z</updated>
-        <content type="html"><![CDATA[<h2 id="反射调用的性能和优化方案">反射调用的性能和优化方案</h2>
-<h3 id="对比">对比</h3>
-<p>普通方法</p>
-<pre><code class="language-java">    //普通方法
-    public static void m1(){
-        Cat cat = new Cat();
-
-        long start = System.currentTimeMillis();
-
-        for (int i = 0; i &lt; 90000000; i++) {
-            cat.say();
-        }
-
-        long end = System.currentTimeMillis();
-        System.out.println(&quot;普通方法执行时间：&quot;+(end-start));
-    }
-</code></pre>
-<p>通过反射</p>
-<pre><code class="language-java">//反射
-    public static void m2() throws ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
-
-        Class aClass = Class.forName(&quot;org.example.Cat&quot;);
-        Object o = aClass.newInstance();
-        Method say = aClass.getMethod(&quot;say&quot;);
-
-        long start = System.currentTimeMillis();
-
-        for (int i = 0; i &lt; 90000000; i++) {
-            say.invoke(o);
-        }
-
-        long end = System.currentTimeMillis();
-        System.out.println(&quot;反射机制执行时间：&quot;+(end-start));
-
-
-    }
-</code></pre>
-<p>两者运行时间对比</p>
-<pre><code>普通方法执行时间：3 ms
-反射机制执行时间：175 ms
-</code></pre>
-<h3 id="优化">优化</h3>
-<blockquote>
-<p>反射调用优化-关闭访问检查</p>
-<ol>
-<li>Method和 Field、 Constructor象都有 setAccessible()方法</li>
-<li>setAccessible()作用是启动和禁用访问安全检查的开关<br>
-3.参数值为true表示反射的对象在使用时取消访向检查，提高反射的效率。<br>
-参数值为 false则表示反射的对象执行访向检查</li>
-</ol>
-</blockquote>
-<p>所以可以通过setAccessible()来优化反射。</p>
-<p>其实呢，优化之后效率也没有高出很多。</p>
-<pre><code class="language-java">    //反射优化
-    public static void m3() throws ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
-
-        Class aClass = Class.forName(&quot;org.example.Cat&quot;);
-        Object o = aClass.newInstance();
-        Method say = aClass.getMethod(&quot;say&quot;);
-
-        //取消在反射调用方法时 取消访问检测
-        say.setAccessible(true);
-
-
-        long start = System.currentTimeMillis();
-
-        for (int i = 0; i &lt; 90000000; i++) {
-            say.invoke(o);
-        }
-
-        long end = System.currentTimeMillis();
-        System.out.println(&quot;反射优化机制执行时间：&quot;+(end-start));
-
-    }
-</code></pre>
-<hr>
-<p>执行结果对比</p>
-<pre><code>普通方法执行时间：3 ms
-反射机制执行时间：176 ms
-反射优化机制执行时间：129 ms
 </code></pre>
 ]]></content>
     </entry>

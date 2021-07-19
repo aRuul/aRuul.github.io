@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>JVM-01 概述 | aRuul的无名小站</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://aruul.github.io/favicon.ico?v=1626687665927">
+<link rel="stylesheet" href="https://aruul.github.io/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+<script async src="//code.tidio.co/0llaydzaqpj2momyrcycfplv2h2my3av.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+    <meta name="description" content="java虚拟机JVM
+java虚拟机是一台执行java字节码的虚拟计算机，它拥有独立的运行机制，其运行的java字节码也未必由java语言编译而成。
+JVM平台的各种语言可以共享java虚拟机带来的跨平台性、优秀的垃圾回收机制以及可靠的即时..." />
+    <meta name="keywords" content="jvm,java" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://aruul.github.io">
+        <img src="https://aruul.github.io/images/avatar.png?v=1626687665927" class="site-logo">
+        <h1 class="site-title">aRuul的无名小站</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/essay" class="site-nav">
+            随笔
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+          <a class="social-link" href="https://github.com/aRuul" target="_blank">
+            <i class="fab fa-github"></i>
+          </a>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+<span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+</span> | <a class="rss" href="https://aruul.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">JVM-01 概述</h2>
+            <div class="post-date">2021-07-16</div>
+            
+            <div class="post-content" v-pre>
+              <h2 id="java虚拟机jvm">java虚拟机JVM</h2>
+<p>java虚拟机是一台执行java字节码的虚拟计算机，它拥有独立的运行机制，其运行的java字节码也未必由java语言编译而成。</p>
+<p>JVM平台的各种语言可以共享java虚拟机带来的跨平台性、优秀的垃圾回收机制以及可靠的即时编译器。java技术的核心就是java虚拟机（jvm，java virtual machine）</p>
+<h2 id="jvm的位置">JVM的位置</h2>
+<figure data-type="image" tabindex="1"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210716200358.png" alt="image-20210716200357558" loading="lazy"></figure>
+<p>jvm是运行在操作系统之上的，没有和硬件直接交互</p>
+<h2 id="jvm的整体结构">JVM的整体结构</h2>
+<figure data-type="image" tabindex="2"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210716200827.png" alt="image-20210716200826280" loading="lazy"></figure>
+<p>​															<mark>要求会自己画出这张图</mark></p>
+<ul>
+<li>HotSport VM是目前市面上最高性能的虚拟机的代表作之一。</li>
+<li>它采用解释器与即时编译器并存的架构</li>
+</ul>
+<h2 id="java代码执行流程">java代码执行流程</h2>
+<p>比如我们现在写了一个 HelloWorld.java 好了，那这个 HelloWorld.java 抛开所有东西不谈，那是不是就类似于一个文本文件，只是这个文本文件它写的都是英文，而且有一定的缩进而已。</p>
+<p>那我们的 <strong>JVM</strong> 是不认识文本文件的，所以它需要一个 <strong>编译</strong> ，让其成为一个它会读二进制文件的 <strong>HelloWorld.class</strong></p>
+<p>如果 <strong>JVM</strong> 想要执行这个 <strong>.class</strong> 文件，我们需要将其装进一个 <strong>类加载器</strong> 中，它就像一个搬运工一样，会把所有的 <strong>.class</strong> 文件全部搬进JVM里面来。</p>
+<figure data-type="image" tabindex="3"><img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210716200206.png" alt="image-20210716200204379" loading="lazy"></figure>
+<p>==由于跨平台的设计，java的指令都是根据栈来设计的。==跨平台性，指令集小，指令多。</p>
+<p>相对于基于寄存器的架构，基于栈的架构的执行性能相比寄存器来说要差一些</p>
+<h2 id="jvm的生命周期">JVM的生命周期</h2>
+<p><strong>java虚拟机的启动</strong>是通过引导类类(bootstrap class loader)创建一个初始化类(initial class)来完成，这个类是有虚拟机的具体实现指定的。</p>
+<p><strong>虚拟机的执行:</strong> 一个运行中的Java虚拟机有着一个清晰的任务：执行Java程序<br>
+程序开始执行时他才运行，程序结束时他就停止<br>
+执行一个所谓的Java程序的时候，真真正正在执行的是一个叫做Java虚拟机的进程</p>
+<p><strong>虚拟机的退出</strong><br>
+有如下的几种情况：</p>
+<ul>
+<li>程序正常执行结束</li>
+<li>程序在执行过程中遇到了异常或错误而异常终止</li>
+<li>由于操作系统出现错误而异致Java虚拟机进程终止</li>
+<li>某线程调用 Runtime类或 system类的exit方法，或 Runtime类的halt<br>
+方法，并且Java安全管理器也允许这次exit或halt操作</li>
+<li>除此之外，JNI( Java Native Interface)规范描述了用JNI Invocation APｴ来加载或卸载Java虚拟机时，Java虚拟机的退出情况</li>
+</ul>
+<h2 id="hotspot虚拟机">HotSpot虚拟机</h2>
+<p>不管是JDK6还是最常用的JDK8，默认虚拟机都是HotSpot</p>
+<blockquote>
+<p>名称中的 Hotspot指的就是它的热点代码探测技术。<br>
+通过计数器找到最具编译价值代码，触发即时编译或上替拧<br>
+通过编译器与解释器协同工作，在最优化的程序响应时间与最佳执行性能中取得平衡</p>
+</blockquote>
+<hr>
+<p>Graal VM  ---&quot;Run Programs Faster Anywhere&quot;  最有可能替代HotSpot。</p>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://aruul.github.io/tag/0YGAvJojq/" class="tag">
+                    jvm
+                  </a>
+                
+                  <a href="https://aruul.github.io/tag/fABi2KP6qR/" class="tag">
+                    java
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://aruul.github.io/post/h25epdEh9/">
+                  <h3 class="post-title">
+                    java多线程
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+  <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad()
+  </script>
+
+
+
+
+
+  </body>
+</html>
