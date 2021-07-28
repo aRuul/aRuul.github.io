@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>ngnix | aRuul的无名小站</title>
+<title>java中父类子类中各个代码块的执行顺序 | aRuul的无名小站</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -22,7 +22,14 @@
 <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
 </script>
 
-    <meta name="description" content="温故而知新">
+    <meta name="description" content="/**
+ * @author aRu
+ * @date 2021/7/27 9:26
+ */
+class DemoFather{
+    public DemoFather(){
+        System.out.println(&qu..." />
+    <meta name="keywords" content="java" />
   </head>
   <body>
     <div id="app" class="main">
@@ -105,28 +112,100 @@
 
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
-          <h2 class="current-tag">标签: ngnix</h2>
-          
-            <article class="post-item">
-              <div class="left">
-                <a href="https://aruul.github.io/post/xeGoYob77/">
-                  <h2 class="post-title">ubuntu ngnix的安装和配置</h2>
-                </a>
-                <div class="post-date">
-                  2021-04-30
-                </div>
-                <div class="post-abstract">
-                  
-                </div>
-              </div>
-              
-            </article>
-          
+          <div class="post-detail">
+            <h2 class="post-title">java中父类子类中各个代码块的执行顺序</h2>
+            <div class="post-date">2021-07-28</div>
+            
+            <div class="post-content" v-pre>
+              <pre><code class="language-java">/**
+ * @author aRu
+ * @date 2021/7/27 9:26
+ */
+class DemoFather{
+    public DemoFather(){
+        System.out.println(&quot;father构造函数&quot;);
+    }
 
-          <div class="pagination-container">
-  
-  
-</div>
+    static{
+        System.out.println(&quot;father静态代码块&quot;);
+    }
+
+    {
+        System.out.println(&quot;father构造代码块&quot;);
+    }
+
+    public void fatherMethord(){
+        System.out.println(&quot;father方法&quot;);
+    }
+
+}
+
+public class Demo4 extends DemoFather{
+    public Demo4(){
+        System.out.println(&quot;son构造函数&quot;);
+    }
+
+    static{
+        System.out.println(&quot;son静态代码块&quot;);
+    }
+
+    {
+        System.out.println(&quot;son构造代码块&quot;);
+    }
+
+    public void fatherMethord(){
+        System.out.println(&quot;son重写方法&quot;);
+
+    }
+
+    public void sonOnlyMethord(){
+        System.out.println(&quot;son独有方法&quot;);
+    }
+
+    public static void main(String[] args) {
+        Demo4 demo4 = new Demo4();
+        demo4.fatherMethord();
+
+    }
+}
+
+</code></pre>
+<p>执行结果</p>
+<pre><code class="language-java">father静态代码块
+son静态代码块
+father构造代码块
+father构造函数
+son构造代码块
+son构造函数
+son重写方法
+
+Process finished with exit code 0
+</code></pre>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://aruul.github.io/tag/fABi2KP6qR/" class="tag">
+                    java
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://aruul.github.io/post/3_MAdpKrX/">
+                  <h3 class="post-title">
+                    JVM-05 String Table
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
 
         </div>
       </div>
