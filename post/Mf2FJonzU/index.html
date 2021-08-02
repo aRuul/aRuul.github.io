@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>JVM-06 垃圾回收 | aRuul的无名小站</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://aruul.github.io/favicon.ico?v=1627901916401">
+<link rel="stylesheet" href="https://aruul.github.io/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+<script async src="//code.tidio.co/0llaydzaqpj2momyrcycfplv2h2my3av.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+    <meta name="description" content="垃圾回收
+概述
+什么是垃圾？
+垃圾是指在运行程序中没有任何指针指向的对象，这个对象就是需要被回收的垃圾。
+为什么需要GC？
+对于高级语言来说，一个基本认知是如果不进行垃圾回收，内存迟早都会被消耗完，因为不断地分配内存空间而不进行回收，就好像..." />
+    <meta name="keywords" content="jvm,java" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://aruul.github.io">
+        <img src="https://aruul.github.io/images/avatar.png?v=1627901916401" class="site-logo">
+        <h1 class="site-title">aRuul的无名小站</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/essay" class="site-nav">
+            随笔
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+          <a class="social-link" href="https://github.com/aRuul" target="_blank">
+            <i class="fab fa-github"></i>
+          </a>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+<span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+</span> | <a class="rss" href="https://aruul.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">JVM-06 垃圾回收</h2>
+            <div class="post-date">2021-08-02</div>
+            
+            <div class="post-content" v-pre>
+              <h1 id="垃圾回收">垃圾回收</h1>
+<h2 id="概述">概述</h2>
+<h3 id="什么是垃圾">什么是垃圾？</h3>
+<p>垃圾是指<strong>在运行程序中没有任何指针指向的对象</strong>，这个对象就是需要被回收的垃圾。</p>
+<h3 id="为什么需要gc">为什么需要GC？</h3>
+<p>对于高级语言来说，一个基本认知是如果不进行垃圾回收，内存迟早都会被消耗完，因为不断地分配内存空间而不进行回收，就好像不停地生产生活垃圾而从来不打扫一样。</p>
+<p>除了释放没用的对象，垃圾回收也可以清除内存里的记录碎片。碎片整理将所占用的堆内存移到堆的一端，以便JVM将整理出的内存分配给新的对象。</p>
+<p>随着应用程序所应付的业务越来越庞大、复杂，用户越来越多，没有GC就不能保证应用程序的正常进行。而经常造成STW的GC又跟不上实际的需求，所以才会不断地尝试对GC进行优化。</p>
+<h3 id="gc主要关注区域">GC主要关注区域</h3>
+<p>GC主要关注于<strong>方法区</strong>和<strong>堆</strong>的垃圾回收</p>
+<p>垃圾收集器可以对年轻代进行回收，也可以对老年代进行回收，甚至是全栈和方法区的回收。</p>
+<p>其中，<strong>java堆是垃圾收集器的工作重点。</strong></p>
+<p>从次数上讲：</p>
+<ul>
+<li><strong>频繁回收Young区</strong></li>
+<li><strong>较少回收Old区</strong></li>
+<li><strong>基本不收集元空间</strong></li>
+</ul>
+<h2 id="标记阶段">标记阶段</h2>
+<p>在堆里面放存着几乎所有的java对象实例，在GC执行垃圾回收之前，<strong>首先需要区分出内存中哪些是存活对象，哪些是已经死亡的对象</strong>。只有被标记为已经死亡的对象，GC才会在执行垃圾回收时，释放掉其所占的内存空间，因此这个过程成为<strong>垃圾标记阶段</strong>。</p>
+<p><strong>当一个对象已经不再被任何的存活对象继续引用时，就可以宣判为已经死亡。</strong></p>
+<p>判断对象存活一般有两种方式：<strong>引用计数算法</strong>和<strong>可达性分析算法</strong>。</p>
+<h3 id="引用计数算法">引用计数算法</h3>
+<p>引用计数算法（Reference Counting）比较简单，对每个对象保存一个整型的引用计数器属性。用于记录对象被引用的情况。</p>
+<p>对于一个对象A，只要有任何一个对象引用了A，则A的引用计数器就加1；当引用失效时，引用计数器就减1。只要对象A的引用计数器的值为0，即表示对象A不可能再被使用，可进行回收。</p>
+<p>优点：<strong>实现简单，垃圾对象便于辨识；判定效率高，回收没有延迟性。</strong></p>
+<p>缺点：</p>
+<ul>
+<li>它需要单独的字段存储计数器，这样的做法增加了存储空间的开销</li>
+<li>每次赋值都需要更新计数器，伴随着加法和减法操作，这增加了时间开销。</li>
+<li>引用计数器有一个严重的问题，即<strong>无法处理循环引用的情况</strong>。这是一条致命缺陷，导致<strong>在Java的垃圾回收器中没有使用这类算法</strong></li>
+</ul>
+<h3 id="可达性分析算法"><strong>可达性分析算法</strong></h3>
+<blockquote>
+<p>可达性分析算法：也被称为 <strong>根搜索算法、追踪性垃圾收集</strong></p>
+</blockquote>
+<p>可达性分析算法基本思路：</p>
+<ul>
+<li>
+<p>可达性分析算法是以**根对象集合（GC  Roots）**为起始点，按照从上至下的方式搜索被根对象集合所连接的目标对象是否可达。</p>
+<blockquote>
+<p>&quot;GCRoots”根集合就是一组必须活跃的引用</p>
+</blockquote>
+</li>
+<li>
+<p>使用可达性分析算法后，内存中的存活对象都会被根对象集合直接或间接连接着，搜索所走过的路径称为<strong>引用链（Reference</strong> Chain）</p>
+</li>
+<li>
+<p>如果目标对象没有任何引用链相连，则是不可达的，就意味着该对象己经死亡，可以标记为垃圾对象。</p>
+</li>
+<li>
+<p>在可达性分析算法中，只有能够被根对象集合直接或者间接连接的对象才是存活对象。</p>
+</li>
+</ul>
+<img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210727150458.png" alt="image-20210727150457501" style="zoom:80%;" />
+<h4 id="gc-roots可以是哪些">GC Roots可以是哪些？</h4>
+<ul>
+<li>虚拟机栈中引用的对象
+<ul>
+<li>比如：各个线程被调用的方法中使用到的参数、局部变量等。</li>
+</ul>
+</li>
+<li>本地方法栈内JNI（通常说的本地方法）引用的对象方法区中<strong>类静态属性</strong>引用的对象
+<ul>
+<li>比如：Java类的引用类型静态变量</li>
+</ul>
+</li>
+<li>方法区中常量引用的对象
+<ul>
+<li>比如：字符串常量池（String Table）里的引用</li>
+</ul>
+</li>
+<li>所有被同步锁synchronized持有的对象</li>
+<li>Java虚拟机内部的引用。
+<ul>
+<li>基本数据类型对应的Class对象，一些常驻的异常对象（如：Nu11PointerException、outofMemoryError），系统类加载器。</li>
+</ul>
+</li>
+<li>反映java虚拟机内部情况的JMXBean、JVMTI中注册的回调、本地代码缓存等。</li>
+</ul>
+<p>【小总结】由于Root采用栈方式存放变量和指针，所以如果一个指针，它保存了堆内存里面的对象，但是自己又不存放在堆内存里面，那它就是一个Root。</p>
+<p>【注意】如果要使用可达性分析算法来判断内存是否可回收，那么分析工作必须在一个能保障一致性的快照中进行。这点不满足的话分析结果的准确性就无法保证。</p>
+<p>这点也是导致GC进行时必须“Stop The World”的一个重要原因。</p>
+<p>即使是号称（几乎）不会发生停顿的CMS收集器中，枚举根节点时也是必须要停顿的。</p>
+<h2 id="对象的finalization机制">对象的finalization机制</h2>
+<ul>
+<li>
+<p>java提供了对象终止机制来允许开发人员提供对象被销毁之前的自定义处理逻辑。</p>
+</li>
+<li>
+<p>在垃圾回收此对象之前，总会先调用这个对象的finalize方法。</p>
+</li>
+<li>
+<p>finalize()方法允许在子类中被重写，<strong>用于在对象被回收前进行资源释放</strong>。<strong>通常在这个方法中进行一些资源释放和清理工作，比如关闭文件、套接字和数据库链接等</strong></p>
+</li>
+</ul>
+<p>【注意】由于finalize()方法的存在，虚拟机中的<strong>对象一般处于三种可能的状态。</strong></p>
+<ul>
+<li>
+<p>可触及的：从根节点开始，可以到达这个对象。</p>
+</li>
+<li>
+<p>可复活的：对象的所有引用都被释放，但是对象有可能在finalize()中复活。</p>
+</li>
+<li>
+<p>不可触及的：对象的finalize()被调用，并且没有复活，那么就会进入不可触及状态。</p>
+<p>​						不可触及的对象不可能被复活，因为<strong>finalize()只会被调用一次</strong>。</p>
+</li>
+</ul>
+<p>判定一个对象objA是否可回收，至少要经过两次标记过程：</p>
+<ol>
+<li>
+<p>如果对象objA到GC Roots没有引用链接，则进行第一次标记</p>
+</li>
+<li>
+<p>进行筛选，判断此对象是否有必要执行finalize()方法</p>
+<p>① 如果对象objA没有重写finalize方法，或者finalize()方法已经被虚拟机调用过，则虚拟机视为“没有必要执行”，objA被判定为<strong>不可触及的。</strong></p>
+<p>② 如果对象objA重写了finalize()方法，且还未执行过，那么objA会被插入到F-Queue队列中，由一个虚拟机自动创建的、低优先级的Finalizer线程触发其finalize()方法执行。</p>
+<p>③ finalize()方法是对象逃脱死亡的最后机会，稍后GC会对F-Queue队列中的对象进行第二次标记。<strong>如果objA在finalize()方法中与引用链上的任何一个对象建立了联系，那么在第二次标记时，objA会被移出“即将回收”集合</strong>。之后，对象会再次出现没有引用存在的情况。在这个情况下，finalize()方法不会被再次调用，对象会直接变成不可触及的状态，也就是说，<strong>一个对象的finalize()方法只会被调用一次。</strong></p>
+</li>
+</ol>
+<h2 id="清除阶段">清除阶段</h2>
+<p>当成功区分出内存中存活对象和死亡对象后，GC接下来的任务就是执行垃圾回收，释放掉无用对象所占用的内存空间，以便有足够的可用内存空间为新对象分配内存。</p>
+<p>目前在JVM中比较常见的<strong>三种垃圾收集算法</strong>：</p>
+<ul>
+<li><strong>标记--清除算法(Mark-Sweep)</strong></li>
+<li><strong>复制算法(Copying)</strong></li>
+<li><strong>标记--压缩算法(Mark-Compact)</strong></li>
+</ul>
+<h3 id="标记-清除算法mark-sweep">标记--清除算法(Mark-Sweep)</h3>
+<p><strong>过程：</strong></p>
+<ul>
+<li>
+<p><strong>标记</strong>：Collector从根节点开始遍历，<strong>标记所有被引用的对象</strong>(<strong>标记的是可达的对象，并不是标记的垃圾</strong>)。一般是在对象Header中记录为可达对象</p>
+</li>
+<li>
+<p><strong>清除</strong>：Collector对堆内存从头到尾进行线性的遍历(就是把所有的遍历一遍)，如果发现某个对象在其Header中没有被标记为可达对象，则将其回收。</p>
+<blockquote>
+<p>这里所谓的清除并不是真的置空，而是把需要清除的对象地址保存在空闲的地址列表里。下次有新对象需要加载时，判断垃圾的位置空间是否够，如果够，就存放覆盖原有的地址。</p>
+</blockquote>
+</li>
+</ul>
+<p><strong>缺点：</strong></p>
+<ul>
+<li>标记清除算法的效率不算高，需要两次</li>
+<li>在进行GC的时候，需要停止整个应用程序，用户体验较差</li>
+<li>这种方式清理出来的空闲内存是不连续的，产生内碎片，需要维护一个空闲列表</li>
+</ul>
+<h3 id="复制算法copying">复制算法(Copying)</h3>
+<p><strong>过程：</strong></p>
+<p>将活着的内存空间分为两块，每次只使用其中一块，在垃圾回收时将正在使用的内存中的存活对象复制到未被使用的内存块中，之后清除正在使用的内存块中的所有对象，交换两个内存的角色，最后完成垃圾回收</p>
+<img src="https://gitee.com/aruul/a-ru-img/raw/master/img/20210727171423.png" alt="image-20210727171422045" style="zoom:80%;" />
+<p>把可达的对象，直接复制到另外一个区域中复制完成后，A区就没有用了，里面的对象可以直接清除掉，其实里面的新生代里面就用到了复制算法</p>
+<p><strong>这个复制算法和年轻代中Minor GC时S0、S1中垃圾回收类似</strong></p>
+<p><strong>优点：</strong></p>
+<ul>
+<li>没有标记和清除过程，实现简单，运行高效</li>
+<li>复制过去以后保证空间的连续性，不会出现“碎片”问题。</li>
+</ul>
+<p><strong>缺点：</strong></p>
+<ul>
+<li>此算法的缺点也是很明显的，就是需要两倍的内存空间。</li>
+<li>对于G1(JDK默认垃圾回收器)这种分拆成为大量region的GC，复制而不是移动，意味着GC需要维护region之间对象引用关系，不管是内存占用或者时间开销也不小</li>
+</ul>
+<p><strong>注意：</strong></p>
+<p><strong>如果系统中的垃圾比较少，那么复制算法每次都要复制大量的存活对象，效率就会很低</strong>。</p>
+<p>所以理想的情况是，垃圾多，存活对象少，那么每次复制的存活对象就少，所以在新生代，对常规应用的垃圾回收，一次通常可以回收70%-99%的内存空间，回收的性价比较高，所以很多商业的虚拟机都是应用这种收集算法<strong>回收新生代</strong>。</p>
+<h3 id="标记-压缩算法mark-compact"><strong>标记--压缩算法(Mark-Compact)</strong></h3>
+<p>又称<strong>标记整理算法</strong></p>
+<blockquote>
+<p>复制算法的高效性是建立在存活对象少、垃圾对象多的前提下的。这种情况在新生代经常发生，但是在老年代，更常见的情况是大部分对象都是存活对象。如果依然使用复制算法，由于存活对象较多，复制的成本也将很高。因此，基于老年代垃圾回收的特性，需要使用其他的算法。</p>
+</blockquote>
+<p><strong>过程：</strong></p>
+<ul>
+<li>
+<p>第一阶段和标记清除算法一样，从根节点开始标记所有被引用对象</p>
+</li>
+<li>
+<p>第二阶段将所有的存活对象压缩到内存的一端，按顺序排放。之后，清理边界外所有的空间。</p>
+</li>
+</ul>
+<p><strong>优点</strong></p>
+<ul>
+<li>消除了标记-清除算法当中，内存区域分散的缺点，我们需要给新对象分配内存时，JVM只需要持有一个内存的起始地址即可。</li>
+<li>消除了复制算法当中，内存减半的高额代价。</li>
+</ul>
+<p><strong>缺点</strong></p>
+<ul>
+<li>从效率上来说，标记-整理算法要低于复制算法。</li>
+<li>移动对象的同时，如果对象被其他对象引用，则还需要调整引用的地址</li>
+<li>移动过程中，需要全程暂停用户应用程序。即：STW(Stop The World)</li>
+</ul>
+<h3 id="小结">小结</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>标记清除</th>
+<th>标记整理</th>
+<th>复制</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>速率</strong></td>
+<td>中等</td>
+<td>最慢</td>
+<td>最快</td>
+</tr>
+<tr>
+<td><strong>空间开销</strong></td>
+<td>少（但会堆积碎片）</td>
+<td>少（不堆积碎片）</td>
+<td>通常需要活对象的2倍空间（不堆积碎片）</td>
+</tr>
+<tr>
+<td><strong>移动对象</strong></td>
+<td>否</td>
+<td>是</td>
+<td>是</td>
+</tr>
+</tbody>
+</table>
+<h3 id="分代收集算法">分代收集算法</h3>
+<blockquote>
+<p>分代收集算法，是基于这样一个事实：不同的对象的生命周期是不一样的。因此，不同生命周期的对象可以采取不同的收集方式，以便提高回收效率。一般是把Java堆分为新生代和老年代，这样就可以根据各个年代的特点使用不同的回收算法，以提高垃圾回收的效率。</p>
+</blockquote>
+<p>在HotSpot中，基于分代的概念，GC所使用的内存回收算法必须结合年轻代和老年代各自的特点。</p>
+<p><strong>年轻代（Young Gen）</strong>：</p>
+<p>年轻代特点：区域相对老年代较小，对象生命周期短、存活率低，回收频繁。</p>
+<p>这种情况复制算法的回收整理，速度是最快的。复制算法的效率只和当前存活对象大小有关，因此很适用于年轻代的回收。而复制算法内存利用率不高的问题，通过hotspot中的两个survivor的设计得到缓解。</p>
+<p><strong>老年代（Tenured Gen）</strong></p>
+<p>老年代特点：区域较大，对象生命周期长、存活率高，回收不及年轻代频繁。</p>
+<p>这种情况存在大量存活率高的对象，复制算法明显变得不合适。一般是由<strong>标记-清除</strong>或者是<strong>标记-清除与标记-整理</strong>的混合实现。</p>
+<ul>
+<li>Mark(标记)阶段的开销与存活对象的数量成正比。</li>
+<li>Sweep(清除)阶段的开销与所管理区域的大小成正相关。</li>
+<li>compact(压缩/整理)阶段的开销与存活对象的数据成正比。</li>
+</ul>
+<p>以HotSpot中的CMS回收器为例子，CMS是基于Mark-Sweep实现的，对于对象的回收效率很高。而对于碎片化问题，CMS采用基于Mark-Compact算法的Serial Old回收器作为补偿措施；当内存回收不佳，将采用Serial Old执行Full GC以达到对老年代内存的整理。</p>
+<h3 id="增量收集算法">增量收集算法</h3>
+<blockquote>
+<p>上述现有的算法，在垃圾回收过程中，应用软件将处于一种stop the World的状态。在stop the World状态下，应用程序所有的线程都会挂起，暂停一切正常的工作，等待垃圾回收的完成。如果垃圾回收时间过长，应用程序会被挂起很久，将严重影响用户体验或者系统的稳定性。为了解决这个问题，即对实时垃圾收集算法的研究直接导致了增量收集（Incremental Collecting）算法的诞生。</p>
+</blockquote>
+<p>如果一次性将所有的垃圾进行处理，需要造成系统长时间的停顿，那么就可以让垃圾收集线程和应用程序线程交替执行。每次，垃圾收集线程只收集一小片区域的内存空间，接着切换到应用程序线程。依次反复，直到垃圾收集完成。</p>
+<p>总的来说，<strong>增量收集算法的基础仍是传统的标记-清除和复制算法。增量收集算法通过对线程间冲突的妥善处理</strong>，允许垃圾收集线程以分阶段的方式完成标记、清理或复制工作</p>
+<p><strong>缺点：</strong></p>
+<p>使用这种方式，由于在垃圾回收过程中，间断性地还执行了应用程序代码，所以能减少系统的停顿时间。但是，因为线程切换和上下文转换的消耗，会使得垃圾回收的总体成本上升，造成系统吞吐量的下降。</p>
+<h3 id="分区算法">分区算法</h3>
+<p>一般来说，在相同条件下，堆空间越大，一次GC时所需要的时间就越长，有关GC产生的停顿也越长。</p>
+<p>为了更好地控制GC产生的停顿时间，将一块大的内存区域分割成多个小块，根据目标的停顿时间，每次合理地回收若干个小区间，而不是整个堆空间，从而减少一次GC所产生的停顿。</p>
+<p>分代算法将按照对象的生命周期长短划分成两个部分，<strong>分区算法将整个堆空间划分成连续的不同小区间</strong>。 每一个小区间都独立使用，独立回收。这种算法的好处是可以控制一次回收多少个小区间。</p>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://aruul.github.io/tag/0YGAvJojq/" class="tag">
+                    jvm
+                  </a>
+                
+                  <a href="https://aruul.github.io/tag/fABi2KP6qR/" class="tag">
+                    java
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://aruul.github.io/post/GJEKowxCw/">
+                  <h3 class="post-title">
+                    java中父类子类中各个代码块的执行顺序
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+  <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad()
+  </script>
+
+
+
+
+
+  </body>
+</html>
